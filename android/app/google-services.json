@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "153995141647",
+    "project_id": "gametime-rehab",
+    "storage_bucket": "gametime-rehab.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153995141647:android:5049811413b32fb6ca797a",
+        "android_client_info": {
+          "package_name": "com.anonymous.GametimeRehab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153995141647-qtb6h1e91cfad905elsd3ba70c9mg613.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anonymous.GametimeRehab",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "153995141647-a9bj1f1c2ndujino27i02cinuaur29i2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwvsO24MKVlQO8DMAahqazY9EJT1wnzc4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153995141647-a9bj1f1c2ndujino27i02cinuaur29i2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

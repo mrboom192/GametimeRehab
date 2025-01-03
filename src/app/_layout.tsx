@@ -1,5 +1,5 @@
 import { Stack, useRouter, useSegments } from "expo-router";
-import "../global.css";
+import "../../global.css";
 import { useEffect, useState } from "react";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { ActivityIndicator, View } from "react-native";

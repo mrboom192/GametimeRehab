@@ -3,6 +3,8 @@ import "../../global.css";
 import { useEffect, useState } from "react";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { ActivityIndicator, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
 
 export default function RootLayout() {
   const [initializing, setInitializing] = useState(true);
@@ -42,9 +44,12 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ title: "Home" }} />
-      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-    </Stack>
+    <>
+      <Stack>
+        <Stack.Screen name="index" options={{ title: "Home" }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+      </Stack>
+      <StatusBar style="dark" />
+    </>
   );
 }

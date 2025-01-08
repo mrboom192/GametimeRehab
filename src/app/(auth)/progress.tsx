@@ -11,7 +11,10 @@ const Progress = () => {
   const [selected, setSelected] = useState("");
 
   return (
-    <SafeAreaView className="flex-1 flex-col bg-white p-5 gap-4">
+    <ScrollView
+      style={{ flex: 1 }}
+      contentContainerClassName="flex-col bg-white p-5 gap-8"
+    >
       <Stack.Screen
         options={{
           headerStyle: {
@@ -19,12 +22,13 @@ const Progress = () => {
           },
           headerShadowVisible: false,
           headerTitle: (props) => (
-            <Text className="text-[#2C2C2C] text-3xl">Progress</Text>
+            <Text className="text-[#2C2C2C] text-4xl">Progress</Text>
           ),
         }}
       />
 
       <AchievementsCard />
+
       <Calendar
         // Customize the appearance of the calendar
         onDayPress={(day: { dateString: React.SetStateAction<string> }) => {
@@ -80,7 +84,7 @@ const Progress = () => {
         color="#78B16C"
         title="Current recovery pace"
       />
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 

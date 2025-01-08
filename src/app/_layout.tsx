@@ -5,6 +5,7 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { ActivityIndicator, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
+import { Text } from "react-native";
 
 export default function RootLayout() {
   const [initializing, setInitializing] = useState(true);
@@ -46,7 +47,35 @@ export default function RootLayout() {
   return (
     <>
       <Stack>
-        <Stack.Screen name="index" options={{ title: "Home" }} />
+        <Stack.Screen
+          name="index"
+          options={{
+            statusBarStyle: "dark",
+            navigationBarColor: "#FFF",
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            headerTitle: (props) => (
+              <Text className="text-[#F1744D] font-medium text-4xl">
+                gametime
+              </Text>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="(signup)"
+          options={{
+            statusBarStyle: "dark",
+            navigationBarColor: "#FFF",
+            headerShadowVisible: false,
+            headerTitleAlign: "center",
+            headerShown: false,
+            headerTitle: (props) => (
+              <Text className="text-[#F1744D] font-medium text-4xl">
+                gametime
+              </Text>
+            ),
+          }}
+        />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       </Stack>
       <StatusBar style="dark" />

@@ -9,8 +9,8 @@ const RecoveryProgressBar = ({
   backgroundColor = "#E9EDE5",
 }) => {
   return (
-    <View>
-      <Text>{title}</Text>
+    <View className="flex flex-col gap-4">
+      <Text className="text-[#2C2C2C] text-xl">{title}</Text>
       <View style={[styles.container, { backgroundColor, height }]}>
         <View
           style={[
@@ -18,6 +18,10 @@ const RecoveryProgressBar = ({
             { width: `${progress}%`, backgroundColor: color, height },
           ]}
         />
+      </View>
+      <View className="flex flex-row self-stretch justify-between">
+        <Text className="text-[#2C2C2C] font-light">Week 0</Text>
+        <Text className="text-[#2C2C2C] font-light">Week 5</Text>
       </View>
     </View>
   );

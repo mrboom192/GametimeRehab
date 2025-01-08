@@ -63,6 +63,8 @@ export default function Page() {
 
       <Stack.Screen
         options={{
+          statusBarStyle: "dark",
+          statusBarBackgroundColor: "#FEF5EF",
           headerStyle: {
             backgroundColor: "#FEF5EF",
           },
@@ -70,7 +72,7 @@ export default function Page() {
           headerTitleAlign: "center",
           headerLeft: () => <Ionicons name="menu" size={32} />,
           headerTitle: (props) => (
-            <Text className="text-[#F1744D] font-medium text-3xl">
+            <Text className="text-[#F1744D] font-medium text-4xl">
               gametime
             </Text>
           ),
@@ -119,7 +121,22 @@ export default function Page() {
       <Text className="text-[#2C2C2C]">Assigned</Text>
       <Text className="text-[#2C2C2C]">Scheduled</Text>
       <AchievementsCard />
-      {/* <Button title="Sign out" onPress={() => auth().signOut()} /> */}
+      <Button title="Sign out" onPress={() => auth().signOut()} />
+
+      <View className="flex justify-between items-end">
+        <Link href="/assigned-exercises" asChild>
+          <Pressable
+            className="flex-row items-center bg-[#2C2C2C] gap-2 p-2.5 rounded-lg hover:bg-zinc-700 active:bg-zinc-600 focus:ring focus:ring-zinc-500"
+            accessibilityRole="button"
+            accessibilityLabel="View Progress"
+          >
+            <Text className="text-white font-medium text-xs">
+              Assigned Exercieses
+            </Text>
+            <Ionicons name="chevron-forward" size={16} color="#FFF" />
+          </Pressable>
+        </Link>
+      </View>
     </SafeAreaView>
   );
 }

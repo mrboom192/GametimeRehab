@@ -6,7 +6,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import LabeledInput from "@/src/components/LabeledInput";
 
 interface Errors {
-  institutionCode?: string;
+  institution_code?: string;
   gender?: string;
   weight?: string;
   height?: string;
@@ -29,10 +29,10 @@ export default function AthleteDetails() {
     const newErrors: Errors = {};
 
     // FAFSA validation
-    if (!signupData.institutionCode) {
-      newErrors.institutionCode = "FAFSA code is required.";
-    } else if (!/^[a-zA-Z0-9]{6}$/.test(signupData.institutionCode)) {
-      newErrors.institutionCode =
+    if (!signupData.institution_code) {
+      newErrors.institution_code = "FAFSA code is required.";
+    } else if (!/^[a-zA-Z0-9]{6}$/.test(signupData.institution_code)) {
+      newErrors.institution_code =
         "FAFSA code must be exactly 6 alphanumeric characters.";
     }
 
@@ -212,13 +212,15 @@ export default function AthleteDetails() {
             <LabeledInput
               label="Institution FAFSA code"
               placeholder="123456"
-              value={signupData.institutionCode}
+              value={signupData.institution_code}
               icon={
                 <Ionicons name="school-outline" size={16} color="#717171" />
               }
-              onChangeText={(text) => updateSignupData("institutionCode", text)}
+              onChangeText={(text) =>
+                updateSignupData("institution_code", text)
+              }
               note="Provided to you by trainer"
-              error={errors.institutionCode}
+              error={errors.institution_code}
             />
             <LabeledInput
               label="Program/Sport"

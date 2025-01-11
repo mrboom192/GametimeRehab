@@ -7,51 +7,16 @@ import {
   Pressable,
 } from "react-native";
 import auth from "@react-native-firebase/auth";
-import React, { useEffect, useState } from "react";
-import firestore, {
-  FirebaseFirestoreTypes,
-} from "@react-native-firebase/firestore";
+import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link, Stack } from "expo-router";
 import GraphArrowIncrease from "@/src/components/icons/GraphArrowIncrease";
 import SummaryCard from "@/src/components/SummaryCard";
 import AchievementsCard from "@/src/components/AchievementsCard";
+import { useUser } from "@/src/contexts/UserContext";
 
 export default function Page() {
-  const [loading, setLoading] = useState(false);
-  const [userInfo, setUserInfo] =
-    useState<FirebaseFirestoreTypes.DocumentData | null>();
-  const [error, setError] = useState<string | null>(null);
-  const user = auth().currentUser;
-
-  useEffect(() => {
-    if (user) {
-      getUserInfo();
-    }
-  }, [user]);
-
-  const getUserInfo = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const userDoc = await firestore()
-        .collection("users")
-        .doc(user?.uid)
-        .get();
-
-      if (userDoc.exists) {
-        setUserInfo(userDoc.data());
-      } else {
-        setUserInfo(null);
-        setError("No user information found.");
-      }
-    } catch (e: any) {
-      console.error("Error retrieving user information:", e.message);
-      setError("Error retrieving user information.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { userInfo, loading } = useUser();
 
   if (loading) {
     return <ActivityIndicator size={"small"} style={{ margin: 28 }} />;
@@ -79,7 +44,7 @@ export default function Page() {
           headerRight: () => (
             <View className="w-10 h-10 rounded-full bg-[#2C2C2C] flex items-center justify-center">
               <Text className="text-xl text-white">
-                {userInfo?.firstName[0]}
+                {userInfo?.first_name[0]}
               </Text>
             </View>
           ),
@@ -91,7 +56,7 @@ export default function Page() {
           numberOfLines={1}
           ellipsizeMode="tail"
         >
-          {userInfo?.firstName || "User"}'s Dashboard
+          {userInfo?.first_name || "User"}'s Dashboard
         </Text>
       </View>
 

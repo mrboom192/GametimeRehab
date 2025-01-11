@@ -32,7 +32,7 @@ export default function UserType() {
         <View className="flex flex-col gap-8">
           <View className="flex flex-col self-stretch items-start gap-2">
             <Text className="text-[#2C2C2C] text-4xl capitalize">
-              Hey {signupData.firstName},
+              Hey {signupData.first_name},
             </Text>
             <Text className="text-[#2C2C2C] text-2xl">
               Which describes you best?

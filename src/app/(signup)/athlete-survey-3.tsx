@@ -1,25 +1,32 @@
 import { View, Text, Pressable } from "react-native";
 import React, { useState } from "react";
 import { useSignup } from "@/src/contexts/SignupContext";
-import { useRouter } from "expo-router";
+import { useRouter } from "expo-router"; // Corrected router import
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Questionnaire from "@/src/components/Questionnaire";
 
-export default function AthleteSurvey1() {
+export default function AthleteSurvey3() {
   const { signupData, updateSignupData } = useSignup();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
   const handleNext = () => {
-    if (signupData.athlete_past_injuries) {
-      router.push("./athlete-survey-2", { relativeToDirectory: false });
+    if (signupData.athlete_challenges) {
+      router.push("./athlete-survey-4", { relativeToDirectory: false });
     } else {
       setError("Please select an option to proceed.");
     }
   };
 
   const handleSelect = (answer: string) => {
-    updateSignupData("athlete_past_injuries", answer);
+    // If the answer is already selected, remove it from the array, otherwise add it
+    const updatedAnswers = signupData.athlete_challenges
+      ? signupData.athlete_challenges.includes(answer)
+        ? signupData.athlete_challenges.filter((item) => item !== answer) // Remove if already selected
+        : [...signupData.athlete_challenges, answer] // Add if not selected
+      : [answer]; // Initialize array if it's undefined or empty
+
+    updateSignupData("athlete_challenges", updatedAnswers); // Update the state with the selected answers
     if (error) {
       setError(null); // Clear the error message when a valid option is selected
     }
@@ -30,10 +37,15 @@ export default function AthleteSurvey1() {
       <View className="flex-1 flex flex-col self-stretch justify-between items-start mx-8 mt-8 mb-16">
         <View className="flex flex-col self-stretch gap-4">
           <Questionnaire
-            title="Question 1/4"
-            question="How many injuries have you had in the past 5 years?"
-            options={["0", "1-2", "3-5", "5+"]}
-            state={signupData.athlete_past_injuries}
+            title="Question 3/4"
+            question="What are the biggest challenges you face in injury recovery? (Select all that apply)"
+            options={[
+              "Lack of knowledge about recovery techniques",
+              "Time constraints",
+              "Access to professional care",
+              "Motivation",
+            ]}
+            state={signupData.athlete_challenges}
             handleSelect={handleSelect}
           />
           {error && (

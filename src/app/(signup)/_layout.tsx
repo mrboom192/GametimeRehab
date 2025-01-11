@@ -82,6 +82,36 @@ const Layout = () => {
           }}
         />
         <Stack.Screen
+          name="athlete-survey-3"
+          options={{
+            statusBarStyle: "dark",
+            navigationBarColor: "#FFF",
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerTitleAlign: "center",
+            // headerTitle: (props) => (
+            //   <Text className="text-[#F1744D] font-medium text-4xl">
+            //     gametime
+            //   </Text>
+            // ),
+          }}
+        />
+        <Stack.Screen
+          name="athlete-survey-4"
+          options={{
+            statusBarStyle: "dark",
+            navigationBarColor: "#FFF",
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerTitleAlign: "center",
+            // headerTitle: (props) => (
+            //   <Text className="text-[#F1744D] font-medium text-4xl">
+            //     gametime
+            //   </Text>
+            // ),
+          }}
+        />
+        <Stack.Screen
           name="trainer-details"
           options={{
             statusBarStyle: "dark",

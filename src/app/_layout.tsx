@@ -1,51 +1,13 @@
-import { Stack, useRouter, useSegments } from "expo-router";
+import { Stack } from "expo-router";
 import "../../global.css";
-import { useEffect, useState } from "react";
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { ActivityIndicator, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Text } from "react-native";
+import { UserProvider } from "../contexts/UserContext";
 
 export default function RootLayout() {
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
-  const router = useRouter();
-  const segments = useSegments();
-
-  const onAuthStateChanged = (user: FirebaseAuthTypes.User | null) => {
-    console.log("onAuthStateChanged", user);
-    setUser(user);
-    if (initializing) setInitializing(false);
-  };
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
-  }, []);
-
-  useEffect(() => {
-    if (initializing) return;
-
-    const inAuthGroup = segments[0] === "(auth)";
-
-    if (user && !inAuthGroup) {
-      router.replace("/(auth)/home");
-    } else if (!user && inAuthGroup) {
-      router.replace("/");
-    }
-  }, [user, initializing]);
-
-  if (initializing) {
-    return (
-      <View className="items-center content-center flex-1">
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
   return (
-    <>
+    <UserProvider>
       <Stack>
         <Stack.Screen
           name="index"
@@ -79,6 +41,6 @@ export default function RootLayout() {
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       </Stack>
       <StatusBar style="dark" />
-    </>
+    </UserProvider>
   );
 }

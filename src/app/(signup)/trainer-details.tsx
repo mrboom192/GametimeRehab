@@ -6,8 +6,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import LabeledInput from "@/src/components/LabeledInput";
 
 interface Errors {
-  athleteCount?: string;
-  institutionCode?: string;
+  athlete_count?: string;
+  institution_code?: string;
   gender?: string;
   weight?: string;
   height?: string;
@@ -30,10 +30,10 @@ export default function TrainerDetails() {
     const newErrors: Errors = {};
 
     // FAFSA validation
-    if (!signupData.institutionCode) {
-      newErrors.institutionCode = "FAFSA code is required.";
-    } else if (!/^[a-zA-Z0-9]{6}$/.test(signupData.institutionCode)) {
-      newErrors.institutionCode =
+    if (!signupData.institution_code) {
+      newErrors.institution_code = "FAFSA code is required.";
+    } else if (!/^[a-zA-Z0-9]{6}$/.test(signupData.institution_code)) {
+      newErrors.institution_code =
         "FAFSA code must be exactly 6 alphanumeric characters.";
     }
 
@@ -49,11 +49,11 @@ export default function TrainerDetails() {
 
     // Athlete count validation
     if (
-      !signupData.athleteCount ||
-      isNaN(parseInt(signupData.athleteCount)) ||
-      parseInt(signupData.athleteCount) <= 0
+      !signupData.athlete_count ||
+      isNaN(parseInt(signupData.athlete_count)) ||
+      parseInt(signupData.athlete_count) <= 0
     ) {
-      newErrors.athleteCount = "Enter a valid athlete count.";
+      newErrors.athlete_count = "Enter a valid athlete count.";
     }
 
     setErrors(newErrors);
@@ -62,8 +62,8 @@ export default function TrainerDetails() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleAthleteCountChange = (text: string) => {
-    updateSignupData("athleteCount", text);
+  const handleathlete_countChange = (text: string) => {
+    updateSignupData("athlete_count", text);
   };
 
   return (
@@ -76,12 +76,14 @@ export default function TrainerDetails() {
             <LabeledInput
               label="Institution FAFSA code"
               placeholder="123456"
-              value={signupData.institutionCode}
+              value={signupData.institution_code}
               icon={
                 <Ionicons name="school-outline" size={16} color="#717171" />
               }
-              onChangeText={(text) => updateSignupData("institutionCode", text)}
-              error={errors.institutionCode}
+              onChangeText={(text) =>
+                updateSignupData("institution_code", text)
+              }
+              error={errors.institution_code}
             />
             <LabeledInput
               label="Program/Sport"
@@ -110,8 +112,8 @@ export default function TrainerDetails() {
               label="How many athletes are you working with?"
               placeholder="0"
               note="An estimate is fine."
-              value={signupData.athleteCount}
-              onChangeText={(text) => handleAthleteCountChange(text)}
+              value={signupData.athlete_count}
+              onChangeText={(text) => handleathlete_countChange(text)}
               keyboardType="numeric"
             />
           </View>

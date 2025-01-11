@@ -41,7 +41,7 @@ const Progress = () => {
           [selected]: {
             selected: true,
             disableTouchEvent: true,
-            selectedDotColor: "orange",
+            selectedColor: "orange",
           },
         }}
         theme={{

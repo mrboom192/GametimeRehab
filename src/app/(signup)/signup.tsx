@@ -6,12 +6,12 @@ import { useSignup } from "@/src/contexts/SignupContext";
 import { useState } from "react";
 
 interface Errors {
-  firstName?: string;
-  lastName?: string;
+  first_name?: string;
+  last_name?: string;
   email?: string;
   phone?: string;
   password?: string;
-  confirmPassword?: string;
+  confirm_password?: string;
 }
 
 export default function SignupScreen() {
@@ -22,12 +22,12 @@ export default function SignupScreen() {
   const validateFields = (): boolean => {
     const newErrors: Errors = {};
 
-    if (!signupData.firstName.trim()) {
-      newErrors.firstName = "First name is required.";
+    if (!signupData.first_name.trim()) {
+      newErrors.first_name = "First name is required.";
     }
 
-    if (!signupData.lastName.trim()) {
-      newErrors.lastName = "Last name is required.";
+    if (!signupData.last_name.trim()) {
+      newErrors.last_name = "Last name is required.";
     }
 
     if (
@@ -48,8 +48,8 @@ export default function SignupScreen() {
       newErrors.password = "Password must be at least 6 characters long.";
     }
 
-    if (signupData.password !== signupData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match.";
+    if (signupData.password !== signupData.confirm_password) {
+      newErrors.confirm_password = "Passwords do not match.";
     }
 
     setErrors(newErrors);
@@ -74,16 +74,16 @@ export default function SignupScreen() {
             <LabeledInput
               label="First name"
               placeholder="John"
-              value={signupData.firstName}
-              onChangeText={(text) => updateSignupData("firstName", text)}
-              error={errors.firstName}
+              value={signupData.first_name}
+              onChangeText={(text) => updateSignupData("first_name", text)}
+              error={errors.first_name}
             />
             <LabeledInput
               label="Last name"
               placeholder="Smith"
-              value={signupData.lastName}
-              onChangeText={(text) => updateSignupData("lastName", text)}
-              error={errors.lastName}
+              value={signupData.last_name}
+              onChangeText={(text) => updateSignupData("last_name", text)}
+              error={errors.last_name}
             />
           </View>
 
@@ -128,8 +128,10 @@ export default function SignupScreen() {
             <LabeledInput
               label="Confirm password"
               placeholder="Confirm your password"
-              value={signupData.confirmPassword}
-              onChangeText={(text) => updateSignupData("confirmPassword", text)}
+              value={signupData.confirm_password}
+              onChangeText={(text) =>
+                updateSignupData("confirm_password", text)
+              }
               icon={
                 <Ionicons
                   name="lock-closed-outline"
@@ -138,7 +140,7 @@ export default function SignupScreen() {
                 />
               }
               secureTextEntry={true}
-              error={errors.confirmPassword}
+              error={errors.confirm_password}
             />
           </View>
         </View>

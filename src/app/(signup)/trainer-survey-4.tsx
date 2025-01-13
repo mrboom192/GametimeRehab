@@ -2,7 +2,6 @@ import { View, Text, Pressable, ActivityIndicator } from "react-native";
 import React, { useState } from "react";
 import { useSignup } from "@/src/contexts/SignupContext";
 import { useRouter } from "expo-router"; // Corrected router import
-import Ionicons from "@expo/vector-icons/Ionicons";
 import Questionnaire from "@/src/components/Questionnaire";
 import { FirebaseError } from "firebase/app";
 import firestore from "@react-native-firebase/firestore";
@@ -13,6 +12,18 @@ export default function TrainerSurvey4() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const generateRandomCode = (length = 8): string => {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    return result;
+  };
 
   const signUp = async () => {
     setLoading(true);
@@ -50,6 +61,8 @@ export default function TrainerSurvey4() {
             signupData.trainer_interested_in_gamification,
           trainer_communication_styles: signupData.trainer_communication_styles,
           trainer_update_frequency: signupData.trainer_update_frequency,
+          trainer_code: generateRandomCode(),
+          pendingRequests: [],
         });
 
       router.replace("/first-welcome");

@@ -8,7 +8,8 @@ interface LabeledInputProps extends TextInputProps {
   labelRight?: React.ReactNode; // Optional content to display next to the label
   icon?: React.ReactNode; // Optional icon to display in the input
   secureTextEntry?: boolean;
-  error?: string; // Add this line to include the error prop
+  error?: string | undefined; // Add this line to include the error prop
+  success?: string | undefined; // Add this line to include the error prop
   unit?: string;
 }
 
@@ -21,6 +22,7 @@ const LabeledInput: React.FC<LabeledInputProps> = ({
   note,
   value,
   error,
+  success,
   unit,
   ...inputProps
 }) => {
@@ -31,6 +33,9 @@ const LabeledInput: React.FC<LabeledInputProps> = ({
         <View className="flex flex-row gap-4">
           <Text className="text-slate-700 text-sm font-medium">{label}</Text>
           {error && <Text className="text-red-500 text-xs mt-1">{error}</Text>}
+          {success && (
+            <Text className="text-green-500 text-xs mt-1">{success}</Text>
+          )}
         </View>
         {labelRight}
       </View>

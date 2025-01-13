@@ -20,16 +20,18 @@ const NavigateButton: React.FC<NavigateButtonProps> = ({
   href,
 }) => {
   return (
-    <View className="rounded-lg overflow-hidden border">
+    <View
+      className={`rounded-lg overflow-hidden border  ${
+        fill ? "bg-[#2C2C2C]" : ""
+      }`}
+    >
       <Link href={href} asChild>
         <Pressable
           android_ripple={{
             color: fill ? "#444" : "#ccc",
             borderless: false,
           }}
-          className={`py-2.5 px-6 justify-center flex-row items-center gap-2 overflow-hidden ${
-            fill ? "bg-[#2C2C2C]" : ""
-          }`}
+          className="py-2.5 px-6 justify-center flex-row items-center gap-2"
           accessibilityLabel={title}
           onPress={handleSubmit}
         >

@@ -11,9 +11,11 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 // Define types for user information (user context)
 interface UserContextType {
+  user: any;
   userInfo: any | null; // Can be null if user info is not available
   setUserInfo: React.Dispatch<React.SetStateAction<any | null>>; // Function to update the user info
   loading: boolean; // To track if user data is being fetched
+  initializing: boolean;
   error: string | null; // To track any errors in fetching user data
 }
 
@@ -71,25 +73,27 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Handle routing based on user state and info
-  useEffect(() => {
-    if (initializing) return;
+  // useEffect(() => {
+  //   if (initializing) return;
 
-    const inAuthGroup = segments[0] === "(auth)"; // Check if current path is within the auth group
+  //   const inAuthGroup = segments[0] === "(auth)"; // Check if current path is within the auth group
 
-    if (user && !inAuthGroup) {
-      // Redirect based on user role after authentication
-      if (userInfo?.type === "athlete") {
-        router.replace("/(auth)/home");
-      } else if (userInfo?.type === "trainer") {
-        router.replace("/(auth)/home");
-      }
-    } else if (!user && inAuthGroup) {
-      router.replace("/"); // Redirect to the login/signup screen if not authenticated
-    }
-  }, [user, initializing, userInfo, segments, router]);
+  //   if (user && !inAuthGroup) {
+  //     // Redirect based on user role after authentication
+  //     if (userInfo?.type === "athlete") {
+  //       router.replace("/(auth)/home");
+  //     } else if (userInfo?.type === "trainer") {
+  //       router.replace("/(auth)/home");
+  //     }
+  //   } else if (!user && inAuthGroup) {
+  //     router.replace("/"); // Redirect to the login/signup screen if not authenticated
+  //   }
+  // }, [user, initializing, userInfo, segments, router]);
 
   return (
-    <UserContext.Provider value={{ userInfo, setUserInfo, loading, error }}>
+    <UserContext.Provider
+      value={{ user, userInfo, initializing, setUserInfo, loading, error }}
+    >
       {children}
     </UserContext.Provider>
   );

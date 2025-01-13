@@ -10,7 +10,7 @@ export default function FirstWelcome() {
   const router = useRouter();
 
   const handleNext = () => {
-    router.replace("./home", { relativeToDirectory: false });
+    router.dismissAll();
   };
 
   return (

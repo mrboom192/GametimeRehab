@@ -73,11 +73,6 @@ const Progress = () => {
           // textDayHeaderFontSize: 16,
         }}
       />
-      <View className="flex flex-row self-stretch gap-5 justify-center">
-        <SummaryCard />
-        <SummaryCard />
-        <SummaryCard />
-      </View>
       <RecoveryProgressBar progress={23} color="#6F6E6E" />
       <RecoveryProgressBar
         progress={30}

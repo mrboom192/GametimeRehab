@@ -10,20 +10,7 @@ export default function RootLayout() {
   return (
     <UserProvider>
       <Stack>
-        <Stack.Screen
-          name="index"
-          options={{
-            statusBarStyle: "dark",
-            navigationBarColor: "#FFF",
-            headerShadowVisible: false,
-            headerTitleAlign: "center",
-            headerTitle: (props) => (
-              <Text className="text-[#F1744D] font-medium text-4xl">
-                gametime
-              </Text>
-            ),
-          }}
-        />
+        <Stack.Screen name="_sitemap" />
         <Stack.Screen
           name="(signup)"
           options={{

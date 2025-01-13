@@ -8,6 +8,7 @@ interface QuestionnaireProps {
   options: string[];
   state: string | string[] | undefined;
   handleSelect: (answer: string) => void;
+  note?: string;
 }
 
 const Questionnaire: React.FC<QuestionnaireProps> = ({
@@ -16,6 +17,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
   options = [],
   state,
   handleSelect,
+  note,
 }) => {
   return (
     <View className="flex flex-col self-stretch gap-8">
@@ -25,6 +27,11 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
       </View>
 
       <View className="flex flex-col self-stretch gap-2">
+        {note ? (
+          <Text className="text-[#817C7C] text-sm italic">{note}</Text>
+        ) : (
+          <></>
+        )}
         {options.map((option) => {
           const isSelected = Array.isArray(state)
             ? state.includes(option)

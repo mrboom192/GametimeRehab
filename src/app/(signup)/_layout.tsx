@@ -29,11 +29,6 @@ const Layout = () => {
             headerShadowVisible: false,
             headerTitle: "",
             headerTitleAlign: "center",
-            // headerTitle: (props) => (
-            //   <Text className="text-[#F1744D] font-medium text-4xl">
-            //     gametime
-            //   </Text>
-            // ),
           }}
         />
         <Stack.Screen
@@ -44,11 +39,6 @@ const Layout = () => {
             headerShadowVisible: false,
             headerTitle: "",
             headerTitleAlign: "center",
-            // headerTitle: (props) => (
-            //   <Text className="text-[#F1744D] font-medium text-4xl">
-            //     gametime
-            //   </Text>
-            // ),
           }}
         />
         <Stack.Screen
@@ -59,11 +49,6 @@ const Layout = () => {
             headerShadowVisible: false,
             headerTitle: "",
             headerTitleAlign: "center",
-            // headerTitle: (props) => (
-            //   <Text className="text-[#F1744D] font-medium text-4xl">
-            //     gametime
-            //   </Text>
-            // ),
           }}
         />
         <Stack.Screen
@@ -74,11 +59,6 @@ const Layout = () => {
             headerShadowVisible: false,
             headerTitle: "",
             headerTitleAlign: "center",
-            // headerTitle: (props) => (
-            //   <Text className="text-[#F1744D] font-medium text-4xl">
-            //     gametime
-            //   </Text>
-            // ),
           }}
         />
         <Stack.Screen
@@ -89,11 +69,6 @@ const Layout = () => {
             headerShadowVisible: false,
             headerTitle: "",
             headerTitleAlign: "center",
-            // headerTitle: (props) => (
-            //   <Text className="text-[#F1744D] font-medium text-4xl">
-            //     gametime
-            //   </Text>
-            // ),
           }}
         />
         <Stack.Screen
@@ -104,11 +79,6 @@ const Layout = () => {
             headerShadowVisible: false,
             headerTitle: "",
             headerTitleAlign: "center",
-            // headerTitle: (props) => (
-            //   <Text className="text-[#F1744D] font-medium text-4xl">
-            //     gametime
-            //   </Text>
-            // ),
           }}
         />
         <Stack.Screen
@@ -119,11 +89,46 @@ const Layout = () => {
             headerShadowVisible: false,
             headerTitle: "",
             headerTitleAlign: "center",
-            // headerTitle: (props) => (
-            //   <Text className="text-[#F1744D] font-medium text-4xl">
-            //     gametime
-            //   </Text>
-            // ),
+          }}
+        />
+        <Stack.Screen
+          name="trainer-survey-1"
+          options={{
+            statusBarStyle: "dark",
+            navigationBarColor: "#FFF",
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          name="trainer-survey-2"
+          options={{
+            statusBarStyle: "dark",
+            navigationBarColor: "#FFF",
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          name="trainer-survey-3"
+          options={{
+            statusBarStyle: "dark",
+            navigationBarColor: "#FFF",
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          name="trainer-survey-4"
+          options={{
+            statusBarStyle: "dark",
+            navigationBarColor: "#FFF",
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerTitleAlign: "center",
           }}
         />
       </Stack>

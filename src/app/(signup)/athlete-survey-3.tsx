@@ -38,7 +38,8 @@ export default function AthleteSurvey3() {
         <View className="flex flex-col self-stretch gap-4">
           <Questionnaire
             title="Question 3/4"
-            question="What are the biggest challenges you face in injury recovery? (Select all that apply)"
+            question="What are the biggest challenges you face in injury recovery?"
+            note="Select all that apply"
             options={[
               "Lack of knowledge about recovery techniques",
               "Time constraints",

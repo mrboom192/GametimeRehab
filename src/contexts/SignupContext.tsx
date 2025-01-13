@@ -32,9 +32,9 @@ interface SignupData {
   athlete_motivation?: string;
   athlete_challenges?: string[];
   athlete_injuries_impact_frequency?: string;
-  trainer_challenges?: string;
+  trainer_challenges?: string[];
   trainer_interested_in_gamification?: string;
-  trainer_communication_styles?: string;
+  trainer_communication_styles?: string[];
   trainer_update_frequency?: string;
 }
 
@@ -76,9 +76,9 @@ export const SignupProvider: React.FC<SignupProviderProps> = ({ children }) => {
     athlete_motivation: "", // aq2
     athlete_challenges: [], // aq3
     athlete_injuries_impact_frequency: "", // aq4
-    trainer_challenges: "", // tq1
+    trainer_challenges: [], // tq1
     trainer_interested_in_gamification: "",
-    trainer_communication_styles: "",
+    trainer_communication_styles: [],
     trainer_update_frequency: "",
   });
 

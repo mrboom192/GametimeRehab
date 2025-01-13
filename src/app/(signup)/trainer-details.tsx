@@ -22,7 +22,7 @@ export default function TrainerDetails() {
 
   const handleNext = () => {
     if (validateFields()) {
-      router.push("./athlete-survey-1"); // Navigate to the next step
+      router.push("./trainer-survey-1"); // Navigate to the next step
     }
   };
 

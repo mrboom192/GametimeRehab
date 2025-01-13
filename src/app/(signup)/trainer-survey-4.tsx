@@ -1,14 +1,14 @@
 import { View, Text, Pressable, ActivityIndicator } from "react-native";
 import React, { useState } from "react";
 import { useSignup } from "@/src/contexts/SignupContext";
-import { useRouter } from "expo-router";
+import { useRouter } from "expo-router"; // Corrected router import
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Questionnaire from "@/src/components/Questionnaire";
-import auth from "@react-native-firebase/auth";
 import { FirebaseError } from "firebase/app";
 import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 
-export default function AthleteSurvey4() {
+export default function TrainerSurvey4() {
   const { signupData, updateSignupData } = useSignup();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -44,17 +44,12 @@ export default function AthleteSurvey4() {
           createdAt: firestore.FieldValue.serverTimestamp(), // Timestamp of registration
 
           // Athlete specific data below
-          system_of_measurement: signupData.system_of_measurement,
-          weight_value: signupData.weight_value,
-          height_feet: signupData.height_feet || null, // Optional for imperial
-          height_inches: signupData.height_inches || null, // Optional for imperial
-          height_cm: signupData.height_cm || null, // Optional for metric
-          gender: signupData.gender,
-          athlete_past_injuries: signupData.athlete_past_injuries,
-          athlete_motivation: signupData.athlete_motivation,
-          athlete_challenges: signupData.athlete_challenges,
-          athlete_injuries_impact_frequency:
-            signupData.athlete_injuries_impact_frequency,
+          athlete_count: signupData.athlete_count,
+          trainer_challenges: signupData.trainer_challenges,
+          trainer_interested_in_gamification:
+            signupData.trainer_interested_in_gamification,
+          trainer_communication_styles: signupData.trainer_communication_styles,
+          trainer_update_frequency: signupData.trainer_update_frequency,
         });
 
       router.replace("/first-welcome");
@@ -71,7 +66,7 @@ export default function AthleteSurvey4() {
   };
 
   const handleSelect = (answer: string) => {
-    updateSignupData("athlete_injuries_impact_frequency", answer);
+    updateSignupData("trainer_update_frequency", answer);
     if (error) {
       setError(null); // Clear the error message when a valid option is selected
     }
@@ -83,9 +78,9 @@ export default function AthleteSurvey4() {
         <View className="flex flex-col self-stretch gap-4">
           <Questionnaire
             title="Question 4/4"
-            question="How do injuries impact your mental well-being?"
-            options={["Never", "Rarely", "Sometimes", "Frequently"]}
-            state={signupData.athlete_injuries_impact_frequency}
+            question="How often would you like to receive updates about athlete progress?"
+            options={["Daily", "Weekly", "Bi-monthly", "Custom"]}
+            state={signupData.trainer_update_frequency}
             handleSelect={handleSelect}
           />
           {error && (

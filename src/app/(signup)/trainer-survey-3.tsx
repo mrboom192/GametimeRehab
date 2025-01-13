@@ -1,25 +1,34 @@
 import { View, Text, Pressable } from "react-native";
 import React, { useState } from "react";
 import { useSignup } from "@/src/contexts/SignupContext";
-import { useRouter } from "expo-router";
+import { useRouter } from "expo-router"; // Corrected router import
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Questionnaire from "@/src/components/Questionnaire";
 
-export default function TrainerSurvey2() {
+export default function TrainerSurvey3() {
   const { signupData, updateSignupData } = useSignup();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
   const handleNext = () => {
-    if (signupData.trainer_interested_in_gamification) {
-      router.push("./trainer-survey-3", { relativeToDirectory: false });
+    if (signupData.trainer_communication_styles) {
+      router.push("./trainer-survey-4", { relativeToDirectory: false });
     } else {
       setError("Please select an option to proceed.");
     }
   };
 
   const handleSelect = (answer: string) => {
-    updateSignupData("trainer_interested_in_gamification", answer);
+    // If the answer is already selected, remove it from the array, otherwise add it
+    const updatedAnswers = signupData.trainer_communication_styles
+      ? signupData.trainer_communication_styles.includes(answer)
+        ? signupData.trainer_communication_styles.filter(
+            (item) => item !== answer
+          ) // Remove if already selected
+        : [...signupData.trainer_communication_styles, answer] // Add if not selected
+      : [answer]; // Initialize array if it's undefined or empty
+
+    updateSignupData("trainer_communication_styles", updatedAnswers); // Update the state with the selected answers
     if (error) {
       setError(null); // Clear the error message when a valid option is selected
     }
@@ -30,10 +39,11 @@ export default function TrainerSurvey2() {
       <View className="flex-1 flex flex-col self-stretch justify-between items-start mx-8 mt-8 mb-16">
         <View className="flex flex-col self-stretch gap-4">
           <Questionnaire
-            title="Question 2/4"
-            question="Are you interested in using gamified features like leaderboards or streak tracking to motivate athletes?"
-            options={["Yes", "No"]}
-            state={signupData.trainer_interested_in_gamification}
+            title="Question 3/4"
+            question="How do you currently communicate with athletes about rehabilitation progress?"
+            note="Select all that apply"
+            options={["In person", "Email", "Application", "Other"]}
+            state={signupData.trainer_communication_styles}
             handleSelect={handleSelect}
           />
           {error && (

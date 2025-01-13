@@ -1,7 +1,5 @@
 import { usePathname, useRouter, useSegments } from "expo-router"; // Ensure these are correctly imported
-import firestore, {
-  FirebaseFirestoreTypes,
-} from "@react-native-firebase/firestore";
+import firestore from "@react-native-firebase/firestore";
 import React, {
   createContext,
   useContext,
@@ -83,7 +81,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       if (userInfo?.type === "athlete") {
         router.replace("/(auth)/home");
       } else if (userInfo?.type === "trainer") {
-        router.replace("/(auth)/progress");
+        router.replace("/(auth)/home");
       }
     } else if (!user && inAuthGroup) {
       router.replace("/"); // Redirect to the login/signup screen if not authenticated

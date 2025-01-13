@@ -1,9 +1,10 @@
 import { Stack } from "expo-router";
 import "../../global.css";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { Text } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { Text, View } from "react-native";
 import { UserProvider } from "../contexts/UserContext";
+import * as SplashScreen from "expo-splash-screen";
 
 export default function RootLayout() {
   return (

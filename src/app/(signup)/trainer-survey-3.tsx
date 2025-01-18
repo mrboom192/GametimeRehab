@@ -4,6 +4,7 @@ import { useSignup } from "@/src/contexts/SignupContext";
 import { useRouter } from "expo-router"; // Corrected router import
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Questionnaire from "@/src/components/Questionnaire";
+import LabeledInput from "@/src/components/LabeledInput";
 
 export default function TrainerSurvey3() {
   const { signupData, updateSignupData } = useSignup();
@@ -46,6 +47,17 @@ export default function TrainerSurvey3() {
             state={signupData.trainer_communication_styles}
             handleSelect={handleSelect}
           />
+          {/* Add in custom logic herre */}
+          {signupData.trainer_communication_styles?.includes("Other") ? (
+            <LabeledInput
+              label="Enter your other communication style"
+              placeholder="Fax"
+              value={""}
+              onChangeText={() => {}}
+            />
+          ) : (
+            <></>
+          )}
           {error && (
             <Text className="text-red-500 text-xl">{error}</Text> // Error message
           )}

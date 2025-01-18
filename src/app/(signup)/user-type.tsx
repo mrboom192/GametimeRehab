@@ -29,7 +29,7 @@ export default function UserType() {
   return (
     <View className="flex-1 bg-white items-center">
       <View className="flex-1 flex flex-col self-stretch justify-between items-start mx-8 my-16">
-        <View className="flex flex-col gap-8">
+        <View className="flex flex-col gap-8 w-full">
           <View className="flex flex-col self-stretch items-start gap-2">
             <Text className="text-[#2C2C2C] text-4xl capitalize">
               Hey {signupData.first_name},
@@ -38,10 +38,12 @@ export default function UserType() {
               Which describes you best?
             </Text>
           </View>
-          <View className="flex flex-col gap-2">
+
+          {/* Center the buttons vertically */}
+          <View className="flex w-full self-stretch items-center justify-center flex-col gap-2">
             {/* Athlete Button */}
             <Pressable
-              className={`py-2.5 px-3 flex flex-row self-baseline items-center justify-start rounded-lg border ${
+              className={`py-2.5 px-3 w-[334px] flex flex-row items-center justify-start rounded-lg border ${
                 signupData.type === "athlete"
                   ? "bg-[#2C2C2C] border-[#2C2C2C]"
                   : "bg-white border-[#717171]"
@@ -49,7 +51,7 @@ export default function UserType() {
               onPress={() => handleSelect("athlete")}
             >
               <Text
-                className={`uppercase ${
+                className={`w-full text-center uppercase ${
                   signupData.type === "athlete"
                     ? "text-white"
                     : "text-[#2C2C2C]"
@@ -61,7 +63,7 @@ export default function UserType() {
 
             {/* Trainer Button */}
             <Pressable
-              className={`py-2.5 px-3 flex flex-row self-baseline items-center justify-start rounded-lg border ${
+              className={`py-2.5 px-3 w-[334px] flex flex-row items-center justify-start rounded-lg border ${
                 signupData.type === "trainer"
                   ? "bg-[#2C2C2C] border-[#2C2C2C]"
                   : "bg-white border-[#717171]"
@@ -69,7 +71,7 @@ export default function UserType() {
               onPress={() => handleSelect("trainer")}
             >
               <Text
-                className={`uppercase ${
+                className={`w-full text-center uppercase ${
                   signupData.type === "trainer"
                     ? "text-white"
                     : "text-[#2C2C2C]"

@@ -10,6 +10,8 @@ export default function TrainerSurvey1() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
+  // Make it at least one option to proceed
+
   const handleNext = () => {
     if (signupData.trainer_challenges) {
       router.push("./trainer-survey-2", { relativeToDirectory: false });
@@ -39,7 +41,7 @@ export default function TrainerSurvey1() {
           <Questionnaire
             title="Question 1/4"
             question="What are the biggest challenges you face in managing athlete recovery?"
-            note="Select all that apply"
+            note="Select at least one"
             options={[
               "Adherence",
               "Time constraints",

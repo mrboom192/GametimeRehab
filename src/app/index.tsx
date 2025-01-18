@@ -30,7 +30,8 @@ export default function Index() {
           headerShadowVisible: false,
           headerTitleAlign: "center",
           headerLeft: () => {
-            return user ? <Ionicons name="menu" size={32} /> : null;
+            // return user ? <Ionicons name="menu" size={32} /> : null;
+            return null;
           },
           headerTitle: () => (
             <Text className="text-[#F1744D] font-medium text-4xl">

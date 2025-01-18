@@ -10,6 +10,9 @@ import RecoveryProgressBar from "@/src/components/RecoveryProgressBar";
 const Progress = () => {
   const [selected, setSelected] = useState("");
 
+  // On calendar: black means they login and complete any assignment, outline means you skipped, multiple black days in a row would be a streak
+  // Show 4 most recent achievements on achievements card
+
   return (
     <ScrollView
       style={{ flex: 1 }}

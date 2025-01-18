@@ -92,7 +92,7 @@ export default function TrainerSurvey4() {
           <Questionnaire
             title="Question 4/4"
             question="How often would you like to receive updates about athlete progress?"
-            options={["Daily", "Weekly", "Bi-monthly", "Custom"]}
+            options={["Daily", "Weekly", "Bi-monthly", "Monthly", "Custom"]}
             state={signupData.trainer_update_frequency}
             handleSelect={handleSelect}
           />

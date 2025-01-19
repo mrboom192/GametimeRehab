@@ -27,8 +27,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [userInfo, setUserInfo] = useState<any | null>(null);
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
-  const router = useRouter();
-  const segments = useSegments();
 
   // On authentication state change (user sign-in/sign-out)
   const onAuthStateChanged = (user: FirebaseAuthTypes.User | null) => {

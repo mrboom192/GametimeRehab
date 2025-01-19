@@ -1,10 +1,8 @@
-import { View, Text, SafeAreaView, ScrollView } from "react-native";
+import { Text, ScrollView } from "react-native";
 import React, { useState } from "react";
-import { Stack } from "expo-router";
-import { LocaleConfig } from "react-native-calendars";
+import { Tabs } from "expo-router";
 import { Calendar } from "react-native-calendars";
 import AchievementsCard from "@/src/components/AchievementsCard";
-import SummaryCard from "@/src/components/SummaryCard";
 import RecoveryProgressBar from "@/src/components/RecoveryProgressBar";
 
 const Progress = () => {
@@ -18,7 +16,7 @@ const Progress = () => {
       style={{ flex: 1 }}
       contentContainerClassName="flex-col bg-white p-5 gap-8"
     >
-      <Stack.Screen
+      <Tabs.Screen
         options={{
           headerStyle: {
             backgroundColor: "#FFF",

@@ -10,6 +10,7 @@ import TrainerAthletes from "../TrainerAthletes";
 import PairForm from "../PairForm";
 import PendingAthleteRequests from "../PendingPairRequests";
 import { useSession } from "@/src/contexts/AuthContext";
+import { StatusBar } from "expo-status-bar";
 
 export default function Home() {
   const { signOut } = useSession();

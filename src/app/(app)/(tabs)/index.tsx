@@ -1,8 +1,10 @@
 import React from "react";
 import { ActivityIndicator, View, Text } from "react-native";
-import Home from "../../components/screens/Home";
-import { useUser } from "../../contexts/UserContext"; // Import UserContext
-import { Stack } from "expo-router";
+import Home from "../../../components/screens/Home";
+import { useUser } from "../../../contexts/UserContext"; // Import UserContext
+import { Stack, Tabs } from "expo-router";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { StatusBar } from "expo-status-bar";
 
 export default function Index() {
   const { user, userInfo, loading, initializing } = useUser(); // Assume useUser provides a loading state
@@ -15,23 +17,15 @@ export default function Index() {
     );
   }
 
-  // Change how this is done later
-  // https://docs.expo.dev/router/reference/authentication/
+  // Need to fix status bar color
   return (
     <>
-      <Stack.Screen
+      <Tabs.Screen
         options={{
-          statusBarStyle: "dark",
-          statusBarBackgroundColor: "#FBF7F5",
-          headerStyle: {
-            backgroundColor: "#FBF7F5",
-          },
-          headerShadowVisible: false,
-          headerTitleAlign: "center",
-          headerLeft: () => {
-            return null;
-            // return user ? <Ionicons name="menu" size={32} /> : null;
-          },
+          title: "Home",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="home" color={color} />
+          ),
           headerTitle: () => (
             <Text className="text-[#F1744D] font-medium text-4xl">
               gametime
@@ -39,15 +33,22 @@ export default function Index() {
           ),
           headerRight: () => {
             return (
-              <View className="w-10 h-10 rounded-full bg-[#2C2C2C] flex items-center justify-center">
+              <View className="w-10 h-10 mr-4 rounded-full bg-[#2C2C2C] flex items-center justify-center">
                 <Text className="text-xl text-white">
                   {userInfo?.first_name?.[0] || "?"}
                 </Text>
               </View>
             );
           },
+          headerStyle: {
+            backgroundColor: "#FBF7F5",
+          },
+
+          headerShadowVisible: false,
+          headerTitleAlign: "center",
         }}
       />
+      <StatusBar backgroundColor={"#FBF7F5"} style="dark" />
       <Home />
     </>
   );

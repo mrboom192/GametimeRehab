@@ -1,12 +1,13 @@
 import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
-import { Stack } from "expo-router";
+import { Tabs } from "expo-router";
 import ExerciseCard from "@/src/components/ExerciseCard";
+import AthleteRoutines from "@/src/components/screens/AthleteRoutines";
 
 const AssignedExercises = () => {
   return (
     <SafeAreaView className="flex-1 flex-col bg-white p-5 gap-4">
-      <Stack.Screen
+      <Tabs.Screen
         options={{
           headerStyle: {
             backgroundColor: "#FFF",
@@ -17,10 +18,7 @@ const AssignedExercises = () => {
           ),
         }}
       />
-      <View className="flex flex-row justify-between">
-        <ExerciseCard />
-        <ExerciseCard />
-      </View>
+      <AthleteRoutines />
     </SafeAreaView>
   );
 };

@@ -24,6 +24,8 @@ export default function AppLayout() {
   return (
     <Stack
       screenOptions={{ navigationBarColor: "#FFF", statusBarStyle: "dark" }}
-    />
+    >
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+    </Stack>
   );
 }

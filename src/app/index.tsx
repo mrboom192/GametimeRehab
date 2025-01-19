@@ -18,6 +18,7 @@ export default function Index() {
   }
 
   // Change how this is done later
+  // https://docs.expo.dev/router/reference/authentication/
   return (
     <>
       <Stack.Screen

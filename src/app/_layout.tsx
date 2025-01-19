@@ -9,13 +9,11 @@ import * as SplashScreen from "expo-splash-screen";
 export default function RootLayout() {
   return (
     <UserProvider>
-      <Stack>
-        <Stack.Screen name="_sitemap" />
+      <Stack screenOptions={{ navigationBarColor: "#FFF" }}>
         <Stack.Screen
           name="(signup)"
           options={{
             statusBarStyle: "dark",
-            navigationBarColor: "#FFF",
             headerShadowVisible: false,
             headerTitleAlign: "center",
             headerShown: false,

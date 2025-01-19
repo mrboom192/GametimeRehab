@@ -1,8 +1,6 @@
 import { View, Text, Pressable } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { Stack, useRouter } from "expo-router";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import Questionnaire from "@/src/components/Questionnaire";
 import { useUser } from "@/src/contexts/UserContext";
 
 export default function FirstWelcome() {
@@ -10,7 +8,7 @@ export default function FirstWelcome() {
   const router = useRouter();
 
   const handleNext = () => {
-    router.dismissAll();
+    router.replace("/");
   };
 
   return (

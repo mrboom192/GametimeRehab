@@ -1,10 +1,8 @@
 import React from "react";
 import { ActivityIndicator, View, Text } from "react-native";
-import Home from "../components/screens/Home";
-import SignIn from "../components/screens/SignIn"; // Import SignIn
-import { useUser } from "../contexts/UserContext"; // Import UserContext
+import Home from "../../components/screens/Home";
+import { useUser } from "../../contexts/UserContext"; // Import UserContext
 import { Stack } from "expo-router";
-import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function Index() {
   const { user, userInfo, loading, initializing } = useUser(); // Assume useUser provides a loading state
@@ -24,15 +22,15 @@ export default function Index() {
       <Stack.Screen
         options={{
           statusBarStyle: "dark",
-          statusBarBackgroundColor: user ? "#FBF7F5" : "#FFF",
+          statusBarBackgroundColor: "#FBF7F5",
           headerStyle: {
-            backgroundColor: user ? "#FBF7F5" : "#FFF",
+            backgroundColor: "#FBF7F5",
           },
           headerShadowVisible: false,
           headerTitleAlign: "center",
           headerLeft: () => {
-            // return user ? <Ionicons name="menu" size={32} /> : null;
             return null;
+            // return user ? <Ionicons name="menu" size={32} /> : null;
           },
           headerTitle: () => (
             <Text className="text-[#F1744D] font-medium text-4xl">
@@ -40,17 +38,17 @@ export default function Index() {
             </Text>
           ),
           headerRight: () => {
-            return user ? (
+            return (
               <View className="w-10 h-10 rounded-full bg-[#2C2C2C] flex items-center justify-center">
                 <Text className="text-xl text-white">
                   {userInfo?.first_name?.[0] || "?"}
                 </Text>
               </View>
-            ) : null;
+            );
           },
         }}
       />
-      {user ? <Home /> : <SignIn />}
+      <Home />
     </>
   );
 }

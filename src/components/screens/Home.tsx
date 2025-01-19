@@ -9,8 +9,10 @@ import AthleteDashboard from "@/src/components/AthleteDashboard";
 import TrainerAthletes from "../TrainerAthletes";
 import PairForm from "../PairForm";
 import PendingAthleteRequests from "../PendingPairRequests";
+import { useSession } from "@/src/contexts/AuthContext";
 
 export default function Home() {
+  const { signOut } = useSession();
   const { userInfo } = useUser();
 
   return (
@@ -47,7 +49,7 @@ export default function Home() {
         />
       </View>
       <AchievementsCard />
-      <Button title="Sign out" onPress={() => auth().signOut()} />
+      <Button title="Sign out" onPress={() => signOut()} />
 
       {/* Exercises button */}
       <View className="flex justify-between items-end">

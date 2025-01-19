@@ -1,73 +1,43 @@
 import { View, Text, Pressable, ActivityIndicator } from "react-native";
 import React, { useState } from "react";
 import { useSignup } from "@/src/contexts/SignupContext";
-import { useRouter } from "expo-router";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import Questionnaire from "@/src/components/Questionnaire";
-import auth from "@react-native-firebase/auth";
-import { FirebaseError } from "firebase/app";
 import firestore from "@react-native-firebase/firestore";
+import { useSession } from "@/src/contexts/AuthContext";
 
 export default function AthleteSurvey4() {
   const { signupData, updateSignupData } = useSignup();
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
-  const signUp = async () => {
-    setLoading(true);
-    try {
-      // Create user with Firebase Authentication
-      const userCredential = await auth().createUserWithEmailAndPassword(
-        signupData.email,
-        signupData.password
-      );
-
-      const user = userCredential.user;
-
-      // Save user details to Firestore
-      await firestore()
-        .collection("users")
-        .doc(user.uid)
-        .set({
-          uid: user.uid,
-          first_name: signupData.first_name,
-          last_name: signupData.last_name,
-          email: user.email,
-          phone: signupData.phone || null,
-          type: signupData.type,
-
-          institution_code: signupData.institution_code,
-          sport: signupData.sport,
-          position: signupData.position,
-
-          createdAt: firestore.FieldValue.serverTimestamp(), // Timestamp of registration
-
-          // Athlete specific data below
-          system_of_measurement: signupData.system_of_measurement,
-          weight_value: signupData.weight_value,
-          height_feet: signupData.height_feet || null, // Optional for imperial
-          height_inches: signupData.height_inches || null, // Optional for imperial
-          height_cm: signupData.height_cm || null, // Optional for metric
-          gender: signupData.gender,
-          athlete_past_injuries: signupData.athlete_past_injuries,
-          athlete_motivation: signupData.athlete_motivation,
-          athlete_challenges: signupData.athlete_challenges,
-          athlete_injuries_impact_frequency:
-            signupData.athlete_injuries_impact_frequency,
-        });
-
-      router.replace("/first-welcome");
-    } catch (e: any) {
-      const err = e as FirebaseError;
-      alert("Registration failed: " + err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { signUp } = useSession();
 
   const handleSubmit = () => {
-    signUp();
+    signUp(signupData.email, signupData.password, {
+      first_name: signupData.first_name,
+      last_name: signupData.last_name,
+      email: signupData.email,
+      phone: signupData.phone || null,
+      type: signupData.type,
+
+      institution_code: signupData.institution_code,
+      sport: signupData.sport,
+      position: signupData.position,
+
+      createdAt: firestore.FieldValue.serverTimestamp(), // Timestamp of registration
+
+      // Athlete specific data below
+      system_of_measurement: signupData.system_of_measurement,
+      weight_value: signupData.weight_value,
+      height_feet: signupData.height_feet || null, // Optional for imperial
+      height_inches: signupData.height_inches || null, // Optional for imperial
+      height_cm: signupData.height_cm || null, // Optional for metric
+      gender: signupData.gender,
+      athlete_past_injuries: signupData.athlete_past_injuries,
+      athlete_motivation: signupData.athlete_motivation,
+      athlete_challenges: signupData.athlete_challenges,
+      athlete_injuries_impact_frequency:
+        signupData.athlete_injuries_impact_frequency,
+    });
   };
 
   const handleSelect = (answer: string) => {

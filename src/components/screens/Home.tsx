@@ -4,13 +4,12 @@ import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AchievementsCard from "@/src/components/AchievementsCard";
 import { useUser } from "@/src/contexts/UserContext";
-import NavigateButton from "@/src/components/NavigateButton";
+import NavigateButton from "@/src/components/buttons/NavigateButton";
 import AthleteDashboard from "@/src/components/AthleteDashboard";
 import TrainerAthletes from "../TrainerAthletes";
 import PairForm from "../PairForm";
 import PendingAthleteRequests from "../PendingPairRequests";
 import { useSession } from "@/src/contexts/AuthContext";
-import { StatusBar } from "expo-status-bar";
 
 export default function Home() {
   const { signOut } = useSession();
@@ -46,7 +45,7 @@ export default function Home() {
           href="/progress"
           title="view progress"
           rightIcon={<Ionicons name="chevron-forward" size={16} color="#FFF" />}
-          fill={true}
+          theme="dark"
         />
       </View>
       <AchievementsCard />
@@ -58,7 +57,7 @@ export default function Home() {
           href="/assigned-exercises"
           title="exercises"
           rightIcon={<Ionicons name="chevron-forward" size={16} color="#FFF" />}
-          fill={true}
+          theme="dark"
         />
       </View>
     </SafeAreaView>

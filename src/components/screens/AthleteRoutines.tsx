@@ -1,11 +1,18 @@
 import { View, Text, ImageBackground } from "react-native";
-import React from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import ExerciseCard from "../ExerciseCard";
 import RoutineCard from "../RoutineCard";
-import { FlatList } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import NavigateButton from "../buttons/NavigateButton";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetScrollView,
+} from "@gorhom/bottom-sheet";
+import { Tabs } from "expo-router";
+import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
 
 const incompleteRoutines = [
   {
@@ -89,95 +96,161 @@ const completedRoutines = [
 ];
 
 const AthleteRoutines = () => {
+  // ref
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ["90%"], []);
+
+  // callbacks
+  const handleSnapPress = useCallback((index: number) => {
+    bottomSheetRef.current?.snapToIndex(index);
+  }, []);
+
+  // renders
+  const renderBackdrop = useCallback(
+    (
+      props: React.JSX.IntrinsicAttributes & BottomSheetDefaultBackdropProps
+    ) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+      />
+    ),
+    []
+  );
   // Make sure to only render a maximum number of routines later
 
   return (
-    <SafeAreaView className="flex flex-col justify-between gap-12">
-      {/* Section */}
-      <View className="flex flex-col gap-4">
-        {/* Section header */}
-        <View className="flex flex-row justify-between items-center self-stretch">
-          <Text className="text-[#2C2C2C] text-4xl">Assigned Routines</Text>
-          <NavigateButton
-            href="/assigned-exercises"
-            title="view all"
-            rightIcon={
-              <Ionicons name="chevron-forward" size={16} color="#2C2C2C" />
-            }
-            theme="transparent"
-            border={false}
-          />
-        </View>
-        {/* Horizontal of routines */}
-        <FlatList
-          data={incompleteRoutines}
-          renderItem={({ item }) => (
-            <RoutineCard
-              routineName={item.routineName}
-              numExercises={item.numExercises}
-              totalSets={item.totalSets}
-              dueDate={new Date(item.dueDate)}
-              assignDate={new Date(item.assignDate)}
-              assigner={item.assigner}
-              tags={item.tags}
-              completed={item.completed}
+    <GestureHandlerRootView style={styles.container}>
+      <SafeAreaView className="flex-1 flex-col bg-white p-5 mt-14 justify-start gap-12">
+        {/* Section */}
+        <View className="flex flex-col gap-4">
+          {/* Section header */}
+          <View className="flex flex-row justify-between items-center self-stretch">
+            <Text className="text-[#2C2C2C] text-4xl">Assigned Routines</Text>
+            <NavigateButton
+              href="/assigned-exercises"
+              title="view all"
+              rightIcon={
+                <Ionicons name="chevron-forward" size={16} color="#2C2C2C" />
+              }
+              theme="transparent"
+              border={false}
             />
-          )}
-          keyExtractor={(item) => item.id}
-          horizontal={true}
-          contentContainerStyle={{ gap: 8 }}
-        />
-      </View>
-
-      {/* Section */}
-      <View className="flex flex-col gap-4">
-        {/* Section header */}
-        <View className="flex flex-row justify-between items-center self-stretch">
-          <Text className="text-[#2C2C2C] text-4xl">Completed</Text>
-          <NavigateButton
-            href="/assigned-exercises"
-            title="view all"
-            rightIcon={
-              <Ionicons name="chevron-forward" size={16} color="#2C2C2C" />
-            }
-            theme="transparent"
-            border={false}
+          </View>
+          {/* Horizontal of routines */}
+          <FlatList
+            data={incompleteRoutines}
+            renderItem={({ item }) => (
+              <RoutineCard
+                routineName={item.routineName}
+                numExercises={item.numExercises}
+                totalSets={item.totalSets}
+                dueDate={new Date(item.dueDate)}
+                assignDate={new Date(item.assignDate)}
+                assigner={item.assigner}
+                tags={item.tags}
+                completed={item.completed}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+            horizontal={true}
+            contentContainerStyle={{ gap: 8 }}
           />
         </View>
-        {/* Horizontal of routines */}
-        <FlatList
-          data={completedRoutines}
-          renderItem={({ item }) => (
-            <RoutineCard
-              routineName={item.routineName}
-              numExercises={item.numExercises}
-              totalSets={item.totalSets}
-              dueDate={new Date(item.dueDate)}
-              assignDate={new Date(item.assignDate)}
-              assigner={item.assigner}
-              tags={item.tags}
-              completed={item.completed}
+
+        {/* Section */}
+        <View className="flex flex-col gap-4">
+          {/* Section header */}
+          <View className="flex flex-row justify-between items-center self-stretch">
+            <Text className="text-[#2C2C2C] text-4xl">Completed</Text>
+            <NavigateButton
+              href="/assigned-exercises"
+              title="view all"
+              rightIcon={
+                <Ionicons name="chevron-forward" size={16} color="#2C2C2C" />
+              }
+              theme="transparent"
+              border={false}
             />
-          )}
-          keyExtractor={(item) => item.id}
-          horizontal={true}
-          contentContainerStyle={{ gap: 8 }}
-        />
-      </View>
-
-      <View className="relative flex w-full rounded-lg py-6 bg-[#2C2C2C] justify-center items-center gap-2 overflow-hidden">
-        <Text className="text-white text-2xl">Create new routine</Text>
-        <Ionicons name="add" size={24} color="#FFF" />
-        <View className="w-1/2">
-          <NavigateButton
-            href="/assigned-exercises"
-            title="create"
-            theme="light"
+          </View>
+          {/* Horizontal of routines */}
+          <FlatList
+            data={completedRoutines}
+            renderItem={({ item }) => (
+              <RoutineCard
+                routineName={item.routineName}
+                numExercises={item.numExercises}
+                totalSets={item.totalSets}
+                dueDate={new Date(item.dueDate)}
+                assignDate={new Date(item.assignDate)}
+                assigner={item.assigner}
+                tags={item.tags}
+                completed={item.completed}
+                handleSurveyPress={() => handleSnapPress(0)}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+            horizontal={true}
+            contentContainerStyle={{ gap: 8 }}
           />
         </View>
-      </View>
-    </SafeAreaView>
+
+        <View className="relative flex w-full rounded-lg py-6 bg-[#2C2C2C] justify-center items-center gap-2 overflow-hidden">
+          <Text className="text-white text-2xl">Create new routine</Text>
+          <Ionicons name="add" size={24} color="#FFF" />
+          <View className="w-1/2">
+            <NavigateButton
+              href="/assigned-exercises"
+              title="create"
+              theme="light"
+            />
+          </View>
+        </View>
+      </SafeAreaView>
+      <BottomSheet
+        ref={bottomSheetRef}
+        enablePanDownToClose={true}
+        backgroundStyle={styles.bottomSheet}
+        handleIndicatorStyle={styles.handleIndicator}
+        index={-1}
+        snapPoints={snapPoints}
+        backdropComponent={renderBackdrop}
+        enableDynamicSizing={false}
+      >
+        <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
+          <View className="flex flex-col self-stretch p-6">
+            <View className="flex flex-col justify-between items-start h-[2000px]">
+              <Text className="text-4xl text-white font-medium">
+                Post Session Survey
+              </Text>
+              <Text className="text-4xl text-white font-medium">
+                Awesome 🎉
+              </Text>
+            </View>
+          </View>
+        </BottomSheetScrollView>
+      </BottomSheet>
+    </GestureHandlerRootView>
   );
 };
+
+const styles = StyleSheet.create({
+  bottomSheet: { backgroundColor: "#2C2C2C" },
+  handleIndicator: {
+    backgroundColor: "#fff",
+    width: 128,
+    marginTop: 8,
+    marginBottom: 2,
+  },
+  container: {
+    flex: 1,
+  },
+  contentContainer: {
+    backgroundColor: "#2C2C2C",
+  },
+});
 
 export default AthleteRoutines;

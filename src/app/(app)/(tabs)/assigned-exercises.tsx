@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView } from "react-native";
+import { View, Text, SafeAreaView, StatusBar } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import ExerciseCard from "@/src/components/ExerciseCard";
@@ -6,7 +6,7 @@ import AthleteRoutines from "@/src/components/screens/AthleteRoutines";
 
 const AssignedExercises = () => {
   return (
-    <SafeAreaView className="flex-1 flex-col bg-white p-5 gap-4">
+    <>
       <Tabs.Screen
         options={{
           headerShown: false,
@@ -19,8 +19,9 @@ const AssignedExercises = () => {
           ),
         }}
       />
+      <StatusBar translucent backgroundColor="transparent" />
       <AthleteRoutines />
-    </SafeAreaView>
+    </>
   );
 };
 

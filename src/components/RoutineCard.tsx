@@ -20,6 +20,7 @@ type RoutineCardProps = {
   assigner?: string;
   tags?: { color: string; text: string }[];
   completed: boolean;
+  handleSurveyPress?: () => void;
 };
 
 const RoutineCard: React.FC<RoutineCardProps> = ({
@@ -31,6 +32,7 @@ const RoutineCard: React.FC<RoutineCardProps> = ({
   assigner = "Trainer Name",
   tags = [{ color: "#FFF", text: "shoulder" }],
   completed,
+  handleSurveyPress,
 }) => {
   function truncateString(str = "", maxLength = 36) {
     if (str.length > maxLength) {
@@ -107,6 +109,7 @@ const RoutineCard: React.FC<RoutineCardProps> = ({
             href="/assigned-exercises"
             title="review post session survey"
             theme="light"
+            handleSubmit={handleSurveyPress}
           />
         </View>
       ) : (

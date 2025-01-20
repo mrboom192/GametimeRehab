@@ -11,6 +11,11 @@ export default function FirstWelcome() {
     router.replace("/");
   };
 
+  // TODO:
+  // Routine and Exercise Creation
+  // Exercise Flow
+  // Post Session Survey
+
   return (
     <View className="flex-1 bg-white items-center">
       <Stack.Screen

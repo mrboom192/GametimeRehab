@@ -1,6 +1,5 @@
-import { View, Text, ImageBackground } from "react-native";
+import { View, Text } from "react-native";
 import React, { useCallback, useMemo, useRef } from "react";
-import ExerciseCard from "../ExerciseCard";
 import RoutineCard from "../RoutineCard";
 import { FlatList, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,8 +10,63 @@ import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
-import { Tabs } from "expo-router";
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
+
+// Experimental
+
+const routineTypeTags = [
+  {
+    id: "rehab",
+    color: "#E5FE2D",
+    label: "rehab",
+  },
+  {
+    id: "prehab",
+    color: "#fe2da3",
+    label: "prehab",
+  },
+  {
+    id: "miscellaneous",
+    color: "#3d3d3d",
+    label: "miscellaneous",
+  },
+];
+
+const injuries = [
+  {
+    id: "2",
+    name: "shoulder",
+    category: "muscle",
+  },
+];
+
+// There are 2 types of tags: exercise type and targeted injuries. All tags under targeted injuries are colored #FFF.
+
+const exercises = [
+  {
+    id: "1", // Unique identifier for the exercise
+    author: "GametimeRehab Team", // User's first and last name
+    createdAt: "2015-03-25T12:00:00-06:30",
+    isPublic: true, // If true, the exercise will be searchable and addable by other trainers or athletes
+    name: "Wall Slide with External Rotation",
+    setCount: 3, // Number of sets
+    repetitionRange: {
+      min: 10, // Minimum repetitions
+      max: 12, // Maximum repetitions
+    },
+    difficulty: "easy",
+    description:
+      "Stand facing a wall, with your forearms resting on the wall at shoulder height. Slowly slide your hands up the wall, keeping your forearms in contact with the surface. Engage your shoulder blades as you move. Return to the starting position with control.",
+    targetedInjuries: ["shoulder", "rotator cuff", "scapular control"], // Injuries or issues this exercise addresses
+    tags: [
+      {
+        id: "rehab",
+        color: "#E5FE2D",
+        label: "rehab",
+      },
+    ],
+  },
+];
 
 const incompleteRoutines = [
   {
@@ -29,6 +83,7 @@ const incompleteRoutines = [
       { color: "#E5FE2D", text: "REHAB" },
       { color: "#F3F3F3", text: "SHOULDER" },
     ],
+    exercises: ["1"], // List of exercises using the exercise id
   },
   {
     id: "routine-2",

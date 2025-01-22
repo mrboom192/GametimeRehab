@@ -213,7 +213,7 @@ export default function AthleteDetails() {
               label="Institution FAFSA code"
               placeholder="123456"
               value={signupData.institution_code}
-              icon={
+              iconLeft={
                 <Ionicons name="school-outline" size={16} color="#717171" />
               }
               onChangeText={(text) =>
@@ -226,7 +226,7 @@ export default function AthleteDetails() {
               label="Program/Sport"
               placeholder="Wrestling, Track, Football, etc..."
               value={signupData.sport}
-              icon={
+              iconLeft={
                 <Ionicons
                   name="american-football-outline"
                   size={16}

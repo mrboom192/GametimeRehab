@@ -44,7 +44,9 @@ const SignIn = () => {
             <LabeledInput
               label="Email"
               placeholder="Email"
-              icon={<Ionicons name="mail-outline" size={16} color="#717171" />}
+              iconLeft={
+                <Ionicons name="mail-outline" size={16} color="#717171" />
+              }
               value={email}
               onChangeText={setEmail}
             />
@@ -52,7 +54,7 @@ const SignIn = () => {
             <LabeledInput
               label="Password"
               placeholder="Password"
-              icon={
+              iconLeft={
                 <Ionicons
                   name="lock-closed-outline"
                   size={16}

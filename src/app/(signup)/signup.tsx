@@ -94,7 +94,9 @@ export default function SignupScreen() {
             value={signupData.email}
             keyboardType="numeric"
             onChangeText={(text) => updateSignupData("email", text)}
-            icon={<Ionicons name="mail-outline" size={16} color="#717171" />}
+            iconLeft={
+              <Ionicons name="mail-outline" size={16} color="#717171" />
+            }
             error={errors.email}
           />
 
@@ -104,7 +106,9 @@ export default function SignupScreen() {
             placeholder="(123) 555-7890"
             value={signupData.phone}
             onChangeText={(text) => updateSignupData("phone", text)}
-            icon={<Ionicons name="call-outline" size={16} color="#717171" />}
+            iconLeft={
+              <Ionicons name="call-outline" size={16} color="#717171" />
+            }
             error={errors.phone}
           />
 
@@ -115,7 +119,7 @@ export default function SignupScreen() {
               placeholder="Enter a 6+ length password"
               value={signupData.password}
               onChangeText={(text) => updateSignupData("password", text)}
-              icon={
+              iconLeft={
                 <Ionicons
                   name="lock-closed-outline"
                   size={16}
@@ -132,7 +136,7 @@ export default function SignupScreen() {
               onChangeText={(text) =>
                 updateSignupData("confirm_password", text)
               }
-              icon={
+              iconLeft={
                 <Ionicons
                   name="lock-closed-outline"
                   size={16}

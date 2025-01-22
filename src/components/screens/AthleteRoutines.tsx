@@ -11,6 +11,8 @@ import BottomSheet, {
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
+import CreateNewRoutineButton from "../CreateNewRoutineButton";
+import { Tabs } from "expo-router";
 
 // Experimental
 
@@ -179,11 +181,36 @@ const AthleteRoutines = () => {
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <SafeAreaView className="flex-1 flex-col bg-white p-5 mt-14 justify-start gap-12">
+      <Tabs.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: "#FFF",
+          },
+          headerShadowVisible: false,
+          headerTitle: (props) => (
+            <Text className="text-[#2C2C2C] text-4xl">Assigned Exercises</Text>
+          ),
+          headerRight: (props) => (
+            <View className="mr-5">
+              <NavigateButton
+                href="/assigned-exercises"
+                title="view all"
+                rightIcon={
+                  <Ionicons name="chevron-forward" size={16} color="#2C2C2C" />
+                }
+                theme="transparent"
+                border={false}
+              />
+            </View>
+          ),
+        }}
+      />
+
+      <SafeAreaView className="flex-1 flex-col bg-white p-5 justify-start gap-12">
         {/* Section */}
         <View className="flex flex-col gap-4">
           {/* Section header */}
-          <View className="flex flex-row justify-between items-center self-stretch">
+          {/* <View className="flex flex-row justify-between items-center self-stretch">
             <Text className="text-[#2C2C2C] text-4xl">Assigned Routines</Text>
             <NavigateButton
               href="/assigned-exercises"
@@ -194,7 +221,7 @@ const AthleteRoutines = () => {
               theme="transparent"
               border={false}
             />
-          </View>
+          </View> */}
           {/* Horizontal of routines */}
           <FlatList
             data={incompleteRoutines}
@@ -253,17 +280,7 @@ const AthleteRoutines = () => {
           />
         </View>
 
-        <View className="relative flex w-full rounded-lg py-6 bg-[#2C2C2C] justify-center items-center gap-2 overflow-hidden">
-          <Text className="text-white text-2xl">Create new routine</Text>
-          <Ionicons name="add" size={24} color="#FFF" />
-          <View className="w-1/2">
-            <NavigateButton
-              href="/assigned-exercises"
-              title="create"
-              theme="light"
-            />
-          </View>
-        </View>
+        <CreateNewRoutineButton />
       </SafeAreaView>
       <BottomSheet
         ref={bottomSheetRef}

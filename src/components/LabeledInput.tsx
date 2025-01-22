@@ -1,12 +1,11 @@
 import { View, Text, TextInput, TextInputProps } from "react-native";
 import React from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface LabeledInputProps extends TextInputProps {
-  label: string;
+  label?: string;
   note?: string;
   labelRight?: React.ReactNode; // Optional content to display next to the label
-  icon?: React.ReactNode; // Optional icon to display in the input
+  iconLeft?: React.ReactNode; // Optional icon to display in the input
   secureTextEntry?: boolean;
   error?: string | undefined; // Add this line to include the error prop
   success?: string | undefined; // Add this line to include the error prop
@@ -14,7 +13,7 @@ interface LabeledInputProps extends TextInputProps {
 }
 
 const LabeledInput: React.FC<LabeledInputProps> = ({
-  icon,
+  iconLeft,
   placeholder = "Enter text",
   onChangeText,
   labelRight,
@@ -29,20 +28,26 @@ const LabeledInput: React.FC<LabeledInputProps> = ({
   return (
     <View className="w-full flex-col items-start gap-2">
       {/* Label Section */}
-      <View className="flex-row justify-between w-full items-center">
-        <View className="flex flex-row gap-4">
-          <Text className="text-slate-700 text-sm font-medium">{label}</Text>
-          {error && <Text className="text-red-500 text-xs mt-1">{error}</Text>}
-          {success && (
-            <Text className="text-green-500 text-xs mt-1">{success}</Text>
-          )}
+      {label ? (
+        <View className="flex-row justify-between w-full items-center">
+          <View className="flex flex-row gap-4">
+            <Text className="text-slate-700 text-sm font-medium">{label}</Text>
+            {error && (
+              <Text className="text-red-500 text-xs mt-1">{error}</Text>
+            )}
+            {success && (
+              <Text className="text-green-500 text-xs mt-1">{success}</Text>
+            )}
+          </View>
+          {labelRight}
         </View>
-        {labelRight}
-      </View>
+      ) : (
+        <></>
+      )}
 
       {/* Input Section */}
       <View className="flex-row items-center w-full py-2 px-4 bg-white rounded-lg border border-[#B8B8B8] gap-2">
-        {icon}
+        {iconLeft}
         <TextInput
           value={value}
           onChangeText={onChangeText}

@@ -1,4 +1,11 @@
-import { Text, ScrollView, View, Switch, StyleSheet } from "react-native";
+import {
+  Text,
+  ScrollView,
+  View,
+  Switch,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Tabs } from "expo-router";
 import { Calendar } from "react-native-calendars";
@@ -9,15 +16,18 @@ import IconButton from "@/src/components/buttons/IconButton";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import ExerciseCard from "@/src/components/ExerciseCard";
+import Weight from "@/src/components/icons/Weight";
+import CreateExerciseForm from "@/src/components/CreateExerciseForm";
 
 const CreateRoutine = () => {
   const [selected, setSelected] = useState("");
   const [isDueDateEnabled, setIsDueDateEnabled] = useState(false); // State for the Switch
+  const [isCreatingExercise, setIsCreatingExercise] = useState(false);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => ["90%"], []);
+  const snapPoints = useMemo(() => ["95%"], []);
 
   // callbacks
   const handleSnapPress = useCallback((index: number) => {
@@ -179,12 +189,45 @@ const CreateRoutine = () => {
       >
         <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
           <View className="flex flex-col self-stretch p-6">
-            <View className="flex flex-col justify-between items-start">
-              <Text className="text-4xl text-white font-medium">
-                Select Exercises
-              </Text>
-              <ExerciseCard backgroundColor="#1D1D1D" />
-            </View>
+            {/* Conditional Rendering */}
+            {isCreatingExercise ? (
+              // Create Exercise Screen
+              <View className="flex flex-col justify-center items-start">
+                <View className="flex flex-row justify-start items-center gap-3 mb-8">
+                  <Weight color="#666" size={40} />
+                  <Text className="text-4xl text-white font-medium">
+                    New Exercise
+                  </Text>
+                </View>
+                {/* Add form fields or content for creating an exercise */}
+                <CreateExerciseForm />
+
+                {/* Back Button */}
+                <TouchableOpacity
+                  onPress={() => setIsCreatingExercise(false)}
+                  className="mt-4 bg-orange-400 p-3 rounded-lg"
+                >
+                  <Text className="text-white font-medium">Back</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              // Select Exercises Screen
+              <View className="flex flex-col justify-between items-start">
+                <Text className="text-4xl text-white font-medium">
+                  Select Exercises
+                </Text>
+                <ExerciseCard backgroundColor="#1D1D1D" />
+                {/* Create Exercise Button */}
+                <TouchableOpacity
+                  onPress={() => setIsCreatingExercise(true)}
+                  className="mt-4 bg-orange-400 p-3 rounded-lg"
+                >
+                  <Text className="text-white font-medium">
+                    Create Exercise
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         </BottomSheetScrollView>
       </BottomSheet>

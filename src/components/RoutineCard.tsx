@@ -53,12 +53,7 @@ const RoutineCard: React.FC<RoutineCardProps> = ({
         >
           {truncateString(routineName, 36)}
         </Text>
-        <IconButton
-          icon={<MoreHorizontal />}
-          href="/assigned-exercises"
-          accessible={true}
-          accessibilityLabel="More options"
-        />
+        <IconButton icon={<MoreHorizontal />} href="/assigned-exercises" />
       </View>
 
       {/* Routine details */}
@@ -97,8 +92,6 @@ const RoutineCard: React.FC<RoutineCardProps> = ({
           <IconButton
             icon={<Ionicons name="chevron-forward" size={16} color="#FFF" />}
             href="/assigned-exercises"
-            accessible={true}
-            accessibilityLabel="More options"
           />
         )}
       </View>

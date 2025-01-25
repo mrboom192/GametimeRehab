@@ -1,16 +1,35 @@
-import { View, Text } from "react-native";
+import { Text, Pressable } from "react-native";
 import React from "react";
 
-const Tag = ({ color = "#FFF", text = "tag" }) => {
+interface TagProps {
+  color: string;
+  text: string;
+  handlePress?: () => void;
+  selected?: boolean;
+}
+
+const Tag: React.FC<TagProps> = ({
+  color = "#FFF",
+  text,
+  selected = false,
+  handlePress,
+}) => {
   return (
-    <View
+    <Pressable
       className="py-1 px-3 border rounded-full"
-      style={{ borderColor: color }}
+      style={{
+        borderColor: color,
+        backgroundColor: selected ? color : "transparent", // Change background color if selected
+      }}
+      onPress={handlePress}
     >
-      <Text className="uppercase text-sm" style={{ color: color }}>
+      <Text
+        className="uppercase text-sm"
+        style={{ color: selected ? "#FFF" : color }}
+      >
         {text}
       </Text>
-    </View>
+    </Pressable>
   );
 };
 

@@ -1,36 +1,42 @@
 import { View, Text } from "react-native";
 import React from "react";
-import StreakFlame from "./icons/StreakFlame";
 import Weight from "./icons/Weight";
 import More2 from "./icons/More2";
-
-// For future
-const difficultyMap = { 1: "Easy", 2: "Medium", 3: "Hard" };
+import Ionicons from "@expo/vector-icons/Ionicons";
+import IconButton from "./buttons/IconButton";
 
 const ExerciseCard = ({
   exerciseName = "Exercise Placeholder Name",
-  numSets = 4,
-  minReps = 6,
+  numSets = 3,
+  minReps = 8,
   maxReps = 12,
+  backgroundColor = "#2C2C2C",
 }) => {
   return (
-    <View className="inline-flex h-36 p-3 justify-center items-start rounded-lg bg-[#2C2C2C]">
-      <View className="flex flex-row items-start justify-between gap-2 self-stretch">
-        <Weight />
-        <Text
-          className="text-white font-semibold w-24"
-          numberOfLines={2}
-          ellipsizeMode="tail"
-        >
-          {exerciseName}
-        </Text>
-        <More2 />
+    <View
+      className="inline-flex self-stretch p-3 justify-center items-start rounded-lg"
+      style={{
+        backgroundColor,
+      }}
+    >
+      <View className="flex flex-row items-center justify-between gap-2 self-stretch mb-2">
+        <View className="flex flex-row gap-2 items-center">
+          <Weight />
+          <Text className="text-white font-semibold" ellipsizeMode="tail">
+            {exerciseName}
+          </Text>
+        </View>
+        <IconButton
+          icon={<Ionicons name="ellipsis-vertical" size={16} color="#FFF" />}
+          theme="dark"
+        />
       </View>
-      <Text className="text-white">{numSets} Sets</Text>
-      <Text className="text-white">
-        {minReps}-{maxReps} Reps
-      </Text>
-      <Text className="text-white text-xs">Due Dec 30, 2024</Text>
+      <View className="flex flex-col mb-2">
+        <Text className="text-white">{numSets} Sets</Text>
+        <Text className="text-white">
+          {minReps}-{maxReps} Reps
+        </Text>
+      </View>
       <Text className="text-orange-400 text-[10px]">Medium difficulty</Text>
     </View>
   );

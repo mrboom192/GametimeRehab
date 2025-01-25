@@ -6,11 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import NavigateButton from "../buttons/NavigateButton";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetScrollView,
-} from "@gorhom/bottom-sheet";
-import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import CreateNewRoutineButton from "../CreateNewRoutineButton";
 import { Tabs } from "expo-router";
 
@@ -164,19 +160,6 @@ const AthleteRoutines = () => {
     bottomSheetRef.current?.snapToIndex(index);
   }, []);
 
-  // renders
-  const renderBackdrop = useCallback(
-    (
-      props: React.JSX.IntrinsicAttributes & BottomSheetDefaultBackdropProps
-    ) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-      />
-    ),
-    []
-  );
   // Make sure to only render a maximum number of routines later
 
   return (
@@ -285,11 +268,26 @@ const AthleteRoutines = () => {
       <BottomSheet
         ref={bottomSheetRef}
         enablePanDownToClose={true}
-        backgroundStyle={styles.bottomSheet}
+        backgroundStyle={styles.bottomSheetBackground}
         handleIndicatorStyle={styles.handleIndicator}
+        style={{
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 12,
+          },
+          shadowOpacity: 0.58,
+          shadowRadius: 16.0,
+
+          elevation: 24,
+        }}
+        handleStyle={{
+          backgroundColor: "#2C2C2C",
+          borderTopLeftRadius: 15,
+          borderTopRightRadius: 15,
+        }} // hack to fix transparent handle
         index={-1}
         snapPoints={snapPoints}
-        backdropComponent={renderBackdrop}
         enableDynamicSizing={false}
       >
         <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
@@ -310,7 +308,7 @@ const AthleteRoutines = () => {
 };
 
 const styles = StyleSheet.create({
-  bottomSheet: { backgroundColor: "#2C2C2C" },
+  bottomSheetBackground: { backgroundColor: "#2C2C2C" },
   handleIndicator: {
     backgroundColor: "#fff",
     width: 128,

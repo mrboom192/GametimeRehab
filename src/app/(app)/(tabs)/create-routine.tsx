@@ -37,9 +37,6 @@ const CreateRoutine = () => {
   const toggleSwitch = () =>
     setIsDueDateEnabled((previousState) => !previousState); // Toggle function
 
-  // On calendar: black means they login and complete any assignment, outline means you skipped, multiple black days in a row would be a streak
-  // Show 4 most recent achievements on achievements card
-
   return (
     <GestureHandlerRootView style={styles.container}>
       <ScrollView
@@ -164,6 +161,7 @@ const CreateRoutine = () => {
       </ScrollView>
       <BottomSheet
         ref={bottomSheetRef}
+        enableContentPanningGesture={false}
         enablePanDownToClose={true}
         backgroundStyle={{ backgroundColor: "#2C2C2C" }}
         handleIndicatorStyle={styles.handleIndicator}
@@ -193,22 +191,10 @@ const CreateRoutine = () => {
             {isCreatingExercise ? (
               // Create Exercise Screen
               <View className="flex flex-col justify-center items-start">
-                <View className="flex flex-row justify-start items-center gap-3 mb-8">
-                  <Weight color="#666" size={40} />
-                  <Text className="text-4xl text-white font-medium">
-                    New Exercise
-                  </Text>
-                </View>
                 {/* Add form fields or content for creating an exercise */}
-                <CreateExerciseForm />
-
-                {/* Back Button */}
-                <TouchableOpacity
-                  onPress={() => setIsCreatingExercise(false)}
-                  className="mt-4 bg-orange-400 p-3 rounded-lg"
-                >
-                  <Text className="text-white font-medium">Back</Text>
-                </TouchableOpacity>
+                <CreateExerciseForm
+                  setIsCreatingExercise={setIsCreatingExercise}
+                />
               </View>
             ) : (
               // Select Exercises Screen

@@ -1,0 +1,834 @@
+{
+  "shoulder": {
+    "region": "Shoulder",
+    "injury_types": {
+      "sprain": [
+        {
+          "name": "AC Joint Sprain",
+          "description": "A sprain of the acromioclavicular joint caused by overstretching or tearing of the ligaments."
+        },
+        {
+          "name": "Glenohumeral Joint Sprain",
+          "description": "An overstretch or tear of the ligaments supporting the glenohumeral (shoulder) joint, often caused by a sudden force or overuse."
+        }
+      ],
+      "tear": [
+        {
+          "name": "Rotator Cuff Tear",
+          "description": "A partial or complete tear of the rotator cuff tendons, often caused by repetitive overhead activities or trauma."
+        },
+        {
+          "name": "Labral Tear",
+          "description": "An injury to the labrum, the cartilage that surrounds the shoulder socket, leading to pain and instability."
+        },
+        {
+          "name": "SLAP Tear",
+          "description": "A superior labral tear from anterior to posterior, often resulting from repetitive overhead motions or trauma."
+        }
+      ],
+      "tendinitis": [
+        {
+          "name": "Biceps Tendinitis",
+          "description": "Inflammation of the biceps tendon, typically caused by repetitive overhead motion or overuse."
+        },
+        {
+          "name": "Rotator Cuff Tendinitis",
+          "description": "Inflammation of the rotator cuff tendons, often caused by overuse or poor posture."
+        },
+        {
+          "name": "Supraspinatus Tendinitis",
+          "description": "Inflammation of the supraspinatus tendon, one of the rotator cuff muscles, often associated with impingement syndrome."
+        },
+        {
+          "name": "Calcific Tendinitis",
+          "description": "A condition characterized by calcium deposits in the tendons of the rotator cuff, causing pain and reduced range of motion."
+        }
+      ],
+      "fracture": [
+        {
+          "name": "Clavicle Fracture",
+          "description": "A break in the collarbone, often caused by a fall on the shoulder or outstretched arm."
+        },
+        {
+          "name": "Scapular Fracture",
+          "description": "A rare fracture of the shoulder blade, typically resulting from high-energy trauma."
+        },
+        {
+          "name": "Proximal Humerus Fracture",
+          "description": "A fracture of the upper arm bone near the shoulder, common in older adults after a fall."
+        }
+      ],
+      "dislocation": [
+        {
+          "name": "Anterior Shoulder Dislocation",
+          "description": "The head of the humerus is displaced forward out of the shoulder socket, commonly caused by trauma or extreme rotation."
+        },
+        {
+          "name": "Posterior Shoulder Dislocation",
+          "description": "The head of the humerus is displaced backward out of the shoulder socket, often due to seizures or electrical shock."
+        },
+        {
+          "name": "Inferior Shoulder Dislocation",
+          "description": "A rare dislocation where the head of the humerus is displaced downward, sometimes caused by hyperabduction."
+        }
+      ],
+      "impingement": [
+        {
+          "name": "Subacromial Impingement Syndrome",
+          "description": "Compression of the rotator cuff tendons and bursa beneath the acromion, leading to pain and inflammation."
+        },
+        {
+          "name": "Internal Impingement",
+          "description": "Occurs when the rotator cuff tendons are pinched between the humeral head and the glenoid during overhead activities."
+        }
+      ],
+      "bursitis": [
+        {
+          "name": "Subacromial Bursitis",
+          "description": "Inflammation of the subacromial bursa, typically associated with repetitive overhead motion or impingement."
+        },
+        {
+          "name": "Subdeltoid Bursitis",
+          "description": "Inflammation of the bursa located beneath the deltoid muscle, often caused by overuse or trauma."
+        }
+      ]
+    }
+  },
+  "neck": {
+    "region": "Neck",
+    "injury_types": {
+      "sprain": [
+        {
+          "name": "Cervical Sprain",
+          "description": "Overstretching or tearing of the ligaments in the neck, often caused by sudden movements or trauma such as whiplash."
+        }
+      ],
+      "strain": [
+        {
+          "name": "Cervical Muscle Strain",
+          "description": "An injury to the muscles or tendons in the neck, commonly due to overuse, poor posture, or sudden force."
+        }
+      ],
+      "discopathy": [
+        {
+          "name": "Cervical Disc Herniation",
+          "description": "A condition where the inner material of a cervical disc protrudes out, compressing nearby nerves and causing pain or numbness."
+        },
+        {
+          "name": "Degenerative Disc Disease",
+          "description": "A wear-and-tear condition where the cervical discs lose their cushioning ability, leading to pain and stiffness."
+        }
+      ],
+      "neuropathy": [
+        {
+          "name": "Cervical Radiculopathy",
+          "description": "Compression or irritation of a nerve root in the cervical spine, often leading to pain, numbness, or weakness in the arms."
+        },
+        {
+          "name": "Thoracic Outlet Syndrome",
+          "description": "Compression of nerves or blood vessels between the collarbone and first rib, causing pain or tingling in the neck and arms."
+        }
+      ],
+      "fracture": [
+        {
+          "name": "Cervical Spine Fracture",
+          "description": "A break in one of the cervical vertebrae, often caused by trauma such as falls or car accidents."
+        }
+      ],
+      "dislocation": [
+        {
+          "name": "Atlantoaxial Dislocation",
+          "description": "Displacement of the first cervical vertebra (atlas) relative to the second vertebra (axis), typically caused by trauma or congenital conditions."
+        }
+      ],
+      "tendinitis": [
+        {
+          "name": "Cervical Tendinitis",
+          "description": "Inflammation of the tendons in the neck, often due to repetitive movements or strain."
+        }
+      ],
+      "bursitis": [
+        {
+          "name": "Cervical Bursitis",
+          "description": "Inflammation of the bursa in the cervical region, leading to pain and reduced neck mobility."
+        }
+      ],
+      "impingement": [
+        {
+          "name": "Cervical Spinal Stenosis",
+          "description": "Narrowing of the spinal canal in the cervical spine, causing compression of the spinal cord or nerve roots."
+        }
+      ]
+    }
+  },
+  "back": {
+    "region": "Back",
+    "injury_types": {
+      "sprain": [
+        {
+          "name": "Lumbar Sprain",
+          "description": "Overstretching or tearing of ligaments in the lower back, often caused by sudden movements or improper lifting."
+        },
+        {
+          "name": "Thoracic Sprain",
+          "description": "Injury to the ligaments in the mid-back region, typically due to trauma or awkward movements."
+        }
+      ],
+      "strain": [
+        {
+          "name": "Back Muscle Strain",
+          "description": "Overuse or overstretching of muscles in the back, often resulting from heavy lifting or poor posture."
+        },
+        {
+          "name": "Erector Spinae Strain",
+          "description": "Strain in the muscles that run along the spine, commonly caused by overuse or improper movement."
+        }
+      ],
+      "discopathy": [
+        {
+          "name": "Herniated Disc",
+          "description": "A condition where the inner material of a spinal disc protrudes, compressing nearby nerves and causing pain or numbness."
+        },
+        {
+          "name": "Degenerative Disc Disease",
+          "description": "Progressive degeneration of the spinal discs, leading to chronic pain and reduced flexibility."
+        },
+        {
+          "name": "Bulging Disc",
+          "description": "A condition where a spinal disc bulges outward without rupturing, potentially irritating nearby nerves."
+        }
+      ],
+      "neuropathy": [
+        {
+          "name": "Sciatica",
+          "description": "Pain radiating along the sciatic nerve, typically caused by compression in the lower spine."
+        },
+        {
+          "name": "Lumbar Radiculopathy",
+          "description": "Nerve root irritation in the lower back, leading to pain, numbness, or weakness in the legs."
+        }
+      ],
+      "fracture": [
+        {
+          "name": "Compression Fracture",
+          "description": "A fracture in the vertebrae due to compression forces, often associated with osteoporosis or trauma."
+        },
+        {
+          "name": "Transverse Process Fracture",
+          "description": "A fracture of the small, bony projections on the vertebrae, typically caused by trauma or severe muscle contractions."
+        }
+      ],
+      "dislocation": [
+        {
+          "name": "Vertebral Dislocation",
+          "description": "Displacement of a vertebra, often caused by high-energy trauma or underlying instability."
+        }
+      ],
+      "tendinitis": [
+        {
+          "name": "Lumbar Tendinitis",
+          "description": "Inflammation of tendons in the lower back, typically caused by overuse or repetitive movements."
+        }
+      ],
+      "impingement": [
+        {
+          "name": "Spinal Stenosis",
+          "description": "Narrowing of the spinal canal, causing compression of the spinal cord or nerves and resulting in pain and weakness."
+        },
+        {
+          "name": "Facet Joint Impingement",
+          "description": "Compression or irritation of the small joints that connect vertebrae, often leading to localized back pain."
+        }
+      ],
+      "curvatures": [
+        {
+          "name": "Scoliosis",
+          "description": "A lateral curvature of the spine, often diagnosed in adolescence or caused by degenerative changes in adults."
+        },
+        {
+          "name": "Kyphosis",
+          "description": "Excessive outward curvature of the thoracic spine, causing a hunched appearance."
+        },
+        {
+          "name": "Lordosis",
+          "description": "Excessive inward curvature of the lumbar spine, often leading to lower back pain."
+        }
+      ]
+    }
+  },
+  "elbow": {
+    "region": "Elbow",
+    "injury_types": {
+      "sprain": [
+        {
+          "name": "Elbow Ligament Sprain",
+          "description": "Overstretching or tearing of the ligaments around the elbow joint, often caused by trauma or excessive force."
+        },
+        {
+          "name": "Ulnar Collateral Ligament (UCL) Sprain",
+          "description": "Injury to the ligament on the inner side of the elbow, common in throwing sports due to repetitive stress."
+        }
+      ],
+      "strain": [
+        {
+          "name": "Elbow Flexor Strain",
+          "description": "Overstretching or tearing of the muscles that flex the elbow, often caused by heavy lifting or sudden force."
+        },
+        {
+          "name": "Extensor Strain",
+          "description": "Injury to the muscles that extend the elbow, typically resulting from overuse or repetitive activities."
+        }
+      ],
+      "tear": [
+        {
+          "name": "Biceps Tendon Tear",
+          "description": "A tear of the biceps tendon at its attachment point, commonly caused by heavy lifting or trauma."
+        }
+      ],
+      "tendinitis": [
+        {
+          "name": "Tennis Elbow (Lateral Epicondylitis)",
+          "description": "Inflammation of the tendons on the outer side of the elbow, caused by repetitive wrist and arm motions."
+        },
+        {
+          "name": "Golfer's Elbow (Medial Epicondylitis)",
+          "description": "Inflammation of the tendons on the inner side of the elbow, associated with repetitive wrist flexion or gripping."
+        },
+        {
+          "name": "Triceps Tendinitis",
+          "description": "Inflammation of the triceps tendon at its insertion point on the elbow, commonly caused by overuse."
+        },
+        {
+          "name": "Biceps Tendinitis",
+          "description": "Inflammation of the biceps tendon at the elbow, often resulting from repetitive lifting or pulling motions."
+        }
+      ],
+      "bursitis": [
+        {
+          "name": "Olecranon Bursitis",
+          "description": "Inflammation of the bursa over the bony prominence of the elbow, often caused by repetitive pressure or trauma."
+        }
+      ],
+      "fracture": [
+        {
+          "name": "Radial Head Fracture",
+          "description": "A fracture of the radial head, typically caused by a fall on an outstretched arm."
+        },
+        {
+          "name": "Olecranon Fracture",
+          "description": "A fracture of the bony tip of the elbow, commonly resulting from direct trauma."
+        },
+        {
+          "name": "Distal Humerus Fracture",
+          "description": "A break in the lower end of the humerus, often caused by falls or high-energy trauma."
+        }
+      ],
+      "dislocation": [
+        {
+          "name": "Elbow Dislocation",
+          "description": "Displacement of the bones in the elbow joint, commonly caused by falls onto an outstretched hand."
+        },
+        {
+          "name": "Nursemaid's Elbow",
+          "description": "A partial dislocation of the radial head, typically occurring in young children when the arm is pulled suddenly."
+        }
+      ],
+      "neuropathy": [
+        {
+          "name": "Cubital Tunnel Syndrome",
+          "description": "Compression of the ulnar nerve at the elbow, causing pain, tingling, and weakness in the ring and little fingers."
+        },
+        {
+          "name": "Radial Tunnel Syndrome",
+          "description": "Compression of the radial nerve near the elbow, leading to pain in the forearm and hand weakness."
+        }
+      ],
+      "impingement": [
+        {
+          "name": "Posterior Impingement Syndrome",
+          "description": "Pinching of soft tissues at the back of the elbow joint during extension, often seen in throwing athletes."
+        }
+      ],
+      "overuse": [
+        {
+          "name": "Little League Elbow",
+          "description": "An overuse injury causing inflammation of the growth plate on the inside of the elbow, common in young baseball players."
+        },
+        {
+          "name": "Repetitive Strain Injury",
+          "description": "Cumulative stress on the muscles and tendons of the elbow due to repetitive motion."
+        }
+      ]
+    }
+  },
+  "hand & wrist": {
+    "region": "Hand & Wrist",
+    "injury_types": {
+      "sprain": [
+        {
+          "name": "Wrist Sprain",
+          "description": "Overstretching or tearing of ligaments in the wrist, often caused by falls or sudden twisting motions."
+        },
+        {
+          "name": "Thumb Sprain",
+          "description": "Injury to the ligaments in the thumb, commonly involving the ulnar collateral ligament (Skier's Thumb)."
+        }
+      ],
+      "strain": [
+        {
+          "name": "Flexor Tendon Strain",
+          "description": "Overstretching or tearing of the tendons that flex the fingers or wrist, often caused by overuse or excessive force."
+        },
+        {
+          "name": "Extensor Tendon Strain",
+          "description": "Injury to the tendons that extend the fingers or wrist, typically resulting from repetitive strain."
+        }
+      ],
+      "fracture": [
+        {
+          "name": "Distal Radius Fracture",
+          "description": "A fracture of the radius near the wrist, often caused by a fall on an outstretched hand."
+        },
+        {
+          "name": "Scaphoid Fracture",
+          "description": "A break in the scaphoid bone of the wrist, commonly resulting from a fall on an outstretched hand."
+        },
+        {
+          "name": "Metacarpal Fracture",
+          "description": "A fracture in one of the hand bones, often caused by trauma or a direct blow."
+        },
+        {
+          "name": "Phalangeal Fracture",
+          "description": "A fracture of the finger bones, typically caused by impact or crushing injuries."
+        }
+      ],
+      "dislocation": [
+        {
+          "name": "Finger Dislocation",
+          "description": "Displacement of the finger bones at a joint, usually caused by trauma or hyperextension."
+        },
+        {
+          "name": "Wrist Dislocation",
+          "description": "Displacement of the carpal bones, often due to high-energy trauma or falls."
+        }
+      ],
+      "tendinitis": [
+        {
+          "name": "De Quervain's Tendinitis",
+          "description": "Inflammation of the tendons on the thumb side of the wrist, often caused by repetitive gripping or lifting."
+        },
+        {
+          "name": "Flexor Tendinitis",
+          "description": "Inflammation of the tendons that flex the fingers or wrist, typically caused by overuse."
+        },
+        {
+          "name": "Extensor Tendinitis",
+          "description": "Inflammation of the tendons that extend the fingers or wrist, commonly due to repetitive strain."
+        }
+      ],
+      "neuropathy": [
+        {
+          "name": "Carpal Tunnel Syndrome",
+          "description": "Compression of the median nerve in the wrist, leading to pain, numbness, and weakness in the hand."
+        },
+        {
+          "name": "Ulnar Nerve Entrapment",
+          "description": "Compression of the ulnar nerve at the wrist or hand, causing tingling and weakness in the ring and little fingers."
+        }
+      ],
+      "bursitis": [
+        {
+          "name": "Wrist Bursitis",
+          "description": "Inflammation of the bursa in the wrist, often caused by repetitive motion or pressure."
+        }
+      ],
+      "impingement": [
+        {
+          "name": "Wrist Impingement Syndrome",
+          "description": "Pinching of soft tissues in the wrist, often leading to pain during extension or weight-bearing activities."
+        }
+      ],
+      "overuse": [
+        {
+          "name": "Trigger Finger",
+          "description": "A condition where a finger gets stuck in a bent position due to inflammation of the flexor tendons."
+        },
+        {
+          "name": "Repetitive Strain Injury (RSI)",
+          "description": "Cumulative trauma to the hand or wrist due to repetitive motions or overuse."
+        },
+        {
+          "name": "Tendinopathy",
+          "description": "Degeneration of the wrist or hand tendons, often caused by chronic overuse."
+        }
+      ],
+      "arthritis": [
+        {
+          "name": "Osteoarthritis of the Hand",
+          "description": "Degenerative joint disease causing pain, stiffness, and swelling in the hand and wrist."
+        },
+        {
+          "name": "Rheumatoid Arthritis of the Wrist",
+          "description": "An autoimmune condition causing inflammation, pain, and joint deformities in the wrist."
+        }
+      ]
+    }
+  },
+  "hip & thigh": {
+    "region": "Hip & Thigh",
+    "injury_types": {
+      "sprain": [
+        {
+          "name": "Hip Joint Sprain",
+          "description": "Overstretching or tearing of the ligaments surrounding the hip joint, often caused by sudden twisting or trauma."
+        }
+      ],
+      "strain": [
+        {
+          "name": "Hamstring Strain",
+          "description": "Overstretching or tearing of the hamstring muscles, commonly caused by rapid acceleration or deceleration."
+        },
+        {
+          "name": "Quadriceps Strain",
+          "description": "Injury to the quadriceps muscles, often due to overuse or sudden forceful extension of the knee."
+        },
+        {
+          "name": "Hip Flexor Strain",
+          "description": "Injury to the muscles responsible for hip flexion, typically caused by overuse or sudden, explosive movements."
+        },
+        {
+          "name": "Adductor Strain (Groin Pull)",
+          "description": "Injury to the adductor muscles on the inner thigh, commonly resulting from rapid side-to-side movements."
+        }
+      ],
+      "fracture": [
+        {
+          "name": "Femoral Neck Fracture",
+          "description": "A break in the neck of the femur, often caused by falls or high-energy trauma, common in older adults."
+        },
+        {
+          "name": "Intertrochanteric Fracture",
+          "description": "A fracture between the greater and lesser trochanters of the femur, typically resulting from a fall."
+        },
+        {
+          "name": "Pelvic Fracture",
+          "description": "A break in one or more bones of the pelvis, often caused by high-energy trauma or falls."
+        }
+      ],
+      "dislocation": [
+        {
+          "name": "Hip Dislocation",
+          "description": "Displacement of the femoral head from the hip socket, commonly caused by high-energy trauma such as car accidents."
+        }
+      ],
+      "tendinitis": [
+        {
+          "name": "Iliopsoas Tendinitis",
+          "description": "Inflammation of the iliopsoas tendon, often caused by repetitive hip flexion or overuse."
+        },
+        {
+          "name": "Gluteal Tendinitis",
+          "description": "Inflammation of the tendons of the gluteal muscles, often due to overuse or repetitive activities."
+        },
+        {
+          "name": "Hamstring Tendinitis",
+          "description": "Inflammation of the hamstring tendons, commonly caused by overuse or repetitive activities involving the thigh."
+        }
+      ],
+      "bursitis": [
+        {
+          "name": "Trochanteric Bursitis",
+          "description": "Inflammation of the bursa over the greater trochanter of the femur, leading to lateral hip pain."
+        },
+        {
+          "name": "Iliopsoas Bursitis",
+          "description": "Inflammation of the bursa near the iliopsoas muscle, often causing groin or anterior hip pain."
+        },
+        {
+          "name": "Ischial Bursitis",
+          "description": "Inflammation of the bursa near the ischial tuberosity, often caused by prolonged sitting or repetitive activities."
+        }
+      ],
+      "neuropathy": [
+        {
+          "name": "Piriformis Syndrome",
+          "description": "Compression of the sciatic nerve by the piriformis muscle, causing pain and numbness in the hip and thigh."
+        },
+        {
+          "name": "Meralgia Paresthetica",
+          "description": "Compression of the lateral femoral cutaneous nerve, leading to burning or tingling in the outer thigh."
+        }
+      ],
+      "impingement": [
+        {
+          "name": "Femoroacetabular Impingement (FAI)",
+          "description": "Abnormal contact between the femur and hip socket, causing pain and restricted range of motion."
+        }
+      ],
+      "overuse": [
+        {
+          "name": "Stress Fracture of the Femur",
+          "description": "A small crack in the femur due to repetitive stress or overuse, common in runners and athletes."
+        }
+      ],
+      "arthritis": [
+        {
+          "name": "Hip Osteoarthritis",
+          "description": "Degenerative joint disease causing pain, stiffness, and reduced mobility in the hip joint."
+        },
+        {
+          "name": "Rheumatoid Arthritis of the Hip",
+          "description": "An autoimmune condition causing inflammation, pain, and joint deformities in the hip."
+        }
+      ]
+    }
+  },
+  "knee & lower leg": {
+    "region": "Knee & Lower Leg",
+    "injury_types": {
+      "sprain": [
+        {
+          "name": "Medial Collateral Ligament (MCL) Sprain",
+          "description": "Overstretching or tearing of the ligament on the inner side of the knee, often caused by impact or twisting."
+        },
+        {
+          "name": "Lateral Collateral Ligament (LCL) Sprain",
+          "description": "Injury to the ligament on the outer side of the knee, commonly caused by direct force to the inside of the knee."
+        },
+        {
+          "name": "Anterior Cruciate Ligament (ACL) Sprain",
+          "description": "A partial or complete tear of the ACL, often caused by sudden stops, pivots, or changes in direction."
+        },
+        {
+          "name": "Posterior Cruciate Ligament (PCL) Sprain",
+          "description": "Injury to the ligament at the back of the knee, typically caused by a direct impact to the front of the knee."
+        }
+      ],
+      "strain": [
+        {
+          "name": "Calf Muscle Strain",
+          "description": "Overstretching or tearing of the muscles in the back of the lower leg, commonly caused by sudden movements."
+        },
+        {
+          "name": "Quadriceps Strain",
+          "description": "Injury to the thigh muscles responsible for knee extension, often caused by overuse or forceful movements."
+        }
+      ],
+      "fracture": [
+        {
+          "name": "Patella Fracture",
+          "description": "A break in the kneecap, often caused by direct trauma or a fall onto the knee."
+        },
+        {
+          "name": "Tibial Plateau Fracture",
+          "description": "A fracture in the upper part of the tibia near the knee joint, commonly caused by high-energy trauma."
+        },
+        {
+          "name": "Fibula Fracture",
+          "description": "A break in the fibula bone of the lower leg, often resulting from trauma or impact."
+        },
+        {
+          "name": "Tibial Stress Fracture",
+          "description": "A small crack in the tibia bone due to repetitive stress or overuse, common in runners."
+        }
+      ],
+      "dislocation": [
+        {
+          "name": "Knee Dislocation",
+          "description": "Displacement of the knee joint, often caused by high-energy trauma or severe ligament injuries."
+        },
+        {
+          "name": "Patellar Dislocation",
+          "description": "Displacement of the kneecap from its normal position, typically caused by sudden twisting or impact."
+        }
+      ],
+      "tendinitis": [
+        {
+          "name": "Patellar Tendinitis (Jumper's Knee)",
+          "description": "Inflammation of the patellar tendon, commonly caused by repetitive jumping or stress on the knee."
+        },
+        {
+          "name": "Quadriceps Tendinitis",
+          "description": "Inflammation of the quadriceps tendon above the kneecap, often due to overuse or repetitive strain."
+        }
+      ],
+      "bursitis": [
+        {
+          "name": "Prepatellar Bursitis (Housemaid's Knee)",
+          "description": "Inflammation of the bursa in front of the kneecap, often caused by prolonged kneeling or direct impact."
+        },
+        {
+          "name": "Infrapatellar Bursitis",
+          "description": "Inflammation of the bursa below the kneecap, typically resulting from repetitive movements or overuse."
+        },
+        {
+          "name": "Pes Anserine Bursitis",
+          "description": "Inflammation of the bursa on the inner side of the knee, often caused by overuse or improper technique."
+        }
+      ],
+      "chondropathy": [
+        {
+          "name": "Meniscus Tear",
+          "description": "A tear in the cartilage that cushions the knee joint, often caused by twisting or heavy impact."
+        },
+        {
+          "name": "Chondromalacia Patellae",
+          "description": "Softening or breakdown of cartilage on the underside of the kneecap, leading to pain and discomfort."
+        }
+      ],
+      "neuropathy": [
+        {
+          "name": "Peroneal Nerve Compression",
+          "description": "Compression of the peroneal nerve near the knee, leading to numbness, tingling, or weakness in the lower leg."
+        }
+      ],
+      "impingement": [
+        {
+          "name": "Fat Pad Impingement",
+          "description": "Irritation of the fat pad beneath the patella, causing anterior knee pain and swelling."
+        }
+      ],
+      "overuse": [
+        {
+          "name": "Iliotibial Band Syndrome (ITBS)",
+          "description": "Irritation of the iliotibial band as it rubs against the femur, often causing lateral thigh or knee pain."
+        },
+        {
+          "name": "Patellofemoral Pain Syndrome (Runner's Knee)",
+          "description": "Pain around or behind the kneecap, often associated with overuse, poor alignment, or improper mechanics."
+        },
+        {
+          "name": "Shin Splints (Medial Tibial Stress Syndrome)",
+          "description": "Pain along the shinbone, often caused by repetitive stress or improper training techniques."
+        }
+      ],
+      "arthritis": [
+        {
+          "name": "Knee Osteoarthritis",
+          "description": "Degenerative joint disease causing pain, stiffness, and swelling in the knee joint."
+        },
+        {
+          "name": "Rheumatoid Arthritis of the Knee",
+          "description": "An autoimmune condition causing inflammation, pain, and joint deformities in the knee."
+        }
+      ]
+    }
+  },
+  "foot & ankle": {
+    "region": "Foot & Ankle",
+    "injury_types": {
+      "sprain": [
+        {
+          "name": "Ankle Sprain",
+          "description": "Overstretching or tearing of the ligaments in the ankle, often caused by twisting or rolling the foot."
+        },
+        {
+          "name": "High Ankle Sprain",
+          "description": "Injury to the ligaments connecting the tibia and fibula above the ankle joint, commonly caused by twisting motions."
+        }
+      ],
+      "strain": [
+        {
+          "name": "Achilles Strain",
+          "description": "Overstretching or tearing of the Achilles tendon or surrounding muscle fibers, often caused by overuse or sudden force."
+        },
+        {
+          "name": "Plantar Fascia Strain",
+          "description": "Injury to the plantar fascia, the connective tissue along the bottom of the foot, often due to overuse or improper footwear."
+        }
+      ],
+      "fracture": [
+        {
+          "name": "Ankle Fracture",
+          "description": "A break in one or more bones of the ankle, often caused by trauma or severe twisting."
+        },
+        {
+          "name": "Metatarsal Fracture",
+          "description": "A break in one of the metatarsal bones of the foot, commonly resulting from impact or overuse."
+        },
+        {
+          "name": "Calcaneal Fracture",
+          "description": "A break in the heel bone, often caused by a fall from a height or significant impact."
+        },
+        {
+          "name": "Stress Fracture",
+          "description": "A small crack in a bone due to repetitive stress or overuse, common in the metatarsals or tibia."
+        }
+      ],
+      "dislocation": [
+        {
+          "name": "Ankle Dislocation",
+          "description": "Displacement of the bones in the ankle joint, often caused by trauma or severe ligament injury."
+        },
+        {
+          "name": "Subtalar Dislocation",
+          "description": "Displacement of the talus relative to the calcaneus and navicular bones, typically caused by high-energy trauma."
+        }
+      ],
+      "tendinitis": [
+        {
+          "name": "Achilles Tendinitis",
+          "description": "Inflammation of the Achilles tendon, often caused by repetitive strain or overuse."
+        },
+        {
+          "name": "Posterior Tibial Tendinitis",
+          "description": "Inflammation of the posterior tibial tendon, commonly leading to pain along the inner side of the ankle and foot."
+        },
+        {
+          "name": "Peroneal Tendinitis",
+          "description": "Inflammation of the peroneal tendons on the outer side of the ankle, often caused by repetitive activity."
+        },
+        {
+          "name": "Extensor Tendinitis",
+          "description": "Inflammation of the tendons on the top of the foot, often resulting from tight shoes or overuse."
+        }
+      ],
+      "bursitis": [
+        {
+          "name": "Retrocalcaneal Bursitis",
+          "description": "Inflammation of the bursa behind the Achilles tendon, causing pain and swelling near the heel."
+        },
+        {
+          "name": "Plantar Bursitis",
+          "description": "Inflammation of the bursa in the sole of the foot, often associated with overuse or improper footwear."
+        }
+      ],
+      "neuropathy": [
+        {
+          "name": "Tarsal Tunnel Syndrome",
+          "description": "Compression of the posterior tibial nerve in the tarsal tunnel, causing pain, tingling, or numbness in the foot."
+        },
+        {
+          "name": "Morton's Neuroma",
+          "description": "Thickening of tissue around a nerve in the foot, often causing pain between the toes."
+        }
+      ],
+      "overuse": [
+        {
+          "name": "Plantar Fasciitis",
+          "description": "Inflammation of the plantar fascia, causing heel pain, often due to overuse, improper footwear, or tight calf muscles."
+        }
+      ],
+      "arthritis": [
+        {
+          "name": "Ankle Osteoarthritis",
+          "description": "Degenerative joint disease causing pain, stiffness, and reduced mobility in the ankle."
+        },
+        {
+          "name": "Rheumatoid Arthritis of the Foot",
+          "description": "An autoimmune condition causing inflammation, pain, and deformities in the joints of the foot and ankle."
+        }
+      ],
+      "impingement": [
+        {
+          "name": "Anterior Ankle Impingement",
+          "description": "Pinching of soft tissues at the front of the ankle, often causing pain during dorsiflexion."
+        },
+        {
+          "name": "Posterior Ankle Impingement",
+          "description": "Compression of tissues at the back of the ankle, commonly seen in activities like ballet or soccer."
+        }
+      ]
+    }
+  }
+}

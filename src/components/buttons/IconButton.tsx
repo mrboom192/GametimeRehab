@@ -8,6 +8,7 @@ interface IconButtonProps {
   handlePress?: () => void;
   href?: any;
   theme?: "dark" | "light"; // Theme for the button
+  disabled?: boolean; // Disabled state for the button
 }
 
 const IconButton: React.FC<IconButtonProps> = ({
@@ -16,57 +17,63 @@ const IconButton: React.FC<IconButtonProps> = ({
   theme = "dark", // Default theme is dark
   handlePress,
   href,
+  disabled = false, // Default to not disabled
 }) => {
-  // Dynamic styles based on the theme
+  // Dynamic styles based on the theme and disabled state
   const isDarkTheme = theme === "dark";
   const isLightTheme = theme === "light";
 
+  const baseStyle = `w-6 h-6 justify-center flex-row items-center gap-2 rounded-lg overflow-hidden`;
+  const textStyle = disabled
+    ? "text-gray-400" // Disabled text color
+    : isDarkTheme
+    ? "text-white"
+    : isLightTheme
+    ? "text-black"
+    : "text-gray-800";
+
+  const rippleColor = disabled
+    ? "transparent"
+    : isDarkTheme
+    ? "rgba(255, 255, 255, 0.15)"
+    : isLightTheme
+    ? "rgba(0, 0, 0, 0.1)"
+    : "rgba(0, 0, 0, 0.05)";
+
+  const handleButtonPress = () => {
+    if (!disabled && handlePress) {
+      handlePress();
+    }
+  };
+
   return href ? (
-    <View className={`rounded-lg overflow-hidden`}>
+    <View className={baseStyle}>
       <Link href={href} asChild>
         <Pressable
           android_ripple={{
-            color: isDarkTheme
-              ? "rgba(255, 255, 255, 0.15)"
-              : isLightTheme
-              ? "rgba(0, 0, 0, 0.1)"
-              : "rgba(0, 0, 0, 0.05)",
+            color: rippleColor,
             borderless: false,
           }}
-          className={`w-6 h-6 justify-center flex-row items-center gap-2 ${
-            isDarkTheme
-              ? "text-white"
-              : isLightTheme
-              ? "text-black"
-              : "text-gray-800"
-          }`}
+          className={`${baseStyle} ${textStyle}`}
           accessibilityLabel={title}
-          onPress={handlePress}
+          onPress={handleButtonPress}
+          disabled={disabled}
         >
           {icon}
         </Pressable>
       </Link>
     </View>
   ) : (
-    <View className={`rounded-lg overflow-hidden`}>
+    <View className={baseStyle}>
       <Pressable
         android_ripple={{
-          color: isDarkTheme
-            ? "rgba(255, 255, 255, 0.15)"
-            : isLightTheme
-            ? "rgba(0, 0, 0, 0.1)"
-            : "rgba(0, 0, 0, 0.05)",
+          color: rippleColor,
           borderless: false,
         }}
-        className={`w-6 h-6 justify-center flex-row items-center gap-2 ${
-          isDarkTheme
-            ? "text-white"
-            : isLightTheme
-            ? "text-black"
-            : "text-gray-800"
-        }`}
+        className={`${baseStyle} ${textStyle}`}
         accessibilityLabel={title}
-        onPress={handlePress}
+        onPress={handleButtonPress}
+        disabled={disabled}
       >
         {icon}
       </Pressable>

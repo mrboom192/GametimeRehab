@@ -13,6 +13,7 @@ import Notch from "./slider/Notch";
 import Weight from "./icons/Weight";
 
 import injuries from "../../assets/data/injuries.json";
+import InjuryCard from "./InjuryCard";
 
 // Define types for the props
 interface GeneralExerciseInfoFormProps {
@@ -69,6 +70,8 @@ const CreateExerciseForm: React.FC<CreateExerciseFormProps> = ({
       formState={formState}
       updateFormState={updateFormState}
     />,
+
+    // Page two
     <View>
       <View className="flex flex-row self-stretch justify-start items-center gap-3 mb-4 ">
         <Text
@@ -374,53 +377,72 @@ const InjurySelector: React.FC<InjurySelectorProps> = ({
   return (
     <View>
       {/* Regions */}
-      <Text>Region</Text>
-      <View className="flex flex-row flex-wrap gap-2">
-        {regions.map((region) => (
-          <Tag
-            key={region}
-            color="#4B4B4B"
-            text={region}
-            selected={formState.selectedRegion === region}
-            handlePress={() => updateFormState("selectedRegion", region)}
-          />
-        ))}
+      <View className="flex flex-col gap-4">
+        <Text className="text-white font-medium" style={{ fontSize: 16 }}>
+          Region
+        </Text>
+
+        <View className="flex flex-row flex-wrap gap-2">
+          {regions.map((region) => (
+            <Tag
+              key={region}
+              color="#4B4B4B"
+              text={region}
+              selected={formState.selectedRegion === region}
+              handlePress={() => updateFormState("selectedRegion", region)}
+            />
+          ))}
+        </View>
       </View>
 
       {formState.selectedRegion ? (
         <>
           {/* Render Injury Types */}
-          <Text>Injury Type</Text>
-          <View className="flex flex-row flex-wrap gap-2">
-            {Object.keys(
-              injuriesData[formState.selectedRegion]?.injury_types || {}
-            ).map((type) => (
-              <Tag
-                key={type}
-                color="#4B4B4B"
-                text={type}
-                selected={formState.selectedType === type}
-                handlePress={() => updateFormState("selectedType", type)}
-              />
-            ))}
+          <View className="flex flex-col gap-4 mt-4">
+            <Text className="text-white font-medium" style={{ fontSize: 16 }}>
+              Injury Type
+            </Text>
+            <View className="flex flex-row flex-wrap gap-2">
+              {Object.keys(
+                injuriesData[formState.selectedRegion]?.injury_types || {}
+              ).map((type) => (
+                <Tag
+                  key={type}
+                  color="#4B4B4B"
+                  text={type}
+                  selected={formState.selectedType === type}
+                  handlePress={() => updateFormState("selectedType", type)}
+                />
+              ))}
+            </View>
           </View>
 
           {/* Render Injuries under Selected Type */}
           {formState.selectedType && (
             <>
-              <Text>Injuries</Text>
-              <View className="flex flex-row flex-wrap gap-2">
-                {injuriesData[formState.selectedRegion]?.injury_types[
-                  formState.selectedType
-                ]?.map((injury) => (
-                  <Tag
-                    key={injury.name}
-                    color="#4B4B4B"
-                    text={injury.name}
-                    selected={formState.injury === injury.name}
-                    handlePress={() => updateFormState("injury", injury.name)}
-                  />
-                ))}
+              <View className="flex flex-col gap-4 mt-4">
+                <Text
+                  className="text-white font-medium"
+                  style={{ fontSize: 16 }}
+                >
+                  Injuries (
+                  {injuriesData[formState.selectedRegion]?.injury_types[
+                    formState.selectedType
+                  ]?.length || 0}
+                  )
+                </Text>
+                <View className="flex flex-row flex-wrap gap-2">
+                  {injuriesData[formState.selectedRegion]?.injury_types[
+                    formState.selectedType
+                  ]?.map((injury) => (
+                    <InjuryCard
+                      key={injury.name}
+                      injuryName={injury.name}
+                      injuryDescription={injury.description}
+                      backgroundColor="#1D1D1D"
+                    />
+                  ))}
+                </View>
               </View>
             </>
           )}

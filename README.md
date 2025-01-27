@@ -1,4 +1,10 @@
+<div align="center">
+
 # Gametime Rehab
+
+![splash-icon](https://github.com/user-attachments/assets/a7b80130-6504-46a8-b21d-92075613f03f)
+
+</div>
 
 **Gametime Rehab** is a rehabilitation app designed for athletes on the road to recovery. Whether you're recovering from an injury or looking to regain peak performance, Gametime Rehab provides personalized guidance, tracking, and resources to help you get back in the game.
 

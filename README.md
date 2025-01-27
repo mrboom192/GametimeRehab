@@ -16,8 +16,6 @@
 - **Interactive Exercises:** Step-by-step instructions and video demonstrations for rehab routines.
 - **Goal-Oriented Design:** Stay motivated with clear objectives and milestones.
 
-### Features
-
 <table>
   <tr>
     <td align="center">

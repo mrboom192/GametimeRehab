@@ -17,4 +17,18 @@
 - **Goal-Oriented Design:** Stay motivated with clear objectives and milestones.
 
 ### Login Page
-![Trainer create workout](https://github.com/user-attachments/assets/9058a419-4f66-465b-a23f-1d041f278981)
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/9058a419-4f66-465b-a23f-1d041f278981" alt="Trainer create workout" width="200">
+      <br>
+      <b>Trainer Create Workout</b>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/21851a3f-488a-43b1-9847-ec1ad72bebd2" alt="Dashboard" width="200">
+      <br>
+      <b>Dashboard</b>
+    </td>
+  </tr>
+</table>

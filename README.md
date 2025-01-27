@@ -16,7 +16,7 @@
 - **Interactive Exercises:** Step-by-step instructions and video demonstrations for rehab routines.
 - **Goal-Oriented Design:** Stay motivated with clear objectives and milestones.
 
-### Login Page
+### Features
 
 <table>
   <tr>
@@ -30,5 +30,12 @@
       <br>
       <b>Athlete Dashboard</b>
     </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/2f2fd1f5-f298-4c04-b126-d3baf1857bc2" alt="Exercise Creation" width="200">
+      <br>
+      <b>Exercise Creation</b>
+    </td>
   </tr>
 </table>
+
+

@@ -36,4 +36,17 @@
   </tr>
 </table>
 
+## Contributors
+
+We are proud of the talented team behind Gametime Rehab:
+
+- **Mohamed Elgouhari**, *Creator* 
+
+  <div style="height: 10px;"></div>
+
+- **Wissam Saleh**, *Designer*  
+  [Wissam's Website](https://salehxwissam.myportfolio.com/)  
+  <div style="height: 10px;"></div>
+
+- **Jason Nguyen**, *Developer*  
 

@@ -54,8 +54,27 @@ const CreateExerciseForm: React.FC<CreateExerciseFormProps> = ({
     low: 0,
     high: 20,
   });
+
   // Helper function to update state
   const updateFormState = (key: keyof typeof formState, value: any) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
+
+  // Helper function to update tag state
+  const updateInjuryTag = (key: keyof typeof formState, value: any) => {
+    if (key === "selectedRegion") {
+      setFormState((prevState) => ({
+        ...prevState,
+        selectedType: null, // Reset selectedType when region changes
+        [key]: value,
+      }));
+
+      return;
+    }
+
     setFormState((prevState) => ({
       ...prevState,
       [key]: value,
@@ -81,7 +100,7 @@ const CreateExerciseForm: React.FC<CreateExerciseFormProps> = ({
           {"What injury does this treat?"}
         </Text>
       </View>
-      <InjurySelector formState={formState} updateFormState={updateFormState} />
+      <InjurySelector formState={formState} updateInjuryTag={updateInjuryTag} />
     </View>,
   ];
 
@@ -361,12 +380,12 @@ interface FormState {
 
 interface InjurySelectorProps {
   formState: FormState;
-  updateFormState: (key: keyof FormState, value: string) => void;
+  updateInjuryTag: (key: keyof FormState, value: string) => void;
 }
 
 const InjurySelector: React.FC<InjurySelectorProps> = ({
   formState,
-  updateFormState,
+  updateInjuryTag,
 }) => {
   // Cast JSON as Injuries type
   const injuriesData: Injuries = injuries;
@@ -389,7 +408,7 @@ const InjurySelector: React.FC<InjurySelectorProps> = ({
               color="#4B4B4B"
               text={region}
               selected={formState.selectedRegion === region}
-              handlePress={() => updateFormState("selectedRegion", region)}
+              handlePress={() => updateInjuryTag("selectedRegion", region)}
             />
           ))}
         </View>
@@ -411,7 +430,7 @@ const InjurySelector: React.FC<InjurySelectorProps> = ({
                   color="#4B4B4B"
                   text={type}
                   selected={formState.selectedType === type}
-                  handlePress={() => updateFormState("selectedType", type)}
+                  handlePress={() => updateInjuryTag("selectedType", type)}
                 />
               ))}
             </View>

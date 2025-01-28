@@ -13,7 +13,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 
   return (
     <View
-      className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex-row justify-between items-center bg-white p-4 gap-4 rounded-2xl"
+      className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex-row justify-between items-center bg-white p-4 gap-8 rounded-2xl"
       style={{
         shadowColor: "#000",
         shadowOffset: { width: 2, height: 4 },

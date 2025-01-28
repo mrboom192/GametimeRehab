@@ -23,7 +23,7 @@ const TabBarButton = ({
       <PlatformPressable
         onPress={onPress}
         onLongPress={onLongPress}
-        className="flex justify-center items-center gap-1 p-2 rounded-lg"
+        className="flex justify-center items-center gap-1 p-4 rounded-lg"
         style={{ backgroundColor: isFocused ? "#222" : "transparent" }}
       >
         {icon[routeName]({ color })}

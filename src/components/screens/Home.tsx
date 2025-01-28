@@ -1,5 +1,4 @@
 import { View, Text, Button, SafeAreaView } from "react-native";
-import auth from "@react-native-firebase/auth";
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AchievementsCard from "@/src/components/AchievementsCard";
@@ -7,12 +6,10 @@ import { useUser } from "@/src/contexts/UserContext";
 import NavigateButton from "@/src/components/buttons/NavigateButton";
 import AthleteDashboard from "@/src/components/AthleteDashboard";
 import TrainerAthletes from "../TrainerAthletes";
-import PairForm from "../PairForm";
 import PendingAthleteRequests from "../PendingPairRequests";
 import { useSession } from "@/src/contexts/AuthContext";
 
 export default function Home() {
-  const { signOut } = useSession();
   const { userInfo } = useUser();
 
   return (
@@ -30,15 +27,6 @@ export default function Home() {
       ) : (
         <></>
       )}
-
-      {userInfo?.type === "athlete" ? (
-        <>
-          <PairForm />
-        </>
-      ) : (
-        <></>
-      )}
-
       {/* Progress button */}
       <View className="flex justify-between items-end">
         <NavigateButton
@@ -49,7 +37,6 @@ export default function Home() {
         />
       </View>
       <AchievementsCard />
-      <Button title="Sign out" onPress={() => signOut()} />
 
       {/* Exercises button */}
       <View className="flex justify-between items-end">

@@ -1,4 +1,3 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import GametimeIcons from "../components/icons/GametimeIcons";
 
 type IconRenderProps = { color?: string; size?: number };
@@ -13,7 +12,7 @@ export const icon: any = {
   progress: (props: IconRenderProps) => (
     <GametimeIcons name="BarChartIcon" size={24} {...props} />
   ),
-  assigned: (props: IconRenderProps) => (
-    <GametimeIcons name="BarChartIcon" size={24} {...props} />
+  profile: (props: IconRenderProps) => (
+    <GametimeIcons name="UserOutline" size={24} {...props} />
   ),
 };

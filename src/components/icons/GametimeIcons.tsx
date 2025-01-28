@@ -3,12 +3,14 @@ import BarChartIcon from "./BarChartIcon"; // Adjust the import path as necessar
 import GraphArrowIncrease from "./GraphArrowIncrease";
 import Home from "./Home";
 import RoutinesGroup from "./RoutinesGroup";
+import UserOutline from "./UserOutline";
 
 const iconMap = {
   BarChartIcon,
   GraphArrowIncrease,
   Home,
   RoutinesGroup,
+  UserOutline,
 };
 
 type GametimeIconProps = {

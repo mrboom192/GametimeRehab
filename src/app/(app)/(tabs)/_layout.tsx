@@ -1,4 +1,4 @@
-import { TabBar } from "@/src/components/TabBar";
+import { TabBar } from "@/src/components/TabBar/TabBar";
 import { Tabs } from "expo-router";
 
 export default function TabLayout() {
@@ -12,7 +12,14 @@ export default function TabLayout() {
         name="routines"
         options={{ title: "Routines", headerShown: false }}
       />
-      <Tabs.Screen name="progress" options={{ title: "Progress" }} />
+      <Tabs.Screen
+        name="progress"
+        options={{ title: "Progress", headerShown: false }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{ title: "Profile", headerShown: false }}
+      />
     </Tabs>
   );
 }

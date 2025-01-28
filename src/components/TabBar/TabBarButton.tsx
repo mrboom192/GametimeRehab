@@ -1,7 +1,7 @@
 import { GestureResponderEvent, View } from "react-native";
 import React from "react";
 import { Text, PlatformPressable } from "@react-navigation/elements";
-import { icon } from "../constants/icon";
+import { icon } from "../../constants/icon";
 
 const TabBarButton = ({
   onPress,

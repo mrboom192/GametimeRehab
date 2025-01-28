@@ -1,19 +1,16 @@
 import React from "react";
-import { Svg, Path } from "react-native-svg";
+import Svg, { Path } from "react-native-svg";
+import { IconProps } from "@/src/types/utils";
 
-interface IconProps {
-  color: string;
-}
-
-const Home: React.FC<IconProps> = ({ color = "#FFF" }) => {
+const Home: React.FC<IconProps> = ({ size = 20, color = "#2C2C2C" }) => {
   return (
-    <Svg width="41" height="40" viewBox="0 0 41 40" fill="none">
+    <Svg width={size} height={size} viewBox="0 0 19 21" fill="none">
       <Path
-        d="M17.9 28.5V19.5H23.3V28.5M12.5 16.8L20.6 10.5L28.7 16.8V26.7C28.7 27.1774 28.5104 27.6352 28.1728 27.9728C27.8352 28.3104 27.3774 28.5 26.9 28.5H14.3C13.8226 28.5 13.3648 28.3104 13.0272 27.9728C12.6896 27.6352 12.5 27.1774 12.5 26.7V16.8Z"
-        stroke={color}
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        d="M6.9 19.5V10.5H12.3V19.5M1.5 7.8L9.6 1.5L17.7 7.8V17.7C17.7 18.1774 17.5104 18.6352 17.1728 18.9728C16.8352 19.3104 16.3774 19.5 15.9 19.5H3.3C2.82261 19.5 2.36477 19.3104 2.02721 18.9728C1.68964 18.6352 1.5 18.1774 1.5 17.7V7.8Z"
+        stroke={color} // Use color prop here
+        strokeWidth="1.5" // Correct prop casing
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </Svg>
   );

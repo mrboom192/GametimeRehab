@@ -1,12 +1,12 @@
-import { View, Text, Button, Pressable } from "react-native";
+import { View, Text } from "react-native";
 import React from "react";
 import { format } from "date-fns";
-import More2 from "./icons/More2";
 import MoreHorizontal from "./icons/MoreHorizontal";
 import Tag from "./Tag";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import IconButton from "./buttons/IconButton";
 import NavigateButton from "./buttons/NavigateButton";
+import GametimeIcons from "./icons/GametimeIcons";
 
 // For future
 const difficultyMap = { 1: "Easy", 2: "Medium", 3: "Hard" };
@@ -45,7 +45,7 @@ const RoutineCard: React.FC<RoutineCardProps> = ({
     <View className="inline-flex w-[400px] p-3.5 justify-start items-start gap-2 rounded-lg bg-[#2C2C2C]">
       {/* Routine header */}
       <View className="flex flex-row items-center justify-between gap-2 self-stretch">
-        <More2 />
+        <GametimeIcons name="RoutinesGroup" color="#FFF" size={24} />
         <Text
           className="text-white flex flex-1 text-lg font-semibold"
           numberOfLines={2}
@@ -53,7 +53,7 @@ const RoutineCard: React.FC<RoutineCardProps> = ({
         >
           {truncateString(routineName, 36)}
         </Text>
-        <IconButton icon={<MoreHorizontal />} href="/assigned-exercises" />
+        <IconButton icon={<MoreHorizontal />} href="/routines/assigned" />
       </View>
 
       {/* Routine details */}
@@ -91,7 +91,7 @@ const RoutineCard: React.FC<RoutineCardProps> = ({
         ) : (
           <IconButton
             icon={<Ionicons name="chevron-forward" size={16} color="#FFF" />}
-            href="/assigned-exercises"
+            href="/routines/assigned"
           />
         )}
       </View>
@@ -99,7 +99,7 @@ const RoutineCard: React.FC<RoutineCardProps> = ({
       {completed ? (
         <View className="flex self-stretch mt-4">
           <NavigateButton
-            href="/assigned-exercises"
+            href="/routines/assigned"
             title="review post session survey"
             theme="light"
             handleSubmit={handleSurveyPress}

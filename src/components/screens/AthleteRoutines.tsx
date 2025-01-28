@@ -8,7 +8,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import CreateNewRoutineButton from "../CreateNewRoutineButton";
-import { Tabs } from "expo-router";
+import { Stack } from "expo-router";
 
 // Experimental
 
@@ -164,7 +164,7 @@ const AthleteRoutines = () => {
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <Tabs.Screen
+      <Stack.Screen
         options={{
           headerStyle: {
             backgroundColor: "#FFF",
@@ -176,7 +176,7 @@ const AthleteRoutines = () => {
           headerRight: (props) => (
             <View className="mr-5">
               <NavigateButton
-                href="/assigned-exercises"
+                href="/routines/assigned"
                 title="view all"
                 rightIcon={
                   <Ionicons name="chevron-forward" size={16} color="#2C2C2C" />
@@ -196,7 +196,7 @@ const AthleteRoutines = () => {
           {/* <View className="flex flex-row justify-between items-center self-stretch">
             <Text className="text-[#2C2C2C] text-4xl">Assigned Routines</Text>
             <NavigateButton
-              href="/assigned-exercises"
+              href="/assigned"
               title="view all"
               rightIcon={
                 <Ionicons name="chevron-forward" size={16} color="#2C2C2C" />
@@ -232,7 +232,7 @@ const AthleteRoutines = () => {
           <View className="flex flex-row justify-between items-center self-stretch">
             <Text className="text-[#2C2C2C] text-4xl">Completed</Text>
             <NavigateButton
-              href="/assigned-exercises"
+              href="/routines/assigned"
               title="view all"
               rightIcon={
                 <Ionicons name="chevron-forward" size={16} color="#2C2C2C" />

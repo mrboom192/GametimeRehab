@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, FlatList } from "react-native";
 import React, { useState } from "react";
-import { Tabs } from "expo-router";
+import { Stack, Tabs } from "expo-router";
 import { Calendar } from "react-native-calendars";
 import AchievementsCard from "@/src/components/AchievementsCard";
 import RecoveryProgressBar from "@/src/components/RecoveryProgressBar";
@@ -76,7 +76,7 @@ const RoutineLibrary = () => {
       style={{ flex: 1 }}
       //   contentContainerClassName="flex-col bg-white p-5 gap-8"
     >
-      <Tabs.Screen
+      <Stack.Screen
         options={{
           headerStyle: {
             backgroundColor: "#FFF",
@@ -97,7 +97,7 @@ const RoutineLibrary = () => {
           <View className="flex flex-row justify-between items-center self-stretch">
             <Text className="text-[#2C2C2C] text-2xl">Recently Assigned</Text>
             <NavigateButton
-              href="/assigned-exercises"
+              href="/routines/assigned"
               title="view all"
               rightIcon={
                 <Ionicons name="chevron-forward" size={16} color="#2C2C2C" />

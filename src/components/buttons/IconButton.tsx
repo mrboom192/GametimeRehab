@@ -23,7 +23,6 @@ const IconButton: React.FC<IconButtonProps> = ({
   const isDarkTheme = theme === "dark";
   const isLightTheme = theme === "light";
 
-  const baseStyle = `w-6 h-6 justify-center flex-row items-center gap-2 rounded-lg overflow-hidden`;
   const textStyle = disabled
     ? "text-gray-400" // Disabled text color
     : isDarkTheme
@@ -47,14 +46,14 @@ const IconButton: React.FC<IconButtonProps> = ({
   };
 
   return href ? (
-    <View className={baseStyle}>
+    <View className="w-6 h-6 justify-center flex-row items-center gap-2 rounded-lg overflow-hidden">
       <Link href={href} asChild>
         <Pressable
           android_ripple={{
             color: rippleColor,
             borderless: false,
           }}
-          className={`${baseStyle} ${textStyle}`}
+          className={`w-6 h-6 justify-center flex-row items-center gap-2 rounded-lg overflow-hidden ${textStyle}`}
           accessibilityLabel={title}
           onPress={handleButtonPress}
           disabled={disabled}
@@ -64,13 +63,13 @@ const IconButton: React.FC<IconButtonProps> = ({
       </Link>
     </View>
   ) : (
-    <View className={baseStyle}>
+    <View className="w-6 h-6 justify-center flex-row items-center gap-2 rounded-lg overflow-hidden">
       <Pressable
         android_ripple={{
           color: rippleColor,
           borderless: false,
         }}
-        className={`${baseStyle} ${textStyle}`}
+        className={`w-6 h-6 justify-center flex-row items-center gap-2 rounded-lg overflow-hidden ${textStyle}`}
         accessibilityLabel={title}
         onPress={handleButtonPress}
         disabled={disabled}

@@ -3,6 +3,7 @@ import React from "react";
 import BarChartIcon from "./icons/BarChartIcon";
 import MiniFlame from "./icons/MiniFlame";
 import SummaryCard from "./SummaryCard";
+import GametimeIcons from "./icons/GametimeIcons";
 
 interface AthleteDashboardProps {
   firstName: string;
@@ -33,7 +34,9 @@ const AthleteDashboard: React.FC<AthleteDashboardProps> = ({ firstName }) => {
               </Text>
             </View>
           }
-          leftIcon={<BarChartIcon color="#2C2C2C" />}
+          leftIcon={
+            <GametimeIcons size={12} color="#2C2C2C" name="BarChartIcon" />
+          }
           note="Ahead of pace"
         />
         <SummaryCard

@@ -11,7 +11,7 @@ const CreateNewRoutineButton = () => {
       <Text className="text-white text-2xl">Create new routine</Text>
       <Ionicons name="add" size={24} color="#FFF" />
       <View className="w-1/2">
-        <NavigateButton href="/routine-library" title="create" theme="light" />
+        <NavigateButton href="/routines/create" title="create" theme="light" />
       </View>
     </View>
   );

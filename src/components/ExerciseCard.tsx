@@ -1,7 +1,6 @@
 import { View, Text } from "react-native";
 import React from "react";
 import Weight from "./icons/Weight";
-import More2 from "./icons/More2";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import IconButton from "./buttons/IconButton";
 

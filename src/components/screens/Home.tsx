@@ -54,7 +54,7 @@ export default function Home() {
       {/* Exercises button */}
       <View className="flex justify-between items-end">
         <NavigateButton
-          href="/assigned-exercises"
+          href="/routines/assigned"
           title="exercises"
           rightIcon={<Ionicons name="chevron-forward" size={16} color="#FFF" />}
           theme="dark"

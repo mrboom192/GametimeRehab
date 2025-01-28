@@ -5,6 +5,7 @@ const InjuryCard = ({
   injuryName = "Injury Placeholder Name",
   injuryDescription = "Injury Description Placeholder",
   backgroundColor = "#2C2C2C",
+  checked = false,
 }) => {
   return (
     <View
@@ -14,10 +15,12 @@ const InjuryCard = ({
       }}
     >
       <View className="flex flex-row items-center justify-between gap-2 self-stretch mb-2">
-        <View className="flex flex-row gap-2 items-center">
+        <View className="flex flex-row self-stretch gap-2 items-center">
           <Text className="text-white font-semibold" ellipsizeMode="tail">
             {injuryName}
           </Text>
+
+          <Text>ONE RN</Text>
         </View>
       </View>
       <View className="flex flex-col mb-2">

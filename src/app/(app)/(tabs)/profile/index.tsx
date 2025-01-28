@@ -16,6 +16,7 @@ const Profile = () => {
     <ScrollView
       style={{ flex: 1 }}
       contentContainerClassName="flex-col bg-white p-5 gap-8"
+      overScrollMode="never" // android only
     >
       <Tabs.Screen
         options={{

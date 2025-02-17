@@ -16,7 +16,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.GametimeRehab",
-      "googleServicesFile": "firebase/ios/GoogleService-Info.plist"
+      "googleServicesFile": "GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +24,7 @@
         "backgroundColor": "#FFF"
       },
       "package": "com.anonymous.GametimeRehab",
-      "googleServicesFile": "./firebase/android/google-services.json"
+      "googleServicesFile": "google-services.json"
     },
     "androidStatusBar": {
       "translucent": true

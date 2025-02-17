@@ -1,4 +1,4 @@
-# Build instructions
+# Build Instructions
 
 ## 📌 Prerequisites
 
@@ -6,29 +6,82 @@
   ```sh
   npm install
   ```
-- Download google-services.json (Android) and GoogleService-Info.plist (iOS) from the Firebase console.
+- Download **google-services.json** (Android) and **GoogleService-Info.plist** (iOS) from the Firebase console.
 
-## iOS/Android Build
+---
 
-### Running the Native App
+## 🚀 iOS/Android Build
 
-- iOS: `npx expo run:ios`
-  - Xcode must be installed for this to run.
-    - A simulator must be preconfigured in Xcode settings.
-      - if no iOS versions are available, install the iOS runtime at `Xcode > Settings > Platforms`.
-      - if the simulator download keeps failing you can download it from the developer website.
-        - [Apple Developer](https://developer.apple.com/download/all/?q=Simulator%20Runtime)
-        - `xcode-select -s /Applications/Xcode.app`
-        - `xcodebuild -runFirstLaunch`
-        - `xcrun simctl runtime add "~/Downloads/iOS_17.4_Simulator_Runtime.dmg"` (adapt the path to the downloaded file)
-    - In addition, ensure Xcode Command Line Tools are installed using `xcode-select --install`.
-  - Expo will require you to configure Xcode Signing. Follow the linked instructions. Error messages in Xcode related to the signing process can be safely ignored when installing on the iOS Simulator; Expo merely requires the profile to exist in order to install the app on the Simulator.
-    - Make sure you do have a certificate: open Xcode > Settings > Accounts > (sign-in) > Manage Certificates > + > Apple Development > Done.
-    - If you still encounter issues, try `rm -rf ios` before trying to build again (`yarn ios`)
-- Android: `npx expo run:android`
-  - Install "Android Studio"
-    - Make sure you have the Android SDK installed (Android Studio > Tools > Android SDK).
-      - In "SDK Platforms": "Android x" (where x is Android's current version).
-      - In "SDK Tools": "Android SDK Build-Tools" and "Android Emulator" are required.
-      - Add `export ANDROID_HOME=/Users/<your_username>/Library/Android/sdk` to your `.zshrc` or `.bashrc` (and restart your terminal).
-    - Setup an emulator (Android Studio > Tools > Device Manager).
+### **Prebuild Native Code (Required for Development Builds)**
+
+```sh
+npx expo prebuild
+```
+
+This updates the native code in the `ios/` and `android/` directories.
+
+---
+
+### **📱 iOS: Install Pods & Run App**
+
+```sh
+cd ios && pod install && cd ..
+npx expo run:ios
+```
+
+- **Xcode must be installed**.
+- **Simulator Setup in Xcode**:
+  - Open **Xcode > Settings > Platforms**, and ensure **iOS Simulator Runtime** is installed.
+  - If the simulator download fails, you can download it manually from:
+    - [Apple Developer](https://developer.apple.com/download/all/?q=Simulator%20Runtime)
+  - Run the following commands to install a downloaded simulator manually:
+    ```sh
+    xcode-select -s /Applications/Xcode.app
+    xcodebuild -runFirstLaunch
+    xcrun simctl runtime add "~/Downloads/iOS_17.4_Simulator_Runtime.dmg"
+    ```
+    _(Modify the path to match the downloaded file location.)_
+- **Install Xcode Command Line Tools**:
+  ```sh
+  xcode-select --install
+  ```
+- **Xcode Signing Setup (Required by Expo)**
+  - Open **Xcode > Settings > Accounts**.
+  - Sign in and navigate to **Manage Certificates**.
+  - Click **+** → Select **Apple Development** → Click **Done**.
+  - If signing issues persist, try removing and rebuilding iOS:
+    ```sh
+    rm -rf ios && npm run ios
+    ```
+
+---
+
+### **🤖 Android: Run App**
+
+```sh
+npx expo run:android
+```
+
+- **Install Android Studio**.
+- **Set Up the Android SDK**:
+  - Open **Android Studio > Tools > SDK Manager**.
+  - **SDK Platforms**:
+    - Install the latest **Android X** version.
+  - **SDK Tools**:
+    - Ensure **Android SDK Build-Tools** and **Android Emulator** are installed.
+- **Set Up Environment Variables**:
+  - Add the following lines to **\~/.zshrc** (if using Zsh) or **\~/.bashrc** (if using Bash):
+    ```sh
+    export ANDROID_HOME=$HOME/Library/Android/sdk
+    export PATH=$PATH:$ANDROID_HOME/emulator
+    export PATH=$PATH:$ANDROID_HOME/platform-tools
+    ```
+  - Restart your terminal:
+    ```sh
+    source ~/.zshrc  # Or source ~/.bashrc
+    ```
+- **Set Up an Emulator**:
+  - Open **Android Studio > Tools > Device Manager**.
+  - Create and configure an emulator.
+
+---

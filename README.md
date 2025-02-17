@@ -36,17 +36,20 @@
   </tr>
 </table>
 
+## 📦 Build Instructions
+
+To set up Gametime Rehab, see the build guide here: [Build Instructions](docs/build.md)
+
 ## Contributors
 
 We are proud of the talented team behind Gametime Rehab:
 
-- **Mohamed Elgouhari**, *Creator* 
+- **Mohamed Elgouhari**, _Creator_
 
   <div style="height: 10px;"></div>
 
-- **Wissam Saleh**, *Designer*  
-  [Wissam's Website](https://salehxwissam.myportfolio.com/)  
+- **Wissam Saleh**, _Designer_  
+  [Wissam's Website](https://salehxwissam.myportfolio.com/)
   <div style="height: 10px;"></div>
 
-- **Jason Nguyen**, *Developer*  
-
+- **Jason Nguyen**, _Developer_

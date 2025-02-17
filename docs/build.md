@@ -1,7 +1,5 @@
 # Build instructions
 
-# Build Instructions
-
 ## 📌 Prerequisites
 
 - Run:

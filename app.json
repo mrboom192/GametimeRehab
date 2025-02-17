@@ -15,7 +15,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.GametimeRehab"
+      "bundleIdentifier": "com.anonymous.GametimeRehab",
+      "googleServicesFile": "firebase/ios/GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {

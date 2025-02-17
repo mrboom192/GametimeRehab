@@ -1,11 +1,14 @@
 import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 export default function ProgressLayout() {
   return (
-    <Stack
-      screenOptions={{ navigationBarColor: "#FFF", statusBarStyle: "dark" }}
-    >
-      <Stack.Screen name="index" />
-    </Stack>
+    <>
+      <StatusBar style="dark" backgroundColor="#FFF" />
+
+      <Stack screenOptions={{ navigationBarColor: "#FFF" }}>
+        <Stack.Screen name="index" />
+      </Stack>
+    </>
   );
 }

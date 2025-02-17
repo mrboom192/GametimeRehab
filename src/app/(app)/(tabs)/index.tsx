@@ -17,7 +17,6 @@ export default function Index() {
     );
   }
 
-  // Need to fix status bar color
   return (
     <>
       <Tabs.Screen

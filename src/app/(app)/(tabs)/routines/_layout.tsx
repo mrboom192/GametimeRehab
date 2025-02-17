@@ -1,13 +1,16 @@
 import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 export default function AssignedLayout() {
   return (
-    <Stack
-      screenOptions={{ navigationBarColor: "#FFF", statusBarStyle: "dark" }}
-    >
-      <Stack.Screen name="index" />
-      <Stack.Screen name="assigned" />
-      <Stack.Screen name="create" />
-    </Stack>
+    <>
+      <StatusBar style="dark" backgroundColor="#FFF" />
+
+      <Stack screenOptions={{ navigationBarColor: "#FFF" }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="assigned" />
+        <Stack.Screen name="create" />
+      </Stack>
+    </>
   );
 }

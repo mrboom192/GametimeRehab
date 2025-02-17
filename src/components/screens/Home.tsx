@@ -13,39 +13,45 @@ export default function Home() {
   const { userInfo } = useUser();
 
   return (
-    <SafeAreaView className="flex-1 flex-col bg-white p-5 gap-4">
+    <SafeAreaView className="flex-1 bg-white ">
       <View className="absolute -top-[45%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#FBF7F5] rounded-full" />
 
-      <AthleteDashboard firstName={userInfo?.first_name} />
+      <View className="flex-1 flex-col p-5 gap-4">
+        <AthleteDashboard firstName={userInfo?.first_name} />
 
-      {userInfo?.type === "trainer" ? (
-        <>
-          <Text>Trainer code: {userInfo.trainer_code}</Text>
-          <TrainerAthletes trainerUid={userInfo.uid} />
-          <PendingAthleteRequests trainerUid={userInfo.uid} />
-        </>
-      ) : (
-        <></>
-      )}
-      {/* Progress button */}
-      <View className="flex justify-between items-end">
-        <NavigateButton
-          href="/progress"
-          title="view progress"
-          rightIcon={<Ionicons name="chevron-forward" size={16} color="#FFF" />}
-          theme="dark"
-        />
-      </View>
-      <AchievementsCard />
+        {userInfo?.type === "trainer" ? (
+          <>
+            <Text>Trainer code: {userInfo.trainer_code}</Text>
+            <TrainerAthletes trainerUid={userInfo.uid} />
+            <PendingAthleteRequests trainerUid={userInfo.uid} />
+          </>
+        ) : (
+          <></>
+        )}
+        {/* Progress button */}
+        <View className="flex justify-between items-end">
+          <NavigateButton
+            href="/progress"
+            title="view progress"
+            rightIcon={
+              <Ionicons name="chevron-forward" size={16} color="#FFF" />
+            }
+            theme="dark"
+          />
+        </View>
+        <AchievementsCard />
 
-      {/* Exercises button */}
-      <View className="flex justify-between items-end">
-        <NavigateButton
-          href="/routines/assigned"
-          title="exercises"
-          rightIcon={<Ionicons name="chevron-forward" size={16} color="#FFF" />}
-          theme="dark"
-        />
+        {/* Exercises button */}
+        <View className="flex justify-between items-end">
+          <NavigateButton
+            href="/routines/assigned"
+            title="exercises"
+            rightIcon={
+              <Ionicons name="chevron-forward" size={16} color="#FFF" />
+            }
+            theme="dark"
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

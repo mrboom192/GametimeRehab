@@ -1,8 +1,7 @@
 import { Text } from "react-native";
 import { Redirect, Stack } from "expo-router";
-
 import { useSession } from "@/src/contexts/AuthContext";
-import { useEffect } from "react";
+import { StatusBar } from "expo-status-bar";
 
 export default function AppLayout() {
   const { session, isLoading } = useSession();
@@ -22,10 +21,12 @@ export default function AppLayout() {
 
   // This layout can be deferred because it's not the root layout.
   return (
-    <Stack
-      screenOptions={{ navigationBarColor: "#FFF", statusBarStyle: "dark" }}
-    >
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <>
+      <StatusBar style="dark" backgroundColor="#FFF" />
+
+      <Stack screenOptions={{ navigationBarColor: "#FFF" }}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+    </>
   );
 }

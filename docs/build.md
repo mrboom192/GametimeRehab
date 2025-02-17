@@ -6,7 +6,7 @@
   ```sh
   npm install
   ```
-- Download **google-services.json** (Android) and **GoogleService-Info.plist** (iOS) from the Firebase console.
+- Download **google-services.json** (Android) and **GoogleService-Info.plist** (iOS) from the Firebase console and place them in the project root directory.
 
 ---
 

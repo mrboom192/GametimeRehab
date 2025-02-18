@@ -7,7 +7,6 @@ import NavigateButton from "@/src/components/buttons/NavigateButton";
 import AthleteDashboard from "@/src/components/AthleteDashboard";
 import TrainerAthletes from "../TrainerAthletes";
 import PendingAthleteRequests from "../PendingPairRequests";
-import { useSession } from "@/src/contexts/AuthContext";
 
 export default function Home() {
   const { userInfo } = useUser();

@@ -1,13 +1,13 @@
 import React from "react";
-import { ActivityIndicator, View, Text } from "react-native";
+import { ActivityIndicator, View, Text, Button } from "react-native";
 import Home from "../../../components/screens/Home";
 import { useUser } from "../../../contexts/UserContext"; // Import UserContext
-import { Stack, Tabs } from "expo-router";
+import { Tabs } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { StatusBar } from "expo-status-bar";
 
 export default function Index() {
-  const { user, userInfo, loading, initializing } = useUser(); // Assume useUser provides a loading state
+  const { userInfo, loading, initializing } = useUser(); // Assume useUser provides a loading state
 
   if (loading || initializing) {
     return (

@@ -25,7 +25,7 @@ This updates the native code in the `ios/` and `android/` directories.
 ### **📱 iOS: Install Pods & Run App**
 
 ```sh
-cd ios && pod install && cd ..
+npx pod-install
 npx expo run:ios
 ```
 

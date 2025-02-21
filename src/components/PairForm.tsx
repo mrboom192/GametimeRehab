@@ -1,7 +1,16 @@
-import { View, Text, Pressable, Alert } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React, { useState } from "react";
 import LabeledInput from "./LabeledInput";
-import firestore from "@react-native-firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
+import { db } from "@/firebaseConfig";
 import { useUser } from "../contexts/UserContext";
 
 const PairForm = () => {
@@ -29,30 +38,29 @@ const PairForm = () => {
       }
 
       // Find the trainer with the entered code
-      const trainerQuery = await firestore()
-        .collection("users")
-        .where("type", "==", "trainer")
-        .where("trainer_code", "==", code)
-        .get();
+      const trainerQuery = query(
+        collection(db, "users"),
+        where("type", "==", "trainer"),
+        where("trainer_code", "==", code)
+      );
 
-      if (trainerQuery.empty) {
+      const trainerSnapshot = await getDocs(trainerQuery);
+
+      if (trainerSnapshot.empty) {
         setError("No trainer found with this code.");
         setLoading(false);
         return;
       }
 
-      const trainerDoc = trainerQuery.docs[0];
+      const trainerDoc = trainerSnapshot.docs[0];
       const trainerData = trainerDoc.data();
 
       console.log(trainerData);
 
       // Add the current user's UID to the trainer's pending_requests
-      await firestore()
-        .collection("users")
-        .doc(trainerDoc.id)
-        .update({
-          pending_requests: firestore.FieldValue.arrayUnion(user.uid),
-        });
+      await updateDoc(doc(db, "users", trainerDoc.id), {
+        pending_requests: arrayUnion(user.uid),
+      });
 
       setSuccess(
         `Your pairing request has been sent to ${

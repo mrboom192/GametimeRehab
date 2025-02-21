@@ -7,7 +7,19 @@ import {
   Button,
   Alert,
 } from "react-native";
-import firestore from "@react-native-firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  arrayRemove,
+  arrayUnion,
+  writeBatch,
+} from "firebase/firestore";
+import { auth, db } from "@/firebaseConfig";
 
 interface PendingAthleteRequestsProps {
   trainerUid: string; // Pass the trainer's UID as a prop
@@ -28,12 +40,10 @@ const PendingAthleteRequests: React.FC<PendingAthleteRequestsProps> = ({
         setError(null);
 
         // Fetch trainer's document
-        const trainerDoc = await firestore()
-          .collection("users")
-          .doc(trainerUid)
-          .get();
+        const trainerDocRef = doc(db, "users", trainerUid);
+        const trainerDoc = await getDoc(trainerDocRef);
 
-        if (!trainerDoc.exists) {
+        if (!trainerDoc.exists()) {
           setError("Trainer not found.");
           setLoading(false);
           return;
@@ -45,11 +55,11 @@ const PendingAthleteRequests: React.FC<PendingAthleteRequestsProps> = ({
         // Fetch details for each athlete in `pendingRequests`
         const athletesData = await Promise.all(
           pendingRequests.map(async (athleteUid: string) => {
-            const athleteDoc = await firestore()
-              .collection("users")
-              .doc(athleteUid)
-              .get();
-            return athleteDoc.exists ? athleteDoc.data() : null;
+            const athleteDocRef = doc(db, "users", athleteUid);
+            const athleteDoc = await getDoc(athleteDocRef);
+            return athleteDoc.exists()
+              ? { uid: athleteUid, ...athleteDoc.data() }
+              : null;
           })
         );
 
@@ -70,16 +80,16 @@ const PendingAthleteRequests: React.FC<PendingAthleteRequestsProps> = ({
     try {
       setLoading(true);
 
-      const trainerRef = firestore().collection("users").doc(trainerUid);
-      const athleteRef = firestore().collection("users").doc(athleteUid);
+      const trainerRef = doc(db, "users", trainerUid);
+      const athleteRef = doc(db, "users", athleteUid);
 
       // Use Firestore batch to atomically update both trainer and athlete documents
-      const batch = firestore().batch();
+      const batch = writeBatch(db);
 
       // Remove athlete from `pendingRequests` and add to `athleteIds`
       batch.update(trainerRef, {
-        pending_requests: firestore.FieldValue.arrayRemove(athleteUid),
-        athlete_ids: firestore.FieldValue.arrayUnion(athleteUid),
+        pending_requests: arrayRemove(athleteUid),
+        athlete_ids: arrayUnion(athleteUid),
       });
 
       // Update athlete's `trainerId`
@@ -106,11 +116,11 @@ const PendingAthleteRequests: React.FC<PendingAthleteRequestsProps> = ({
     try {
       setLoading(true);
 
-      const trainerRef = firestore().collection("users").doc(trainerUid);
+      const trainerRef = doc(db, "users", trainerUid);
 
       // Remove athlete from `pendingRequests`
-      await trainerRef.update({
-        pending_requests: firestore.FieldValue.arrayRemove(athleteUid),
+      await updateDoc(trainerRef, {
+        pending_requests: arrayRemove(athleteUid),
       });
 
       Alert.alert("Success", "Athlete has been rejected.");

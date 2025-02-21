@@ -1,5 +1,6 @@
-import { usePathname, useRouter, useSegments } from "expo-router"; // Ensure these are correctly imported
-import firestore from "@react-native-firebase/firestore";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "@/firebaseConfig";
 import React, {
   createContext,
   useContext,
@@ -7,11 +8,10 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 // Define types for user information (user context)
 interface UserContextType {
-  user: any;
+  user: User | null;
   userInfo: any | null; // Can be null if user info is not available
   setUserInfo: React.Dispatch<React.SetStateAction<any | null>>; // Function to update the user info
   loading: boolean; // To track if user data is being fetched
@@ -26,18 +26,17 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<any | null>(null);
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   // On authentication state change (user sign-in/sign-out)
-  const onAuthStateChanged = (user: FirebaseAuthTypes.User | null) => {
-    console.log("onAuthStateChanged", user);
-    setUser(user);
-    if (initializing) setInitializing(false);
-  };
-
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return () => subscriber(); // Cleanup on unmount
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log("onAuthStateChanged", user);
+      setUser(user);
+      if (initializing) setInitializing(false);
+    });
+
+    return () => unsubscribe(); // Cleanup on unmount
   }, []);
 
   // Fetch user info if user is authenticated
@@ -51,13 +50,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     setError(null); // Reset any previous errors
     try {
-      const userDoc = await firestore()
-        .collection("users")
-        .doc(user?.uid) // Use UID to get the correct user document
-        .get();
+      if (!user) return;
 
-      if (userDoc.exists) {
-        setUserInfo(userDoc.data() as any); // Ensure data is correctly typed
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (userDoc.exists()) {
+        setUserInfo(userDoc.data()); // Ensure data is correctly typed
       } else {
         setUserInfo(null);
         setError("No user information found.");

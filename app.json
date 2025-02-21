@@ -15,16 +15,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.GametimeRehab",
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "bundleIdentifier": "com.anonymous.GametimeRehab"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFF"
       },
-      "package": "com.anonymous.GametimeRehab",
-      "googleServicesFile": "./google-services.json"
+      "package": "com.anonymous.GametimeRehab"
     },
     "androidStatusBar": {
       "translucent": true
@@ -56,8 +54,6 @@
           }
         }
       ],
-      "@react-native-firebase/app",
-      "@react-native-firebase/auth",
       "expo-secure-store"
     ],
     "experiments": {

@@ -1,9 +1,10 @@
 import { View, Text, Pressable, ActivityIndicator } from "react-native";
 import React, { useState } from "react";
+
+import { serverTimestamp } from "firebase/firestore";
+
 import { useSignup } from "@/src/contexts/SignupContext";
-import { useRouter } from "expo-router"; // Corrected router import
 import Questionnaire from "@/src/components/Questionnaire";
-import firestore from "@react-native-firebase/firestore";
 import { useSession } from "@/src/contexts/AuthContext";
 
 export default function TrainerSurvey4() {
@@ -36,7 +37,7 @@ export default function TrainerSurvey4() {
       sport: signupData.sport,
       position: signupData.position,
 
-      createdAt: firestore.FieldValue.serverTimestamp(), // Timestamp of registration
+      createdAt: serverTimestamp(), // Timestamp of registration
 
       // Trainer specific data below
       athlete_count: signupData.athlete_count,

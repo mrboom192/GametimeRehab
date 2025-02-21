@@ -1,8 +1,10 @@
 import { View, Text, Pressable, ActivityIndicator } from "react-native";
 import React, { useState } from "react";
+
+import { serverTimestamp } from "firebase/firestore";
+
 import { useSignup } from "@/src/contexts/SignupContext";
 import Questionnaire from "@/src/components/Questionnaire";
-import firestore from "@react-native-firebase/firestore";
 import { useSession } from "@/src/contexts/AuthContext";
 
 export default function AthleteSurvey4() {
@@ -23,7 +25,7 @@ export default function AthleteSurvey4() {
       sport: signupData.sport,
       position: signupData.position,
 
-      createdAt: firestore.FieldValue.serverTimestamp(), // Timestamp of registration
+      createdAt: serverTimestamp(), // Timestamp of registration
 
       // Athlete specific data below
       system_of_measurement: signupData.system_of_measurement,

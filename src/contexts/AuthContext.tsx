@@ -1,8 +1,13 @@
 import { useContext, createContext, type PropsWithChildren } from "react";
 import { useStorageState } from "../hooks/useStorageState";
-import firestore from "@react-native-firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "@/firebaseConfig";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 import { FirebaseError } from "firebase/app";
-import auth from "@react-native-firebase/auth";
 import { router } from "expo-router";
 
 const AuthContext = createContext<{
@@ -18,6 +23,7 @@ const AuthContext = createContext<{
   session: null,
   isLoading: false,
 });
+
 // This hook can be used to access the user info.
 export function useSession() {
   const value = useContext(AuthContext);
@@ -35,16 +41,14 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
   async function signUp(email: string, password: string, userData: any) {
     try {
-      const userCredential = await auth().createUserWithEmailAndPassword(
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
         email,
         password
       );
       const user = userCredential.user;
 
-      await firestore()
-        .collection("users")
-        .doc(user.uid)
-        .set({ uid: user.uid, ...userData }); // Create the uid manually
+      await setDoc(doc(db, "users", user.uid), { uid: user.uid, ...userData }); // Create user document
 
       setSession(user.uid); // Save the new user ID or token to the session
       router.replace("/welcome"); // Navigate to a welcome page or dashboard
@@ -56,11 +60,13 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
   async function signIn(email: string, password: string) {
     try {
-      const userCredential = await auth().signInWithEmailAndPassword(
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
         email,
         password
       );
       const user = userCredential.user;
+
       // Save the user UID or token to session state
       setSession(user.uid); // Or user.email or user.getIdToken() for token
       router.replace("/");
@@ -70,9 +76,9 @@ export function SessionProvider({ children }: PropsWithChildren) {
     }
   }
 
-  async function signOut() {
+  async function signOutUser() {
     try {
-      await auth().signOut();
+      await signOut(auth);
       setSession(null); // Clear the session
     } catch (error) {
       console.error("Error signing out:", error);
@@ -81,7 +87,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
   return (
     <AuthContext.Provider
-      value={{ signIn, signUp, signOut, session, isLoading }}
+      value={{ signIn, signUp, signOut: signOutUser, session, isLoading }}
     >
       {children}
     </AuthContext.Provider>

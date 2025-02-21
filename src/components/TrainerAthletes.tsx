@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, ActivityIndicator, FlatList } from "react-native";
-import firestore from "@react-native-firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
 
 interface TrainerAthletesProps {
   trainerUid: string; // Pass the trainer's UID as a prop
@@ -17,12 +18,10 @@ const TrainerAthletes: React.FC<TrainerAthletesProps> = ({ trainerUid }) => {
       setError(null);
 
       // Fetch trainer's document
-      const trainerDoc = await firestore()
-        .collection("users")
-        .doc(trainerUid)
-        .get();
+      const trainerDocRef = doc(db, "users", trainerUid);
+      const trainerDoc = await getDoc(trainerDocRef);
 
-      if (!trainerDoc.exists) {
+      if (!trainerDoc.exists()) {
         setError("Trainer not found");
         return;
       }
@@ -33,11 +32,11 @@ const TrainerAthletes: React.FC<TrainerAthletesProps> = ({ trainerUid }) => {
       // Fetch athlete data
       const athletesData = await Promise.all(
         athleteIds.map(async (athleteUid: string) => {
-          const athleteDoc = await firestore()
-            .collection("users")
-            .doc(athleteUid)
-            .get();
-          return athleteDoc.exists ? athleteDoc.data() : null;
+          const athleteDocRef = doc(db, "users", athleteUid);
+          const athleteDoc = await getDoc(athleteDocRef);
+          return athleteDoc.exists()
+            ? { uid: athleteUid, ...athleteDoc.data() }
+            : null;
         })
       );
 

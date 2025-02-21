@@ -26,14 +26,14 @@ const NavigateButton: React.FC<NavigateButtonProps> = ({
   return (
     <Link href={href} asChild>
       <TouchableOpacity
-        className={`rounded-lg overflow-hidden py-2.5 px-6 justify-center flex-row items-center gap-2 
+        className={`rounded-lg overflow-hidden py-4 px-6 justify-center flex-row items-center gap-2
   ${isDarkTheme ? "bg-[#2C2C2C]" : isLightTheme ? "bg-white" : ""}`}
         accessibilityLabel={title}
         onPress={handleSubmit}
       >
         {leftIcon}
         <Text
-          className={`uppercase ${
+          className={`capitalize font-semibold ${
             isDarkTheme
               ? "text-white"
               : isLightTheme

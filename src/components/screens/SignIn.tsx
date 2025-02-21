@@ -4,6 +4,7 @@ import {
   Pressable,
   KeyboardAvoidingView,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Link } from "expo-router";
@@ -76,12 +77,12 @@ const SignIn = () => {
           {loading ? (
             <ActivityIndicator size={"small"} style={{ margin: 28 }} />
           ) : (
-            <Pressable
+            <TouchableOpacity
               className="flex self-stretch py-4 justify-center items-center rounded-lg bg-[#2C2C2C]"
               onPress={handleSignIn}
             >
               <Text className="text-white uppercase">Sign in</Text>
-            </Pressable>
+            </TouchableOpacity>
           )}
         </KeyboardAvoidingView>
         <View className="flex flex-row justify-center items-center gap-3 self-stretch">
@@ -94,9 +95,9 @@ const SignIn = () => {
             New here? Create an account in minutes!
           </Text>
           <Link href="/signup" asChild>
-            <Pressable className="flex self-stretch py-4 justify-center items-center rounded-lg bg-[#2C2C2C]">
+            <TouchableOpacity className="flex self-stretch py-4 justify-center items-center rounded-lg bg-[#2C2C2C]">
               <Text className="text-white uppercase">Create account</Text>
-            </Pressable>
+            </TouchableOpacity>
           </Link>
         </View>
       </View>

@@ -92,7 +92,6 @@ export default function SignupScreen() {
             label="Email"
             placeholder="example@example.com"
             value={signupData.email}
-            keyboardType="numeric"
             onChangeText={(text) => updateSignupData("email", text)}
             iconLeft={
               <Ionicons name="mail-outline" size={16} color="#717171" />

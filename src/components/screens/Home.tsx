@@ -1,4 +1,10 @@
-import { View, Text, Button, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  SafeAreaView,
+  ImageBackground,
+} from "react-native";
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AchievementsCard from "@/src/components/AchievementsCard";
@@ -7,12 +13,13 @@ import NavigateButton from "@/src/components/buttons/NavigateButton";
 import AthleteDashboard from "@/src/components/AthleteDashboard";
 import TrainerAthletes from "../TrainerAthletes";
 import PendingAthleteRequests from "../PendingPairRequests";
+import athleteBackground from "../../../assets/images/athletebackground1.png";
 
 export default function Home() {
   const { userInfo } = useUser();
 
   return (
-    <SafeAreaView className="flex-1 bg-white ">
+    <SafeAreaView className="flex-1 ">
       {/* <View className="absolute -top-[45%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#FBF7F5] rounded-full" /> */}
 
       <View className="flex-1 flex-col p-5 gap-4">

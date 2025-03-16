@@ -6,6 +6,8 @@ import { UserProvider } from "../contexts/UserContext";
 import { SessionProvider } from "../contexts/AuthContext";
 
 export default function RootLayout() {
+  // Need to change font to dm-sans
+
   return (
     <SessionProvider>
       <UserProvider>

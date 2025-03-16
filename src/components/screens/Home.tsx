@@ -13,9 +13,10 @@ export default function Home() {
 
   return (
     <SafeAreaView className="flex-1 bg-white ">
-      <View className="absolute -top-[45%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#FBF7F5] rounded-full" />
+      {/* <View className="absolute -top-[45%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#FBF7F5] rounded-full" /> */}
 
       <View className="flex-1 flex-col p-5 gap-4">
+        <Text>Athlete View</Text>
         <AthleteDashboard firstName={userInfo?.first_name} />
 
         {userInfo?.type === "trainer" ? (

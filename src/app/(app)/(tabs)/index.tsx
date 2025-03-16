@@ -25,22 +25,19 @@ export default function Index() {
           tabBarIcon: ({ color }) => (
             <FontAwesome size={28} name="home" color={color} />
           ),
-          headerTitle: () => (
-            <Text className="text-[#F1744D] font-medium text-4xl">
-              gametime
-            </Text>
-          ),
+          // headerTitle: () => (
+          //   <Text className="text-[#F1744D] font-medium text-4xl">
+          //     gametime
+          //   </Text>
+          // ),
           headerRight: () => {
             return (
-              <View className="w-10 h-10 mr-4 rounded-full bg-[#2C2C2C] flex items-center justify-center">
-                <Text className="text-xl text-white">
+              <View className="w-10 h-10 mr-4 rounded-full bg-[#fff] flex items-center justify-center">
+                <Text className="text-xl text-black">
                   {userInfo?.first_name?.[0] || "?"}
                 </Text>
               </View>
             );
-          },
-          headerStyle: {
-            backgroundColor: "#FBF7F5",
           },
 
           headerShadowVisible: false,

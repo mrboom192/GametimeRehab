@@ -13,7 +13,6 @@ import NavigateButton from "@/src/components/buttons/NavigateButton";
 import AthleteDashboard from "@/src/components/AthleteDashboard";
 import TrainerAthletes from "../TrainerAthletes";
 import PendingAthleteRequests from "../PendingPairRequests";
-import athleteBackground from "../../../assets/images/athletebackground1.png";
 
 export default function Home() {
   const { userInfo } = useUser();

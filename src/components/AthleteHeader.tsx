@@ -1,141 +1,39 @@
 import {
-  StyleSheet,
   View,
   Text,
-  SafeAreaView,
+  StyleSheet,
+  Image,
   TouchableOpacity,
   ScrollView,
+  Pressable,
+  SafeAreaView,
+  ActivityIndicator,
+  ImageBackground,
 } from "react-native";
-import React, { useRef, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
+import React, { useMemo, useRef, useState } from "react";
 import { useRouter } from "expo-router";
-import Colors from "@/constants/Colors";
+import Colors from "../constants/Colors";
 import * as Haptics from "expo-haptics";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { useUser } from "../contexts/UserContext";
+import { StatusBar } from "expo-status-bar";
+import athleteBackground from "@/assets/images/athletebackground1.png";
+import { Dimensions } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import Feather from "@expo/vector-icons/Feather";
 
-const categories = [
-  {
-    name: "All",
-    icon: "user",
-  },
-  {
-    name: "General Practice",
-    icon: "stethoscope",
-  },
-  {
-    name: "Pediatrics",
-    icon: "child_care",
-  },
-  {
-    name: "Cardiology",
-    icon: "favorite",
-  },
-  {
-    name: "Dermatology",
-    icon: "healing",
-  },
-  {
-    name: "Oncology",
-    icon: "coronavirus",
-  },
-  {
-    name: "Neurology",
-    icon: "psychology",
-  },
-  {
-    name: "Ophthalmology",
-    icon: "visibility",
-  },
-  {
-    name: "Orthopedics",
-    icon: "accessibility_new",
-  },
-  {
-    name: "Psychiatry",
-    icon: "psychology_alt",
-  },
-  {
-    name: "Neurosurgery",
-    icon: "medical_services",
-  },
-  {
-    name: "Allergy and Immunology",
-    icon: "sick",
-  },
-  {
-    name: "Anesthesiology",
-    icon: "mask",
-  },
-  {
-    name: "Diagnostic Radiology",
-    icon: "biotech",
-  },
-  {
-    name: "Emergency Medicine",
-    icon: "local_hospital",
-  },
-  {
-    name: "Family Medicine",
-    icon: "group",
-  },
-  {
-    name: "Internal Medicine",
-    icon: "medication",
-  },
-  {
-    name: "Medical Genetics",
-    icon: "science",
-  },
-  {
-    name: "Nuclear Medicine",
-    icon: "radiology",
-  },
-  {
-    name: "Obstetrics and Gynecology",
-    icon: "pregnant_woman",
-  },
-  {
-    name: "Pathology",
-    icon: "microscope",
-  },
-  {
-    name: "Rehab",
-    icon: "elderly",
-  },
-  {
-    name: "Preventive Medicine",
-    icon: "health_and_safety",
-  },
-  {
-    name: "Radiation Oncology",
-    icon: "radiology",
-  },
-  {
-    name: "Surgery",
-    icon: "surgical",
-  },
-  {
-    name: "Urology",
-    icon: "water_drop",
-  },
-  {
-    name: "Gastroenterology",
-    icon: "stomach",
-  },
-];
-
-interface Props {
-  onSpecialtyChange: (specialty: string) => void;
-}
-
-const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
+const Header = ({
+  tabs,
+  onTabChange,
+}: {
+  tabs: string[];
+  onTabChange: (tabName: string) => void;
+}) => {
   const scrollRef = useRef<ScrollView | null>(null);
+  const { userInfo } = useUser(); // Assume useUser provides a loading state
   const router = useRouter();
   const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
-  const { colorScheme, themeBorderStyle, themeTextStyleSecondary } =
-    useThemedStyles();
   const [activeIndex, setActiveIndex] = useState(0);
+  const { height } = Dimensions.get("window");
 
   const selectCategory = (index: number) => {
     const selected = itemsRef.current[index];
@@ -150,130 +48,151 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
     });
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onSpecialtyChange(categories[index].name);
+    onTabChange(tabs[index]);
   };
 
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
-        <View style={styles.actionRow}>
-          {/* Search container */}
-          <TouchableOpacity
-            onPress={() => router.back()}
-            style={[themeBorderStyle, styles.filterBtn]}
-          >
-            <Ionicons
-              name="chevron-back"
-              size={24}
-              color={
-                colorScheme === "light" ? Colors.light.grey : Colors.dark.grey
-              }
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => router.push("/")}
-            style={[themeBorderStyle, styles.searchBtn]}
-          >
-            <Ionicons
-              name="search"
-              size={24}
-              color={
-                colorScheme === "light" ? Colors.light.grey : Colors.dark.grey
-              }
-            />
-            <View>
-              <Text style={[themeTextStyleSecondary, { fontFamily: "dm-sb" }]}>
-                Find the perfect doctor
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        <ScrollView
-          ref={scrollRef}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={[
-            themeBorderStyle,
-            {
-              borderWidth: 0,
-              borderBottomWidth: 1,
-              alignItems: "center",
-              gap: 30,
+    <ImageBackground
+      source={athleteBackground}
+      imageStyle={{ resizeMode: "cover" }}
+      style={{
+        height: height * 0.45,
+        width: "100%",
+        position: "relative",
+      }}
+    >
+      <StatusBar style="light" />
+      <LinearGradient
+        // Background Linear Gradient
+        colors={["transparent", "rgba(255,255,255, 1)"]}
+        start={{ x: 1, y: 0.65 }} // Adjusts where the gradient begins
+        end={{ x: 1, y: 0.9 }} // Adjusts where it ends
+        style={{
+          position: "absolute",
+          bottom: 0,
+          width: "100%",
+          height, // Adjust height for desired fade effect
+        }}
+      />
+      <SafeAreaView>
+        <View style={styles.container}>
+          <View
+            style={{
+              flexDirection: "row",
               paddingHorizontal: 16,
-              paddingBottom: 16,
-            },
-          ]}
-        >
-          {categories.map((item, index) => (
-            <TouchableOpacity
-              onPress={() => selectCategory(index)}
-              key={index}
-              ref={(el) => (itemsRef.current[index] = el)}
+              justifyContent: "space-between",
+            }}
+          >
+            <Pressable
+              onPress={() => console.log("Pressed!")}
               style={{
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
-                gap: 4,
+                gap: 8,
               }}
             >
-              {/* <MaterialIcons
-                name={item.icon as any}
-                color={
-                  activeIndex === index
-                    ? Colors.primary
-                    : colorScheme === "light"
-                    ? Colors.light.grey
-                    : Colors.dark.grey
-                }
-                size={24}
-              /> */}
-              <Text
-                style={
-                  activeIndex === index
-                    ? { color: Colors.primary, fontFamily: "dm-sb" }
-                    : [themeTextStyleSecondary, { fontFamily: "dm-sb" }]
-                }
-              >
-                {item.name}
+              <Feather name="menu" size={40} color={"#FFF"} />
+            </Pressable>
+
+            <View
+              style={{
+                height: 40,
+                width: 40,
+                backgroundColor: "#FFF",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 9999,
+              }}
+            >
+              <Text className="text-xl text-black">
+                {userInfo?.first_name?.[0] || "?"}
               </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-    </SafeAreaView>
+            </View>
+          </View>
+
+          <View style={{ flexDirection: "column", gap: 16 }}>
+            <View>
+              {userInfo?.type === "athlete" ? (
+                <View style={{ flexDirection: "row", gap: 6, marginLeft: 16 }}>
+                  <Feather name="eye" size={20} color={"#A6A6A6"} />
+                  <Text
+                    style={{
+                      fontFamily: "dm",
+                      fontSize: 16,
+                      color: "#A6A6A6",
+                    }}
+                  >
+                    Athlete View
+                  </Text>
+                </View>
+              ) : (
+                <></>
+              )}
+              <Text
+                style={{
+                  marginLeft: 16,
+                  fontFamily: "dm-sb",
+                  fontSize: 26,
+                  color: "#2C2C2C",
+                }}
+              >
+                Welcome back,{" "}
+                <Text style={{ color: Colors.primary }}>
+                  {userInfo?.first_name}!
+                </Text>
+              </Text>
+            </View>
+
+            <ScrollView
+              ref={scrollRef}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                alignItems: "center",
+                paddingHorizontal: 16,
+                gap: 30,
+              }}
+            >
+              {tabs.map((tabName, index) => (
+                <Pressable
+                  onPress={() => selectCategory(index)}
+                  key={index}
+                  ref={(el) => (itemsRef.current[index] = el)}
+                  style={{
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  <Text
+                    style={[
+                      activeIndex === index
+                        ? { color: "#2C2C2C" }
+                        : { color: Colors.light.grey },
+                      { fontFamily: "dm", fontSize: 30 },
+                    ]}
+                  >
+                    {tabName}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
-    justifyContent: "flex-start",
-  },
-  actionRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 24,
-    marginBottom: 16,
-    gap: 16,
-  },
-  filterBtn: {
-    height: 56,
-    width: 56,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 9999,
-  },
-  searchBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    height: 56,
+    height: "100%",
     gap: 10,
-    flex: 1,
-    padding: 14,
-    borderRadius: 30,
+    justifyContent: "space-between",
   },
 });
 
-export default DoctorsHeader;
+export default Header;

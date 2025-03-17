@@ -2,15 +2,12 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
-  TouchableOpacity,
   ScrollView,
   Pressable,
   SafeAreaView,
-  ActivityIndicator,
   ImageBackground,
 } from "react-native";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useRouter } from "expo-router";
 import Colors from "../constants/Colors";
 import * as Haptics from "expo-haptics";
@@ -21,6 +18,10 @@ import { Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Feather from "@expo/vector-icons/Feather";
 
+const HEADER_HEIGHT_PERCENTAGE = 0.475; // How much the space the header takes up as a pecentage of screen height
+const GRADIENT_START = { x: 1, y: 0.65 }; // Adjust the gradient start/end
+const GRADIENT_END = { x: 1, y: 0.905 };
+
 const Header = ({
   tabs,
   onTabChange,
@@ -30,7 +31,6 @@ const Header = ({
 }) => {
   const scrollRef = useRef<ScrollView | null>(null);
   const { userInfo } = useUser(); // Assume useUser provides a loading state
-  const router = useRouter();
   const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const { height } = Dimensions.get("window");
@@ -56,7 +56,7 @@ const Header = ({
       source={athleteBackground}
       imageStyle={{ resizeMode: "cover" }}
       style={{
-        height: height * 0.45,
+        height: height * HEADER_HEIGHT_PERCENTAGE,
         width: "100%",
         position: "relative",
       }}
@@ -65,13 +65,13 @@ const Header = ({
       <LinearGradient
         // Background Linear Gradient
         colors={["transparent", "rgba(255,255,255, 1)"]}
-        start={{ x: 1, y: 0.65 }} // Adjusts where the gradient begins
-        end={{ x: 1, y: 0.9 }} // Adjusts where it ends
+        start={GRADIENT_START}
+        end={GRADIENT_END}
         style={{
           position: "absolute",
           bottom: 0,
           width: "100%",
-          height, // Adjust height for desired fade effect
+          height,
         }}
       />
       <SafeAreaView>
@@ -111,7 +111,7 @@ const Header = ({
             </View>
           </View>
 
-          <View style={{ flexDirection: "column", gap: 16 }}>
+          <View style={{ flexDirection: "column", gap: 8 }}>
             <View>
               {userInfo?.type === "athlete" ? (
                 <View style={{ flexDirection: "row", gap: 6, marginLeft: 16 }}>
@@ -170,7 +170,7 @@ const Header = ({
                     style={[
                       activeIndex === index
                         ? { color: "#2C2C2C" }
-                        : { color: Colors.light.grey },
+                        : { color: Colors.grey },
                       { fontFamily: "dm", fontSize: 30 },
                     ]}
                   >

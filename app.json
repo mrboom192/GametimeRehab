@@ -15,7 +15,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.GametimeRehab"
+      "bundleIdentifier": "com.anonymous.GametimeRehab",
+      "appleTeamId": "C25QXRZ85K"
     },
     "android": {
       "adaptiveIcon": {
@@ -25,7 +26,8 @@
       "package": "com.anonymous.GametimeRehab"
     },
     "androidStatusBar": {
-      "translucent": true
+      "translucent": true,
+      "backgroundColor": "#ffffff"
     },
     "web": {
       "bundler": "metro",

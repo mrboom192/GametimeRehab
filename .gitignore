@@ -45,5 +45,9 @@ ios/
 # typescript
 *.tsbuildinfo
 
+# Stuff to be uploaded to Firebase later
+assets/data/exercises.json
+assets/data/img
+
 app-example
 

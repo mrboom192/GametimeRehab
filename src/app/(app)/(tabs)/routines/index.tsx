@@ -10,6 +10,7 @@ import RoutineCard from "@/src/components/RoutineCard";
 import CreateNewRoutineButton from "@/src/components/CreateNewRoutineButton";
 import Tag from "@/src/components/Tag";
 import LabeledInput from "@/src/components/LabeledInput";
+import { StatusBar } from "expo-status-bar";
 
 const incompleteRoutines = [
   {
@@ -76,6 +77,7 @@ const RoutineLibrary = () => {
       style={{ flex: 1 }}
       //   contentContainerClassName="flex-col bg-white p-5 gap-8"
     >
+      <StatusBar style="dark" backgroundColor="#FFF" />
       <Stack.Screen
         options={{
           headerStyle: {

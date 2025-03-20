@@ -1,20 +1,18 @@
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, Image, FlatList, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Link, useLocalSearchParams } from "expo-router";
 import exercises from "@/assets/data/exercises.json";
+import Colors from "@/src/constants/Colors";
+import { useCart } from "@/src/contexts/CartContext";
+import { Exercise } from "@/src/types/utils";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const ITEMS_PER_PAGE = 15;
 
 const Search = () => {
-  const [exerciseList, setExerciseList] = useState<any[]>([]);
+  const [exerciseList, setExerciseList] = useState<Exercise[]>([]);
   const [page, setPage] = useState(1);
+  const { cart, setCart } = useCart();
   const { id } = useLocalSearchParams();
   const formattedId = id
     .toString()
@@ -27,7 +25,7 @@ const Search = () => {
     .join(" ");
 
   const filteredExercises = exercises.filter(
-    (exercise: any) =>
+    (exercise: Exercise) =>
       exercise.category.toLowerCase() === formattedId.toLowerCase()
   );
 
@@ -39,6 +37,14 @@ const Search = () => {
     const newExercises = filteredExercises.slice(0, nextPage * ITEMS_PER_PAGE);
     setExerciseList(newExercises);
     setPage(nextPage);
+  };
+
+  const handleAdd = (item: Exercise) => {
+    setCart((old) => [...old, item]);
+  };
+
+  const handleRemove = (item: Exercise) => {
+    setCart((old) => old.filter((cartItem) => cartItem.id !== item.id));
   };
 
   // Initial loading
@@ -59,69 +65,153 @@ const Search = () => {
       </Text>
 
       {filteredExercises.length === 0 ? (
-        <Text style={styles.noResults}>No exercises found.</Text>
+        <Text
+          style={{
+            fontSize: 16,
+            color: "gray",
+          }}
+        >
+          No exercises found.
+        </Text>
       ) : (
         <FlatList
           data={exerciseList}
-          keyExtractor={(item) => item.description}
+          keyExtractor={(item) => item.id}
           onEndReached={loadMoreExercises}
           onEndReachedThreshold={0}
-          renderItem={({ item }) => (
-            <View
-              style={{
-                borderRadius: 10,
-                padding: 16,
-                marginBottom: 12,
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Image
-                source={{
-                  uri: item.image_dark,
-                }}
+          renderItem={({ item }) => {
+            const isInCart = cart.some((cartItem) => cartItem.id === item.id);
+            return (
+              <View
                 style={{
-                  width: 80,
-                  height: 80,
-                  marginRight: 12,
-                  borderRadius: 10,
+                  borderRadius: 16,
+                  padding: 16,
+                  marginBottom: 8,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  borderWidth: 1,
+                  borderColor: Colors.faintGrey,
                 }}
-                resizeMode="contain"
-              />
-              <View style={styles.textContainer}>
-                <Text style={styles.exerciseName}>{item.name}</Text>
-                <Text style={styles.description}>{item.description}</Text>
-                <Link href={"/(app)/(modals)/exercise-details"} asChild>
-                  <TouchableOpacity>
-                    <Text>Details</Text>
-                  </TouchableOpacity>
-                </Link>
+              >
+                {/* The exercise image */}
+                <Image
+                  source={{
+                    uri: item.image_dark,
+                  }}
+                  style={{
+                    width: 96,
+                    height: 96,
+                    marginRight: 16,
+                  }}
+                  resizeMode="contain"
+                />
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontFamily: "dm-sb",
+                        marginBottom: 4,
+                      }}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {item.name}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        color: Colors.grey2,
+                      }}
+                    >
+                      {item.tags[0]
+                        ?.split(" ")
+                        .map(
+                          (word: string) =>
+                            word.charAt(0).toUpperCase() + word.slice(1)
+                        )
+                        .join(" ")}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      width: "100%",
+                      justifyContent: "flex-end",
+                      flexDirection: "row",
+                      gap: 8,
+                    }}
+                  >
+                    <Link href={"/(app)/(modals)/exercise-details"} asChild>
+                      <TouchableOpacity
+                        style={{
+                          paddingHorizontal: 16,
+                          paddingVertical: 8,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderWidth: 1,
+                          borderColor: Colors.grey2,
+                          borderRadius: 9999,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontFamily: "dm-sb",
+                            fontSize: 12,
+                            color: Colors.grey2,
+                          }}
+                        >
+                          Details
+                        </Text>
+                      </TouchableOpacity>
+                    </Link>
+                    <TouchableOpacity
+                      style={{
+                        paddingHorizontal: 16,
+                        paddingVertical: 8,
+                        flexDirection: "row",
+                        gap: 8,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: isInCart ? Colors.green : Colors.dark,
+                        borderWidth: 1,
+                        borderColor: isInCart ? Colors.green : Colors.dark,
+                        borderRadius: 9999,
+                      }}
+                      onPress={() =>
+                        isInCart ? handleRemove(item) : handleAdd(item)
+                      }
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "dm-sb",
+                          fontSize: 12,
+                          color: "#FFF",
+                        }}
+                      >
+                        {isInCart ? "Added" : "Add"}
+                      </Text>
+                      {isInCart ? (
+                        <Ionicons name="checkmark" size={16} color={"#FFF"} />
+                      ) : (
+                        <></>
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
-            </View>
-          )}
+            );
+          }}
         />
       )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  noResults: {
-    fontSize: 16,
-    color: "gray",
-  },
-  textContainer: {
-    flex: 1,
-  },
-  exerciseName: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 4,
-  },
-  description: {
-    fontSize: 14,
-    color: "gray",
-  },
-});
 
 export default Search;

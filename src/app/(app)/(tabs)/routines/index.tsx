@@ -6,7 +6,7 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "expo-router";
 
 const categories = [

@@ -1,5 +1,7 @@
 export default {
   primary: "#F1744D", // purple
+  green: "#4DD97E",
+  red: "#D94D4D",
   yellow: "#FFCE00",
   grey: "#595959", // secondary text/disabled icons
   grey2: "#949494", // secondary text/disabled icons

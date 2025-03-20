@@ -9,6 +9,7 @@ import {
 import React from "react";
 import { Link, Stack } from "expo-router";
 import ExerciseHeader from "@/src/components/ExerciseHeader";
+import { useNavigationState } from "@react-navigation/native";
 
 const categoriesMock = [
   {

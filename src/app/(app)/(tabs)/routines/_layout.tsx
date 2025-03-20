@@ -1,12 +1,12 @@
 import ExerciseHeader from "@/src/components/ExerciseHeader";
+import { useNavigationState } from "@react-navigation/native";
 import { Stack } from "expo-router";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 
 export default function AssignedLayout() {
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1 }}>
       <ExerciseHeader />
-
       <Stack
         screenOptions={{
           navigationBarColor: "#FFF",
@@ -14,15 +14,8 @@ export default function AssignedLayout() {
         }}
       >
         <Stack.Screen name="index" />
-        <Stack.Screen name="assigned" />
-        <Stack.Screen name="create" />
+        <Stack.Screen name="[id]" />
       </Stack>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

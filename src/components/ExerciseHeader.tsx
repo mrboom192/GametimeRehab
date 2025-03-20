@@ -1,12 +1,5 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  Pressable,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
-import React, { act } from "react";
+import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
+import React from "react";
 import Colors from "../constants/Colors";
 import { StatusBar } from "expo-status-bar";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -16,7 +9,7 @@ const ExerciseHeader = () => {
   const segments = useSegments();
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: "#FFF" }}>
       <StatusBar style="dark" />
       <View
         style={{
@@ -35,6 +28,11 @@ const ExerciseHeader = () => {
               backgroundColor: "#FFF",
               justifyContent: "center",
               alignItems: "center",
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.2,
+              shadowRadius: 4,
+              elevation: 5,
             }}
             onPress={() => router.back()}
           >
@@ -52,6 +50,11 @@ const ExerciseHeader = () => {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.2,
+            shadowRadius: 4,
+            elevation: 5,
           }}
         >
           <Text style={{ fontFamily: "dm-sb" }}>Search exercises</Text>

@@ -8,6 +8,7 @@ const Layout = () => {
   return (
     <SignupProvider>
       <StatusBar style="dark" backgroundColor="#FFF" />
+      <Stack.Screen name="(signup)" options={{ headerShown: false }} />
 
       <Stack
         screenOptions={{

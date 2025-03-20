@@ -35,12 +35,8 @@ export default function AppLayout() {
 
   // This layout can be deferred because it's not the root layout.
   return (
-    <>
-      <StatusBar style="dark" backgroundColor="#FFF" />
-
-      <Stack screenOptions={{ navigationBarColor: "#FFF" }}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
-    </>
+    <Stack screenOptions={{ navigationBarColor: "#FFF" }}>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+    </Stack>
   );
 }

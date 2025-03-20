@@ -53,9 +53,7 @@ function RootLayoutNav() {
             navigationBarColor: "#FFF",
             headerShown: false,
           }}
-        >
-          <Stack.Screen name="(signup)" options={{ headerShown: false }} />
-        </Stack>
+        />
       </UserProvider>
     </SessionProvider>
   );

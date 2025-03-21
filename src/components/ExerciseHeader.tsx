@@ -18,6 +18,7 @@ const ExerciseHeader = () => {
   const segments = useSegments();
   const { cart } = useCart(); // Access the cart state
   const { searchQuery, setSearchQuery } = useSearch();
+  console.log(segments);
 
   return (
     <SafeAreaView style={{ backgroundColor: "#FFF" }}>

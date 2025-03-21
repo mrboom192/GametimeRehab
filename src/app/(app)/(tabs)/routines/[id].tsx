@@ -11,11 +11,11 @@ import { useSearch } from "@/src/contexts/SearchContext";
 const ITEMS_PER_PAGE = 8;
 
 const Search = () => {
+  const { id } = useLocalSearchParams();
   const [exerciseList, setExerciseList] = useState<Exercise[]>([]);
   const { searchQuery } = useSearch();
   const [page, setPage] = useState(1);
   const { cart, setCart } = useCart();
-  const { id } = useLocalSearchParams();
   const formattedId = id
     .toString()
     .split("-")
@@ -150,7 +150,13 @@ const Search = () => {
                       gap: 8,
                     }}
                   >
-                    <Link href={"/(app)/(modals)/exercise-details"} asChild>
+                    <Link
+                      href={{
+                        pathname: "/(app)/(modals)/[exercise-id]",
+                        params: { id: item.id },
+                      }}
+                      asChild
+                    >
                       <TouchableOpacity
                         style={{
                           paddingHorizontal: 16,

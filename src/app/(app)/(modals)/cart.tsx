@@ -22,7 +22,7 @@ const Page = () => {
         flex: 1,
         flexDirection: "column",
         gap: 16,
-        padding: 26,
+        paddingHorizontal: 16,
         backgroundColor: "#FFF",
       }}
     >
@@ -41,6 +41,7 @@ const Page = () => {
           data={cart}
           keyExtractor={(item) => item.id}
           onEndReachedThreshold={0}
+          contentContainerStyle={{ paddingTop: 16, paddingBottom: 200 }} // To account for the footer
           renderItem={({ item }) => {
             const isInCart = cart.some((cartItem) => cartItem.id === item.id);
             return (
@@ -109,7 +110,13 @@ const Page = () => {
                       gap: 8,
                     }}
                   >
-                    <Link href={"/(app)/(modals)/exercise-details"} asChild>
+                    <Link
+                      href={{
+                        pathname: "/(app)/(modals)/[exercise-id]",
+                        params: { id: item.id },
+                      }}
+                      asChild
+                    >
                       <TouchableOpacity
                         style={{
                           paddingHorizontal: 16,
@@ -167,6 +174,68 @@ const Page = () => {
           }}
         />
       )}
+
+      {/* Footer */}
+      <View
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          backgroundColor: "#fff",
+          paddingVertical: 16,
+          paddingHorizontal: 16,
+          flexDirection: "column",
+          gap: 8,
+          borderTopColor: Colors.faintGrey,
+          borderTopWidth: 1,
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            paddingVertical: 16,
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            borderWidth: 1,
+            borderColor: Colors.dark,
+            borderRadius: 8,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "dm-sb",
+              fontSize: 16,
+              color: Colors.dark,
+            }}
+          >
+            Add to Routine
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            paddingVertical: 16,
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            borderWidth: 1,
+            backgroundColor: Colors.dark,
+            borderColor: Colors.dark,
+            borderRadius: 8,
+            marginBottom: 32,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "dm-sb",
+              fontSize: 16,
+              color: "#FFF",
+            }}
+          >
+            Create Routine
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

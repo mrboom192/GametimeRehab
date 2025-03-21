@@ -1,10 +1,13 @@
-import { Text } from "react-native";
-import { Redirect, Stack } from "expo-router";
+import { Text, TouchableOpacity, View } from "react-native";
+import { Redirect, router, Stack } from "expo-router";
 import { useSession } from "@/src/contexts/AuthContext";
 import { StatusBar } from "expo-status-bar";
 import { auth } from "@/firebaseConfig";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import Colors from "@/src/constants/Colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AppLayout() {
   const { signOut, session, isLoading } = useSession();
@@ -38,10 +41,39 @@ export default function AppLayout() {
     <Stack screenOptions={{ navigationBarColor: "#FFF" }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen
-        name="(modals)/exercise-details"
+        name="(modals)/[exercise-id]"
         options={{
           presentation: "modal",
           title: "Exercise Details",
+          header: () => (
+            <View
+              style={{
+                position: "relative",
+                padding: 20,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#FFF",
+                borderBottomWidth: 1,
+                borderColor: Colors.faintGrey,
+              }}
+            >
+              <TouchableOpacity
+                style={{ position: "absolute", left: 16 }}
+                onPress={() => router.back()}
+              >
+                <Ionicons name="close-outline" color={Colors.dark} size={24} />
+              </TouchableOpacity>
+              <Text
+                style={{
+                  color: Colors.dark,
+                  fontFamily: "dm-sb",
+                  fontSize: 16,
+                }}
+              >
+                Exercise Details
+              </Text>
+            </View>
+          ),
         }}
       />
       <Stack.Screen
@@ -49,6 +81,35 @@ export default function AppLayout() {
         options={{
           presentation: "modal",
           title: "Cart",
+          header: () => (
+            <View
+              style={{
+                position: "relative",
+                padding: 20,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#FFF",
+                borderBottomWidth: 1,
+                borderColor: Colors.faintGrey,
+              }}
+            >
+              <TouchableOpacity
+                style={{ position: "absolute", left: 16 }}
+                onPress={() => router.back()}
+              >
+                <Ionicons name="close-outline" color={Colors.dark} size={24} />
+              </TouchableOpacity>
+              <Text
+                style={{
+                  color: Colors.dark,
+                  fontFamily: "dm-sb",
+                  fontSize: 16,
+                }}
+              >
+                Routines Cart
+              </Text>
+            </View>
+          ),
         }}
       />
     </Stack>

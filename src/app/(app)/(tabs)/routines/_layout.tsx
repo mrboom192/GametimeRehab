@@ -3,15 +3,13 @@ import { useNavigationState } from "@react-navigation/native";
 import { Stack } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
-import { SearchContext } from "@/src/contexts/SearchContext";
+import { SearchProvider } from "@/src/contexts/SearchContext";
 
 export default function AssignedLayout() {
-  const [searchQuery, setSearchQuery] = useState("");
-
   return (
-    <SearchContext.Provider value={{ searchQuery, setSearchQuery }}>
+    <SearchProvider>
       <View style={{ flex: 1 }}>
-        <ExerciseHeader onSearch={setSearchQuery} />
+        <ExerciseHeader />
         <Stack
           screenOptions={{
             navigationBarColor: "#FFF",
@@ -22,6 +20,6 @@ export default function AssignedLayout() {
           <Stack.Screen name="[id]" />
         </Stack>
       </View>
-    </SearchContext.Provider>
+    </SearchProvider>
   );
 }

@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   TextInput,
+  Pressable,
 } from "react-native";
 import React from "react";
 import Colors from "../constants/Colors";
@@ -11,14 +12,12 @@ import { StatusBar } from "expo-status-bar";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link, router, useSegments } from "expo-router";
 import { useCart } from "../contexts/CartContext";
+import { useSearch } from "../contexts/SearchContext";
 
-const ExerciseHeader = ({
-  onSearch,
-}: {
-  onSearch: (query: string) => void;
-}) => {
+const ExerciseHeader = () => {
   const segments = useSegments();
   const { cart } = useCart(); // Access the cart state
+  const { searchQuery, setSearchQuery } = useSearch();
 
   return (
     <SafeAreaView style={{ backgroundColor: "#FFF" }}>
@@ -77,13 +76,26 @@ const ExerciseHeader = ({
           <TextInput
             placeholder="Search exercises"
             placeholderTextColor={Colors.grey2}
-            onChangeText={onSearch}
+            value={searchQuery}
+            onChangeText={(text) => setSearchQuery(text)}
             style={{
               padding: 16,
               fontFamily: "dm-sb",
-              width: "100%",
+              flex: 1,
             }}
           />
+          {searchQuery ? (
+            <Pressable onPress={() => setSearchQuery("")}>
+              <Ionicons
+                name="close"
+                color={Colors.dark}
+                size={20}
+                style={{ marginRight: 16 }}
+              />
+            </Pressable>
+          ) : (
+            <></>
+          )}
         </View>
 
         {/* Cart Button */}

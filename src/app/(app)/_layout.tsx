@@ -41,6 +41,14 @@ export default function AppLayout() {
         name="(modals)/exercise-details"
         options={{
           presentation: "modal",
+          title: "Exercise Details",
+        }}
+      />
+      <Stack.Screen
+        name="(modals)/cart"
+        options={{
+          presentation: "modal",
+          title: "Cart",
         }}
       />
     </Stack>

@@ -7,6 +7,7 @@ import { SessionProvider } from "../contexts/AuthContext";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { useFonts } from "expo-font";
+import { CartProvider } from "../contexts/CartContext";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -47,13 +48,15 @@ function RootLayoutNav() {
   return (
     <SessionProvider>
       <UserProvider>
-        <StatusBar style="dark" backgroundColor="#FFF" />
-        <Stack
-          screenOptions={{
-            navigationBarColor: "#FFF",
-            headerShown: false,
-          }}
-        />
+        <CartProvider>
+          <StatusBar style="dark" backgroundColor="#FFF" />
+          <Stack
+            screenOptions={{
+              navigationBarColor: "#FFF",
+              headerShown: false,
+            }}
+          />
+        </CartProvider>
       </UserProvider>
     </SessionProvider>
   );

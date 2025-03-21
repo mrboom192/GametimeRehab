@@ -3,7 +3,7 @@ import React from "react";
 import Colors from "../constants/Colors";
 import { StatusBar } from "expo-status-bar";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { router, useSegments } from "expo-router";
+import { Link, router, useSegments } from "expo-router";
 import { useCart } from "../contexts/CartContext";
 
 const ExerciseHeader = () => {
@@ -65,33 +65,34 @@ const ExerciseHeader = () => {
 
         {/* Cart Button */}
         {cart.length > 0 && (
-          <TouchableOpacity
-            style={{
-              padding: 16,
-              borderRadius: 9999,
-              backgroundColor: Colors.green,
-              justifyContent: "center",
-              alignItems: "center",
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.2,
-              shadowRadius: 4,
-              elevation: 5,
-            }}
-            onPress={() => router.back()}
-          >
-            <Text
+          <Link href="/(app)/(modals)/cart" asChild>
+            <TouchableOpacity
               style={{
-                height: 20,
-                width: 20,
-                textAlign: "center",
-                fontFamily: "dm-sb",
-                color: "#FFF",
+                padding: 16,
+                borderRadius: 9999,
+                backgroundColor: Colors.green,
+                justifyContent: "center",
+                alignItems: "center",
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.2,
+                shadowRadius: 4,
+                elevation: 5,
               }}
             >
-              {cart.length}
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  height: 20,
+                  width: 20,
+                  textAlign: "center",
+                  fontFamily: "dm-sb",
+                  color: "#FFF",
+                }}
+              >
+                {cart.length}
+              </Text>
+            </TouchableOpacity>
+          </Link>
         )}
       </View>
     </SafeAreaView>

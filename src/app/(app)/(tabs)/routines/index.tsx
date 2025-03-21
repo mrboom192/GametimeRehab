@@ -76,7 +76,7 @@ const categories = [
 
 const categoriesWithTotals = categories.map((category) => ({
   ...category,
-  total: exercises.filter(
+  total: (exercises as Exercise[]).filter(
     (item: Exercise) =>
       item.category.trim().toLowerCase() === category.name.trim().toLowerCase()
   ).length,

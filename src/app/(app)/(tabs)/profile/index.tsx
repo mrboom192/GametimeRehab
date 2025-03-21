@@ -1,4 +1,4 @@
-import { Text, ScrollView, SafeAreaView, View, Pressable } from "react-native";
+import { Text, ScrollView, View } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import { useUser } from "@/src/contexts/UserContext";
@@ -38,11 +38,6 @@ const Profile = () => {
           ),
         }}
       />
-
-      {/* Dev Only */}
-      <View style={{ height: 500 }}>
-        <Text>Test</Text>
-      </View>
 
       {/* First Name and Last Name */}
       <View className="flex flex-col gap-4">

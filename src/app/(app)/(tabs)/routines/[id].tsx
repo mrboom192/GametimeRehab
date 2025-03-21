@@ -26,7 +26,7 @@ const Search = () => {
     )
     .join(" ");
 
-  const filteredExercises = exercises.filter(
+  const filteredExercises = (exercises as Exercise[]).filter(
     (exercise: Exercise) =>
       exercise.category.toLowerCase() === formattedId.toLowerCase() &&
       exercise.name.toLowerCase().includes(searchQuery.toLowerCase())

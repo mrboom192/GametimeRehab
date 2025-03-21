@@ -7,12 +7,16 @@ import { useCart } from "@/src/contexts/CartContext";
 import { Exercise } from "@/src/types/utils";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSearch } from "@/src/contexts/SearchContext";
+import { collection, doc, getDocs, query, where } from "firebase/firestore";
+import { auth, db } from "@/firebaseConfig";
 
 const ITEMS_PER_PAGE = 8;
 
 const Search = () => {
   const { id } = useLocalSearchParams();
   const [exerciseList, setExerciseList] = useState<Exercise[]>([]);
+  const [routines, setRoutines] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const { searchQuery } = useSearch();
   const [page, setPage] = useState(1);
   const { cart, setCart } = useCart();
@@ -50,6 +54,30 @@ const Search = () => {
     setCart((old) => old.filter((cartItem) => cartItem.id !== item.id));
   };
 
+  useEffect(() => {
+    const fetchRoutines = async () => {
+      const uid = auth.currentUser?.uid;
+      if (!uid) return;
+
+      try {
+        const q = query(collection(db, "routines"), where("userId", "==", uid));
+        const querySnapshot = await getDocs(q);
+        const docs = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as any[];
+
+        setRoutines(docs);
+      } catch (error) {
+        console.error("Failed to fetch routines:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRoutines();
+  }, []);
+
   // Initial loading
   useEffect(() => {
     setExerciseList(filteredExercises.slice(0, ITEMS_PER_PAGE));
@@ -57,10 +85,18 @@ const Search = () => {
 
   return (
     <View style={{ flex: 1, padding: 16, backgroundColor: "#FFF" }}>
+      {loading ? (
+        <Text>Loading...</Text>
+      ) : routines.length === 0 ? (
+        <Text>No routines yet.</Text>
+      ) : (
+        routines.map((routine) => <Text key={routine.id}>{routine.name}</Text>)
+      )}
+
       <Text
         style={{
-          fontSize: 20,
-          fontWeight: "bold",
+          fontSize: 16,
+          fontFamily: "dm-sb",
           marginBottom: 16,
         }}
       >

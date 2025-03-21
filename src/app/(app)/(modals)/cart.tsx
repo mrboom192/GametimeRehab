@@ -3,10 +3,14 @@ import React, { useState } from "react";
 import { useCart } from "@/src/contexts/CartContext";
 import Colors from "@/src/constants/Colors";
 import { Exercise } from "@/src/types/utils";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
+import { auth, db } from "@/firebaseConfig";
+import { addDoc, collection, setDoc } from "firebase/firestore";
 
 const Page = () => {
   const { cart, setCart } = useCart();
+
+  let userId = auth.currentUser?.uid; // May want to use guard if the user is not signed in, which should never happen
 
   const handleAdd = (item: Exercise) => {
     setCart((old) => [...old, item]);
@@ -15,6 +19,18 @@ const Page = () => {
   const handleRemove = (item: Exercise) => {
     setCart((old) => old.filter((cartItem) => cartItem.id !== item.id));
   };
+
+  async function createRoutine() {
+    console.log("RAN");
+    await addDoc(collection(db, "routines"), {
+      userId,
+      name: "My Routine",
+      exercises: [...cart],
+    });
+
+    setCart([]);
+    router.back();
+  }
 
   return (
     <View
@@ -213,6 +229,7 @@ const Page = () => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={createRoutine}
           style={{
             paddingVertical: 16,
             width: "100%",

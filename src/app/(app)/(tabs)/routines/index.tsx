@@ -6,81 +6,81 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "expo-router";
+import exercises from "@/assets/data/exercises.json";
+import { Exercise } from "@/src/types/utils";
 
 const categories = [
   {
     id: "balance-training",
     name: "Balance Training",
-    total: "213",
     color: "#434343",
     image: require("@/assets/images/exercises/soft_mat__one-leg_stand_-_rocking_lateral_1_light.png"),
   },
   {
     id: "body-mechanics",
     name: "Body Mechanics",
-    total: "402",
     color: "#9F4C61",
     image: require("@/assets/images/exercises/deep_squat_1_light.png"),
   },
   {
     id: "closed-chain",
     name: "Closed Chain",
-    total: "402",
     color: "#5E8482",
     image: require("@/assets/images/exercises/push-up__medium_hands_1_light.png"),
   },
   {
     id: "complete-balance-and-vestibular",
     name: "Complete Balance and Vestibular",
-    total: "397",
     color: "#426947",
     image: require("@/assets/images/exercises/leg_lift_1_light.png"),
   },
   {
     id: "stability-ball",
     name: "Stability Ball",
-    total: "397",
     color: "#615AA8",
     image: require("@/assets/images/exercises/one-leg_hip_abduction__standing_1_light.png"),
   },
   {
     id: "strength-training",
     name: "Strength Training",
-    total: "397",
     color: "#402E81",
     image: require("@/assets/images/exercises/bench_press__medium_grip_(barbell)_1_light.png"),
   },
   {
     id: "geriatric-strengthening",
     name: "Geriatric Strengthening",
-    total: "397",
     color: "#80703D",
     image: require("@/assets/images/exercises/adduction__standing_-_stable_(active)_1_light.png"),
   },
   {
     id: "geriatric-resource-library",
     name: "Geriatric Resource Library",
-    total: "397",
     color: "#A87E2F",
     image: require("@/assets/images/exercises/supine_push_1_light.png"),
   },
   {
     id: "orthopedic",
     name: "Orthopedic",
-    total: "397",
     color: "#9B2C44",
     image: require("@/assets/images/exercises/straight_leg_raise_3_light.png"),
   },
   {
     id: "spinal-stabilization",
     name: "Spinal Stabilization",
-    total: "397",
     color: "#533535",
     image: require("@/assets/images/exercises/the_hundred__intermediate_1_light.png"),
   },
 ];
+
+const categoriesWithTotals = categories.map((category) => ({
+  ...category,
+  total: exercises.filter(
+    (item: Exercise) =>
+      item.category.trim().toLowerCase() === category.name.trim().toLowerCase()
+  ).length,
+}));
 
 const RoutineLibrary = () => {
   const screenWidth = Dimensions.get("window").width;
@@ -98,7 +98,7 @@ const RoutineLibrary = () => {
           paddingBottom: 128,
         }}
       >
-        {categories.map((item, index) => {
+        {categoriesWithTotals.map((item, index) => {
           return (
             <Link
               href={`/(app)/(tabs)/routines/${item.id}`}

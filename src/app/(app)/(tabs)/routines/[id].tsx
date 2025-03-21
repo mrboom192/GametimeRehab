@@ -8,7 +8,7 @@ import { Exercise } from "@/src/types/utils";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSearch } from "@/src/contexts/SearchContext";
 
-const ITEMS_PER_PAGE = 15;
+const ITEMS_PER_PAGE = 8;
 
 const Search = () => {
   const [exerciseList, setExerciseList] = useState<Exercise[]>([]);

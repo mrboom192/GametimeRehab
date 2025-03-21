@@ -1,7 +1,5 @@
 import ExerciseHeader from "@/src/components/ExerciseHeader";
-import { useNavigationState } from "@react-navigation/native";
 import { Stack } from "expo-router";
-import { useState } from "react";
 import { View } from "react-native";
 import { SearchProvider } from "@/src/contexts/SearchContext";
 

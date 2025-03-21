@@ -1,4 +1,11 @@
-import { View, Text, Image, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { Link, useLocalSearchParams } from "expo-router";
 import exercises from "@/assets/data/exercises.json";
@@ -84,20 +91,57 @@ const Search = () => {
   }, [id]); // Reload when id changes
 
   return (
-    <View style={{ flex: 1, padding: 16, backgroundColor: "#FFF" }}>
-      {loading ? (
-        <Text>Loading...</Text>
-      ) : routines.length === 0 ? (
-        <Text>No routines yet.</Text>
-      ) : (
-        routines.map((routine) => <Text key={routine.id}>{routine.name}</Text>)
-      )}
+    <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+      <Text
+        style={{
+          fontSize: 16,
+          fontFamily: "dm-sb",
+          marginBottom: 16,
+          marginHorizontal: 16,
+        }}
+      >
+        Routines
+      </Text>
+
+      <View>
+        <ScrollView
+          horizontal
+          style={{ marginBottom: 16 }}
+          contentContainerStyle={{ paddingLeft: 16 }}
+        >
+          {loading ? (
+            <Text>Loading...</Text>
+          ) : routines.length === 0 ? (
+            <Text>No routines yet.</Text>
+          ) : (
+            routines.map((routine) => (
+              <TouchableOpacity
+                key={routine.id}
+                style={{ marginRight: 8, flexDirection: "column", gap: 8 }}
+              >
+                <View
+                  style={{
+                    width: 100,
+                    height: 100,
+                    backgroundColor: Colors.faintGrey,
+                    borderRadius: 8,
+                  }}
+                />
+                <Text style={{ fontFamily: "dm-sb", fontSize: 12 }}>
+                  {routine.name}
+                </Text>
+              </TouchableOpacity>
+            ))
+          )}
+        </ScrollView>
+      </View>
 
       <Text
         style={{
           fontSize: 16,
           fontFamily: "dm-sb",
           marginBottom: 16,
+          marginHorizontal: 16,
         }}
       >
         {formattedId}
@@ -118,6 +162,8 @@ const Search = () => {
           keyExtractor={(item) => item.id}
           onEndReached={loadMoreExercises}
           onEndReachedThreshold={0}
+          style={{ flex: 1 }}
+          contentContainerStyle={{ marginHorizontal: 16, paddingBottom: 100 }}
           renderItem={({ item }) => {
             const isInCart = cart.some((cartItem) => cartItem.id === item.id);
             return (

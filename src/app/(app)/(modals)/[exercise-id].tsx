@@ -20,12 +20,11 @@ const Page = () => {
         style={{
           flex: 1,
           flexDirection: "column",
-          gap: 16,
           padding: 16,
           backgroundColor: "#FFF",
         }}
       >
-        <View style={{ flexDirection: "column", gap: 8 }}>
+        <View style={{ flexDirection: "column", gap: 8, marginBottom: 16 }}>
           <Text
             style={{ fontSize: 24, fontFamily: "dm-sb", color: Colors.dark }}
           >
@@ -42,6 +41,7 @@ const Page = () => {
           style={{
             width: "100%",
             aspectRatio: 16 / 10,
+            marginBottom: 16,
           }}
           resizeMode="contain"
         />

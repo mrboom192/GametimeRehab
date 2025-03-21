@@ -1,4 +1,10 @@
-import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import React from "react";
 import Colors from "../constants/Colors";
 import { StatusBar } from "expo-status-bar";
@@ -6,7 +12,11 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link, router, useSegments } from "expo-router";
 import { useCart } from "../contexts/CartContext";
 
-const ExerciseHeader = () => {
+const ExerciseHeader = ({
+  onSearch,
+}: {
+  onSearch: (query: string) => void;
+}) => {
   const segments = useSegments();
   const { cart } = useCart(); // Access the cart state
 
@@ -45,7 +55,6 @@ const ExerciseHeader = () => {
         {/* Search bar */}
         <View
           style={{
-            padding: 16,
             borderRadius: 9999,
             flex: 1,
             backgroundColor: "#FFF",
@@ -59,8 +68,22 @@ const ExerciseHeader = () => {
             elevation: 5,
           }}
         >
-          <Text style={{ fontFamily: "dm-sb" }}>Search exercises</Text>
-          <Ionicons name="search" color={Colors.dark} size={20} />
+          <Ionicons
+            name="search"
+            color={Colors.grey2}
+            size={20}
+            style={{ marginLeft: 16 }}
+          />
+          <TextInput
+            placeholder="Search exercises"
+            placeholderTextColor={Colors.grey2}
+            onChangeText={onSearch}
+            style={{
+              padding: 16,
+              fontFamily: "dm-sb",
+              width: "100%",
+            }}
+          />
         </View>
 
         {/* Cart Button */}

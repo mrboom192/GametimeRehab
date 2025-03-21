@@ -6,11 +6,13 @@ import Colors from "@/src/constants/Colors";
 import { useCart } from "@/src/contexts/CartContext";
 import { Exercise } from "@/src/types/utils";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useSearch } from "@/src/contexts/SearchContext";
 
 const ITEMS_PER_PAGE = 15;
 
 const Search = () => {
   const [exerciseList, setExerciseList] = useState<Exercise[]>([]);
+  const { searchQuery } = useSearch();
   const [page, setPage] = useState(1);
   const { cart, setCart } = useCart();
   const { id } = useLocalSearchParams();
@@ -26,7 +28,8 @@ const Search = () => {
 
   const filteredExercises = exercises.filter(
     (exercise: Exercise) =>
-      exercise.category.toLowerCase() === formattedId.toLowerCase()
+      exercise.category.toLowerCase() === formattedId.toLowerCase() &&
+      exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Load more exercises

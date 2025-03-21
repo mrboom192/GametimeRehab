@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link, useLocalSearchParams } from "expo-router";
 import exercises from "@/assets/data/exercises.json";
 import Colors from "@/src/constants/Colors";
@@ -37,11 +37,13 @@ const Search = () => {
     )
     .join(" ");
 
-  const filteredExercises = (exercises as Exercise[]).filter(
-    (exercise: Exercise) =>
-      exercise.category.toLowerCase() === formattedId.toLowerCase() &&
-      exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredExercises = useMemo(() => {
+    return (exercises as Exercise[]).filter(
+      (exercise: Exercise) =>
+        exercise.category.toLowerCase() === formattedId.toLowerCase() &&
+        exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [formattedId, searchQuery]);
 
   // Load more exercises
   const loadMoreExercises = () => {
@@ -158,7 +160,7 @@ const Search = () => {
         </Text>
       ) : (
         <FlatList
-          data={exerciseList}
+          data={filteredExercises}
           keyExtractor={(item) => item.id}
           onEndReached={loadMoreExercises}
           onEndReachedThreshold={0}

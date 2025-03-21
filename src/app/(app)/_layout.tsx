@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Colors from "@/src/constants/Colors";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AppLayout() {
   const { signOut, session, isLoading } = useSession();

@@ -153,10 +153,13 @@ const Search = () => {
         <Text
           style={{
             fontSize: 16,
+            fontFamily: "dm",
             color: "gray",
+            marginLeft: 16,
           }}
         >
-          No exercises found.
+          No exercises found for{" "}
+          <Text style={{ fontFamily: "dm-sb" }}>"{searchQuery}"</Text>.
         </Text>
       ) : (
         <FlatList

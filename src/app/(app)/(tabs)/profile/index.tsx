@@ -12,8 +12,8 @@ import * as ImagePicker from "expo-image-picker";
 import Colors from "@/src/constants/Colors";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { auth, db, storage } from "@/firebaseConfig";
-import uuid from "react-native-uuid";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import Avatar from "@/src/components/Avatar";
 
 const Profile = () => {
   const { userInfo } = useUser();
@@ -86,7 +86,7 @@ const Profile = () => {
     }
 
     // Update or set the user document in Firestore
-    const userRef = doc(db, "users", uid);
+    const userRef = doc(db, "users", uid as string);
 
     try {
       const userSnap = await getDoc(userRef);
@@ -133,38 +133,7 @@ const Profile = () => {
         }}
       />
 
-      <Pressable
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          width: 64,
-          height: 64,
-          backgroundColor: Colors.faintGrey,
-          borderRadius: 9999,
-          overflow: "hidden",
-        }}
-        onPress={pickImage}
-      >
-        {userInfo.image ? (
-          <Image
-            source={{ uri: userInfo.image }}
-            style={{ width: "100%", height: "100%" }}
-            resizeMode="cover"
-          />
-        ) : (
-          <Text
-            style={{
-              fontFamily: "dm-sb",
-              color: Colors.grey,
-              marginHorizontal: 8,
-              textAlign: "center",
-            }}
-          >
-            {userInfo.first_name[0]}
-            {userInfo.last_name[0]}
-          </Text>
-        )}
-      </Pressable>
+      <Avatar onPress={pickImage} size={64} />
 
       {/* First Name and Last Name */}
       <View className="flex flex-col gap-4">

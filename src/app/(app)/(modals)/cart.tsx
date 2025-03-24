@@ -22,7 +22,6 @@ import * as ImageManipulator from "expo-image-manipulator";
 const Page = () => {
   const { cart, setCart } = useCart();
   const [image, setImage] = useState<string | null>(null);
-  const [imageURL, setImageURL] = useState<string | null>(null);
   const [routineName, setRoutineName] = useState("My Routine");
   const [isUploading, setIsUploading] = useState(false);
   const id = auth.currentUser?.uid; // User id
@@ -95,8 +94,6 @@ const Page = () => {
       blob.close?.();
 
       uploadedImageURL = await getDownloadURL(fileRef);
-
-      setImageURL(uploadedImageURL); // still useful if you want to display it somewhere
     }
 
     // Create the routine in Firestore

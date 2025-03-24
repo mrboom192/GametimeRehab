@@ -20,14 +20,15 @@ const Pair = () => {
           ),
         }}
       />
-
-      {userInfo?.type === "athlete" ? (
-        <>
-          <PairForm />
-        </>
-      ) : (
-        <></>
-      )}
+      <View style={{ flex: 1, padding: 16 }}>
+        {userInfo?.type === "athlete" ? (
+          <>
+            <PairForm />
+          </>
+        ) : (
+          <></>
+        )}
+      </View>
     </SafeAreaView>
   );
 };

@@ -1,7 +1,6 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { Redirect, router, Stack } from "expo-router";
 import { useSession } from "@/src/contexts/AuthContext";
-import { StatusBar } from "expo-status-bar";
 import { auth } from "@/firebaseConfig";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";

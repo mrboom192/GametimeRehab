@@ -133,7 +133,7 @@ const Profile = () => {
         }}
       />
 
-      <Avatar onPress={pickImage} size={64} uri={userInfo} />
+      <Avatar onPress={pickImage} size={64} uri={userInfo.image} />
 
       {/* First Name and Last Name */}
       <View className="flex flex-col gap-4">

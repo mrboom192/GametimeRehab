@@ -13,7 +13,7 @@ import Colors from "@/src/constants/Colors";
 import { Exercise } from "@/src/types/utils";
 import { Link, router } from "expo-router";
 import { auth, db, storage } from "@/firebaseConfig";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import * as ImagePicker from "expo-image-picker";
 import uuid from "react-native-uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -113,6 +113,7 @@ const Page = () => {
       image: uploadedImageURL,
       name: routineName,
       exercises: [...cart],
+      createdAt: serverTimestamp(),
     });
 
     setCart([]);

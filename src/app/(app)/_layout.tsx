@@ -110,6 +110,15 @@ export default function AppLayout() {
           ),
         }}
       />
+      <Stack.Screen name="routine/[id]" />
+      <Stack.Screen
+        name="routine/active"
+        options={{
+          headerShown: false,
+          gestureEnabled: false,
+          animation: "slide_from_bottom",
+        }}
+      />
     </Stack>
   );
 }

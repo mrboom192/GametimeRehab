@@ -8,6 +8,8 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { useFonts } from "expo-font";
 import { CartProvider } from "../contexts/CartContext";
+import { RoutineProvider } from "../contexts/RoutineContext";
+import { RoutineSessionProvider } from "../contexts/RoutineSessionContext";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -49,13 +51,15 @@ function RootLayoutNav() {
     <SessionProvider>
       <UserProvider>
         <CartProvider>
-          <StatusBar style="dark" backgroundColor="#FFF" />
-          <Stack
-            screenOptions={{
-              navigationBarColor: "#FFF",
-              headerShown: false,
-            }}
-          />
+          <RoutineSessionProvider>
+            <StatusBar style="dark" backgroundColor="#FFF" />
+            <Stack
+              screenOptions={{
+                navigationBarColor: "#FFF",
+                headerShown: false,
+              }}
+            />
+          </RoutineSessionProvider>
         </CartProvider>
       </UserProvider>
     </SessionProvider>

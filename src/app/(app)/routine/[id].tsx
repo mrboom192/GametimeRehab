@@ -1,19 +1,20 @@
 import { View, Text, Image, FlatList, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Link, Stack, useLocalSearchParams } from "expo-router";
+import { Link, router, Stack, useLocalSearchParams } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "@/firebaseConfig";
 import Colors from "@/src/constants/Colors";
 import Avatar from "@/src/components/Avatar";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import HoldToStartButton from "@/src/components/buttons/HoldToStartButton";
 import * as Haptics from "expo-haptics";
+import { useRoutineSession } from "@/src/contexts/RoutineSessionContext";
+import uuid from "react-native-uuid";
 
 const RoutinePage = () => {
   const { id } = useLocalSearchParams();
   const [routine, setRoutine] = useState<any>();
+  const { setRoutineSession } = useRoutineSession();
   const [loading, setLoading] = useState(true);
-  const [image, setImage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchRoutine = async () => {
@@ -139,7 +140,15 @@ const RoutinePage = () => {
         <HoldToStartButton
           onComplete={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-            console.log("RAN");
+            setRoutineSession({
+              sessionId: uuid.v4(), // So we can find the session later in local storage
+              routine: routine, // The routine object
+              currentIndex: 0, // Current exercise we are on
+              timeElapsed: 0, // Total time taken for the routine
+              startedAt: Date.now(), // The date we start the session
+              completed: false, // User cannot complete the exercise immediately
+            });
+            router.push(`/(app)/routine/active`);
           }}
         />
       </View>

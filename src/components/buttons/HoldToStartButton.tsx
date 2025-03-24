@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Text,
   TouchableOpacity,
@@ -28,6 +28,7 @@ const HoldToStartButton = ({ onComplete }: Props) => {
   const progress = useSharedValue(0);
   const isHolding = useSharedValue(false);
   const buttonWidth = useSharedValue(0);
+  const [width, setWidth] = useState<number>();
 
   const animatedStyle = useAnimatedStyle(() => ({
     width: buttonWidth.value * progress.value,
@@ -57,8 +58,9 @@ const HoldToStartButton = ({ onComplete }: Props) => {
   };
 
   const onLayout = (event: LayoutChangeEvent) => {
-    const width = event.nativeEvent.layout.width;
-    buttonWidth.value = width;
+    const layoutWidth = event.nativeEvent.layout.width;
+    setWidth(layoutWidth);
+    buttonWidth.value = layoutWidth;
   };
 
   return (
@@ -71,7 +73,7 @@ const HoldToStartButton = ({ onComplete }: Props) => {
     >
       <Animated.View style={[styles.fill, animatedStyle]} />
 
-      {/* Base content (green) */}
+      {/* Green text */}
       <View style={styles.content}>
         <Text style={[styles.text, { color: Colors.green }]} numberOfLines={1}>
           Hold to start
@@ -83,7 +85,7 @@ const HoldToStartButton = ({ onComplete }: Props) => {
       <Animated.View style={[styles.contentOverlay, animatedStyle]}>
         <View
           style={{
-            width: buttonWidth.value,
+            width: width,
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "row",

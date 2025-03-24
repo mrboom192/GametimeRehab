@@ -1,20 +1,114 @@
-import { Text, ScrollView, View } from "react-native";
-import React from "react";
-import { Tabs } from "expo-router";
+import { Text, ScrollView, View, Pressable, Image } from "react-native";
+import React, { useState } from "react";
+import { router, Tabs } from "expo-router";
 import { useUser } from "@/src/contexts/UserContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import LabeledInput from "@/src/components/LabeledInput";
 import NavigateButton from "@/src/components/buttons/NavigateButton";
 import IconButton from "@/src/components/buttons/IconButton";
 import { useSession } from "@/src/contexts/AuthContext";
+import * as ImageManipulator from "expo-image-manipulator";
+import * as ImagePicker from "expo-image-picker";
+import Colors from "@/src/constants/Colors";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { auth, db, storage } from "@/firebaseConfig";
+import uuid from "react-native-uuid";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const Profile = () => {
   const { userInfo } = useUser();
   const { signOut } = useSession();
+  const [image, setImage] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.01,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      const uri = result.assets[0].uri;
+
+      // Resize & compress image
+      const manipulated = await ImageManipulator.manipulateAsync(
+        uri,
+        [{ resize: { width: 300, height: 300 } }], // Resize image
+        { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+      );
+
+      setImage(manipulated.uri); // Resized image
+      uploadImage(manipulated.uri);
+    }
+  };
+
+  async function uploadImage(imageUri: string) {
+    setIsUploading(true); // Make sure user cant double tap create routine button
+
+    let uploadedImageURL: string | null = null;
+    const uid = auth.currentUser?.uid;
+
+    // Upload image if exists
+    if (imageUri) {
+      const fileRef = ref(storage, `users/${uid}.jpg`);
+
+      const blob: Blob = await new Promise<Blob>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function (e) {
+          console.log(e);
+          reject(new TypeError("Network request failed"));
+        };
+        xhr.responseType = "blob";
+        xhr.open("GET", imageUri, true);
+        xhr.send(null);
+      });
+
+      try {
+        await uploadBytes(fileRef, blob);
+        console.log("Ran"); // Only logs if successful
+      } catch (error) {
+        console.error("uploadBytes failed:", error);
+      }
+
+      // Clean up blob (optional chaining for safety)
+      // @ts-ignore
+      blob.close?.();
+
+      uploadedImageURL = await getDownloadURL(fileRef);
+    }
+
+    // Update or set the user document in Firestore
+    const userRef = doc(db, "users", uid);
+
+    try {
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        // Update existing user document
+        await updateDoc(userRef, {
+          image: uploadedImageURL,
+        });
+      }
+
+      console.log("User Firestore document updated.");
+    } catch (error) {
+      console.error("Error updating Firestore user doc:", error);
+    }
+
+    setIsUploading(false);
+  }
 
   return (
     <ScrollView
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: "#FFF" }}
       contentContainerClassName="flex-col bg-white p-5 gap-8"
       overScrollMode="never" // android only
     >
@@ -38,6 +132,39 @@ const Profile = () => {
           ),
         }}
       />
+
+      <Pressable
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          width: 64,
+          height: 64,
+          backgroundColor: Colors.faintGrey,
+          borderRadius: 9999,
+          overflow: "hidden",
+        }}
+        onPress={pickImage}
+      >
+        {userInfo.image ? (
+          <Image
+            source={{ uri: userInfo.image }}
+            style={{ width: "100%", height: "100%" }}
+            resizeMode="cover"
+          />
+        ) : (
+          <Text
+            style={{
+              fontFamily: "dm-sb",
+              color: Colors.grey,
+              marginHorizontal: 8,
+              textAlign: "center",
+            }}
+          >
+            {userInfo.first_name[0]}
+            {userInfo.last_name[0]}
+          </Text>
+        )}
+      </Pressable>
 
       {/* First Name and Last Name */}
       <View className="flex flex-col gap-4">

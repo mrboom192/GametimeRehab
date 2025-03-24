@@ -14,7 +14,7 @@ import { useCart } from "@/src/contexts/CartContext";
 import { Exercise } from "@/src/types/utils";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSearch } from "@/src/contexts/SearchContext";
-import { collection, doc, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { auth, db } from "@/firebaseConfig";
 
 const ITEMS_PER_PAGE = 8;

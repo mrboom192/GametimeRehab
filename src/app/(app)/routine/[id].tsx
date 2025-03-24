@@ -6,6 +6,8 @@ import { auth, db } from "@/firebaseConfig";
 import Colors from "@/src/constants/Colors";
 import Avatar from "@/src/components/Avatar";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import HoldToStartButton from "@/src/components/buttons/HoldToStartButton";
+import * as Haptics from "expo-haptics";
 
 const RoutinePage = () => {
   const { id } = useLocalSearchParams();
@@ -134,21 +136,12 @@ const RoutinePage = () => {
         </TouchableOpacity>
 
         {/* Start button */}
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            gap: 8,
-            backgroundColor: Colors.green,
-            paddingVertical: 12,
-            paddingHorizontal: 16,
-            borderRadius: 9999,
+        <HoldToStartButton
+          onComplete={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+            console.log("RAN");
           }}
-        >
-          <Text style={{ color: "#FFF", fontFamily: "dm-sb", fontSize: 12 }}>
-            Start routine
-          </Text>
-          <Ionicons name="play" size={16} color={"#FFF"} />
-        </TouchableOpacity>
+        />
       </View>
       <FlatList
         data={routine.exercises}

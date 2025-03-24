@@ -20,6 +20,7 @@ const ExerciseHeader = () => {
   const { searchQuery, setSearchQuery } = useSearch();
 
   const updateSearch = (query: string) => {
+    console.log(segments);
     setSearchQuery(query);
   };
 

@@ -69,24 +69,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // Handle routing based on user state and info
-  // useEffect(() => {
-  //   if (initializing) return;
-
-  //   const inAuthGroup = segments[0] === "(auth)"; // Check if current path is within the auth group
-
-  //   if (user && !inAuthGroup) {
-  //     // Redirect based on user role after authentication
-  //     if (userInfo?.type === "athlete") {
-  //       router.replace("/(auth)/home");
-  //     } else if (userInfo?.type === "trainer") {
-  //       router.replace("/(auth)/home");
-  //     }
-  //   } else if (!user && inAuthGroup) {
-  //     router.replace("/"); // Redirect to the login/signup screen if not authenticated
-  //   }
-  // }, [user, initializing, userInfo, segments, router]);
-
   return (
     <UserContext.Provider
       value={{ user, userInfo, initializing, setUserInfo, loading, error }}

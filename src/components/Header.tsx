@@ -33,7 +33,7 @@ const Header = ({
   onTabChange: (tabName: string) => void;
 }) => {
   const scrollRef = useRef<ScrollView | null>(null);
-  const { userInfo } = useUser(); // Assume useUser provides a loading state
+  const { userInfo, loading } = useUser(); // Assume useUser provides a loading state
   const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const { height } = Dimensions.get("window");
@@ -100,9 +100,11 @@ const Header = ({
 
             <Avatar
               color="#FFF"
-              uri={userInfo.image}
+              uri={loading ? null : userInfo.image}
               size={48}
-              initials={userInfo.first_name[0] + userInfo.last_name[0]}
+              initials={
+                loading ? "?" : userInfo.first_name[0] + userInfo.last_name[0]
+              }
             />
           </View>
 

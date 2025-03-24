@@ -73,7 +73,7 @@ const Search = () => {
       try {
         const q = query(
           collection(db, "routines"),
-          where("assignee", "==", uid)
+          where("assigneeIds", "array-contains", uid)
         );
         const querySnapshot = await getDocs(q);
         const docs = querySnapshot.docs.map((doc) => ({

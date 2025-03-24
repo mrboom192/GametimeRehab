@@ -3,9 +3,17 @@ import { useUser } from "../contexts/UserContext";
 import Colors from "../constants/Colors";
 import React from "react";
 
-const Avatar = ({ onPress, size }: { onPress: () => void; size: number }) => {
-  const { userInfo } = useUser();
-
+const Avatar = ({
+  onPress = null,
+  size,
+  uri,
+  initials = "",
+}: {
+  onPress?: null | (() => void);
+  size: number;
+  uri: string; // Update later
+  initials?: string;
+}) => {
   return (
     <Pressable
       style={{
@@ -21,9 +29,9 @@ const Avatar = ({ onPress, size }: { onPress: () => void; size: number }) => {
       }}
       onPress={onPress}
     >
-      {userInfo.image ? (
+      {uri ? (
         <Image
-          source={{ uri: userInfo.image }}
+          source={{ uri: uri }}
           style={{ width: "100%", height: "100%" }}
           resizeMode="cover"
         />
@@ -36,8 +44,7 @@ const Avatar = ({ onPress, size }: { onPress: () => void; size: number }) => {
             textAlign: "center",
           }}
         >
-          {userInfo.first_name[0]}
-          {userInfo.last_name[0]}
+          {initials}
         </Text>
       )}
     </Pressable>

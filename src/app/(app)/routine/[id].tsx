@@ -1,39 +1,17 @@
-import {
-  View,
-  Text,
-  Button,
-  Image,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, Image, FlatList, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Link, Stack, useLocalSearchParams } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "@/firebaseConfig";
-import * as ImagePicker from "expo-image-picker";
 import Colors from "@/src/constants/Colors";
+import Avatar from "@/src/components/Avatar";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const RoutinePage = () => {
   const { id } = useLocalSearchParams();
   const [routine, setRoutine] = useState<any>();
   const [loading, setLoading] = useState(true);
   const [image, setImage] = useState<string | null>(null);
-
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
 
   useEffect(() => {
     const fetchRoutine = async () => {
@@ -73,17 +51,105 @@ const RoutinePage = () => {
       }}
     >
       <Stack.Screen options={{ title: routine!.name || "Routine" }} />
-      <Text style={{ fontFamily: "dm-sb" }}>
-        {auth.currentUser?.uid === routine.assigner
-          ? "Made by Me"
-          : `Assigned by ${routine.assigner}`}{" "}
-        •{" "}
-        <Text style={{ fontFamily: "dm" }}>
-          {" "}
-          {routine.exercises.length}{" "}
-          {routine.exercises.length === 1 ? "Exercise" : "Exercises"}
+      <View
+        style={{
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            width: 200,
+            height: 200,
+            backgroundColor: Colors.faintGrey,
+            borderRadius: 8,
+            borderWidth: 1,
+            borderColor: Colors.faintGrey,
+            overflow: "hidden",
+          }}
+        >
+          {routine.image ? (
+            <Image
+              source={{ uri: routine.image }}
+              style={{ width: "100%", height: "100%" }}
+              resizeMode="cover"
+            />
+          ) : (
+            <Text
+              style={{
+                fontFamily: "dm-sb",
+                color: Colors.grey,
+                marginHorizontal: 8,
+                textAlign: "center",
+              }}
+            >
+              {routine.name}
+            </Text>
+          )}
+        </View>
+      </View>
+
+      <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
+        <Avatar
+          size={40}
+          uri={routine.assigner.image}
+          initials={`${routine.assigner.firstName[0]}${routine.assigner.lastName[0]}`}
+        />
+        <Text style={{ fontFamily: "dm-sb", fontSize: 16 }}>
+          {auth.currentUser?.uid === routine.assigner.id
+            ? "Made by Me"
+            : `Assigned by ${routine.assigner.firstName}`}{" "}
+          •{" "}
+          <Text style={{ fontFamily: "dm" }}>
+            {" "}
+            {routine.exercises.length}{" "}
+            {routine.exercises.length === 1 ? "Exercise" : "Exercises"}
+          </Text>
         </Text>
-      </Text>
+      </View>
+      {/* Buttons to do stuff with the routine */}
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        {/* Edit button */}
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            gap: 8,
+            backgroundColor: Colors.dark,
+            paddingVertical: 12,
+            paddingHorizontal: 16,
+            borderRadius: 9999,
+          }}
+        >
+          <Text style={{ color: "#FFF", fontFamily: "dm-sb", fontSize: 12 }}>
+            Edit
+          </Text>
+        </TouchableOpacity>
+
+        {/* Start button */}
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            gap: 8,
+            backgroundColor: Colors.green,
+            paddingVertical: 12,
+            paddingHorizontal: 16,
+            borderRadius: 9999,
+          }}
+        >
+          <Text style={{ color: "#FFF", fontFamily: "dm-sb", fontSize: 12 }}>
+            Start routine
+          </Text>
+          <Ionicons name="play" size={16} color={"#FFF"} />
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={routine.exercises}
         keyExtractor={(item) => item.id}

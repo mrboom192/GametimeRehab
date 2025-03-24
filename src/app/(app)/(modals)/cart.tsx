@@ -18,6 +18,7 @@ import * as ImagePicker from "expo-image-picker";
 import uuid from "react-native-uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import * as ImageManipulator from "expo-image-manipulator";
+import { useUser } from "@/src/contexts/UserContext";
 
 const Page = () => {
   const { cart, setCart } = useCart();
@@ -25,6 +26,7 @@ const Page = () => {
   const [routineName, setRoutineName] = useState("My Routine");
   const [isUploading, setIsUploading] = useState(false);
   const id = auth.currentUser?.uid; // User id
+  const { userInfo } = useUser();
 
   const handleAdd = (item: Exercise) => {
     setCart((old) => [...old, item]);
@@ -96,10 +98,18 @@ const Page = () => {
       uploadedImageURL = await getDownloadURL(fileRef);
     }
 
-    // Create the routine in Firestore
+    const currentUser = {
+      id: id,
+      firstName: userInfo.first_name,
+      lastName: userInfo.first_name,
+      image: userInfo.image,
+    };
+
+    // User creates their own routine in firebase
     await addDoc(collection(db, "routines"), {
-      assignee: id,
-      assigner: id,
+      assigneeIds: [currentUser.id],
+      assignees: [currentUser], // An array of people assigned to the routine
+      assigner: currentUser, // Can only have 1 person assigning
       image: uploadedImageURL,
       name: routineName,
       exercises: [...cart],

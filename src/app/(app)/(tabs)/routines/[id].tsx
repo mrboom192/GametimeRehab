@@ -41,7 +41,9 @@ const Search = () => {
     return (exercises as Exercise[]).filter(
       (exercise: Exercise) =>
         exercise.category.toLowerCase() === formattedId.toLowerCase() &&
-        exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
+        exercise.name
+          .toLowerCase()
+          .includes(searchQuery.replace(/\s+/g, " ").trim().toLowerCase()) // Super basic
     );
   }, [formattedId, searchQuery]);
 

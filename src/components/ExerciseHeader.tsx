@@ -18,7 +18,10 @@ const ExerciseHeader = () => {
   const segments = useSegments();
   const { cart } = useCart(); // Access the cart state
   const { searchQuery, setSearchQuery } = useSearch();
-  console.log(segments);
+
+  const updateSearch = (query: string) => {
+    setSearchQuery(query);
+  };
 
   return (
     <SafeAreaView style={{ backgroundColor: "#FFF" }}>
@@ -78,7 +81,7 @@ const ExerciseHeader = () => {
             placeholder="Search exercises"
             placeholderTextColor={Colors.grey2}
             value={searchQuery}
-            onChangeText={(text) => setSearchQuery(text)}
+            onChangeText={(text) => updateSearch(text)}
             style={{
               padding: 16,
               fontFamily: "dm-sb",
@@ -86,7 +89,7 @@ const ExerciseHeader = () => {
             }}
           />
           {searchQuery ? (
-            <Pressable onPress={() => setSearchQuery("")}>
+            <Pressable onPress={() => updateSearch("")}>
               <Ionicons
                 name="close"
                 color={Colors.dark}

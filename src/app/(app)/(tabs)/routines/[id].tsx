@@ -69,7 +69,10 @@ const Search = () => {
       if (!uid) return;
 
       try {
-        const q = query(collection(db, "routines"), where("userId", "==", uid));
+        const q = query(
+          collection(db, "routines"),
+          where("assignee", "==", uid)
+        );
         const querySnapshot = await getDocs(q);
         const docs = querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -117,22 +120,30 @@ const Search = () => {
             <Text>No routines yet.</Text>
           ) : (
             routines.map((routine) => (
-              <TouchableOpacity
+              <Link
+                href={{
+                  pathname: "/(app)/routine/[id]",
+                  params: { id: routine.id },
+                }}
                 key={routine.id}
-                style={{ marginRight: 8, flexDirection: "column", gap: 8 }}
+                asChild
               >
-                <View
-                  style={{
-                    width: 100,
-                    height: 100,
-                    backgroundColor: Colors.faintGrey,
-                    borderRadius: 8,
-                  }}
-                />
-                <Text style={{ fontFamily: "dm-sb", fontSize: 12 }}>
-                  {routine.name}
-                </Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={{ marginRight: 8, flexDirection: "column", gap: 8 }}
+                >
+                  <View
+                    style={{
+                      width: 100,
+                      height: 100,
+                      backgroundColor: Colors.faintGrey,
+                      borderRadius: 8,
+                    }}
+                  />
+                  <Text style={{ fontFamily: "dm-sb", fontSize: 12 }}>
+                    {routine.name}
+                  </Text>
+                </TouchableOpacity>
+              </Link>
             ))
           )}
         </ScrollView>

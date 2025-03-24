@@ -10,8 +10,6 @@ import { addDoc, collection, setDoc } from "firebase/firestore";
 const Page = () => {
   const { cart, setCart } = useCart();
 
-  let userId = auth.currentUser?.uid; // May want to use guard if the user is not signed in, which should never happen
-
   const handleAdd = (item: Exercise) => {
     setCart((old) => [...old, item]);
   };
@@ -23,7 +21,8 @@ const Page = () => {
   async function createRoutine() {
     console.log("RAN");
     await addDoc(collection(db, "routines"), {
-      userId,
+      assignee: auth.currentUser?.uid,
+      assigner: null,
       name: "My Routine",
       exercises: [...cart],
     });

@@ -6,8 +6,10 @@ import {
   Pressable,
   SafeAreaView,
   ImageBackground,
+  TouchableOpacity,
+  TouchableOpacityProps,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { ForwardRefExoticComponent, useRef, useState } from "react";
 import { useRouter } from "expo-router";
 import Colors from "../constants/Colors";
 import * as Haptics from "expo-haptics";
@@ -17,6 +19,7 @@ import athleteBackground from "@/assets/images/athletebackground1.png";
 import { Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Feather from "@expo/vector-icons/Feather";
+import Avatar from "./Avatar";
 
 const HEADER_HEIGHT_PERCENTAGE = 0.475; // How much the space the header takes up as a pecentage of screen height
 const GRADIENT_START = { x: 1, y: 0.65 }; // Adjust the gradient start/end
@@ -31,7 +34,7 @@ const Header = ({
 }) => {
   const scrollRef = useRef<ScrollView | null>(null);
   const { userInfo } = useUser(); // Assume useUser provides a loading state
-  const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
+  const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const { height } = Dimensions.get("window");
 
@@ -39,7 +42,7 @@ const Header = ({
     const selected = itemsRef.current[index];
     setActiveIndex(index);
 
-    selected?.measure((x: number) => {
+    (selected as any)?.measure((x: number) => {
       scrollRef.current?.scrollTo({
         x: x - 16,
         y: 0,
@@ -95,20 +98,12 @@ const Header = ({
               <Feather name="menu" size={40} color={"#FFF"} />
             </Pressable>
 
-            <View
-              style={{
-                height: 40,
-                width: 40,
-                backgroundColor: "#FFF",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 9999,
-              }}
-            >
-              <Text className="text-xl text-black">
-                {userInfo?.first_name?.[0] || "?"}
-              </Text>
-            </View>
+            <Avatar
+              color="#FFF"
+              uri={userInfo.image}
+              size={48}
+              initials={userInfo.first_name[0] + userInfo.last_name[0]}
+            />
           </View>
 
           <View style={{ flexDirection: "column", gap: 8 }}>

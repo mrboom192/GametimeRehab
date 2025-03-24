@@ -1,18 +1,19 @@
-import { Text, Pressable, Image } from "react-native";
-import { useUser } from "../contexts/UserContext";
+import { Text, Pressable, Image, View } from "react-native";
 import Colors from "../constants/Colors";
 import React from "react";
 
 const Avatar = ({
   onPress = null,
   size,
-  uri,
+  uri = null,
   initials = "",
+  color = Colors.faintGrey,
 }: {
   onPress?: null | (() => void);
   size: number;
-  uri: string; // Update later
+  uri?: string | null;
   initials?: string;
+  color?: string;
 }) => {
   return (
     <Pressable
@@ -21,20 +22,34 @@ const Avatar = ({
         justifyContent: "center",
         width: size,
         height: size,
-        backgroundColor: Colors.faintGrey,
+        backgroundColor: color,
         borderRadius: 9999,
-        borderWidth: 1,
-        borderColor: Colors.faintGrey,
         overflow: "hidden",
       }}
       onPress={onPress}
     >
       {uri ? (
-        <Image
-          source={{ uri: uri }}
-          style={{ width: "100%", height: "100%" }}
-          resizeMode="cover"
-        />
+        <>
+          <Image
+            source={{ uri: uri }}
+            style={{ width: "100%", height: "100%" }}
+            resizeMode="cover"
+          />
+          {/* Overlay border */}
+          <View
+            pointerEvents="none"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              borderRadius: 9999,
+              borderWidth: 1,
+              borderColor: "rgba(255, 255, 255, 0.2)",
+            }}
+          />
+        </>
       ) : (
         <Text
           style={{

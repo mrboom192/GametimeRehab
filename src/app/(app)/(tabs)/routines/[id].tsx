@@ -129,17 +129,48 @@ const Search = () => {
                 asChild
               >
                 <TouchableOpacity
-                  style={{ marginRight: 8, flexDirection: "column", gap: 8 }}
+                  style={{
+                    marginRight: 8,
+                    flexDirection: "column",
+                    gap: 8,
+                    width: 100,
+                  }}
                 >
                   <View
                     style={{
+                      alignItems: "center",
+                      justifyContent: "center",
                       width: 100,
                       height: 100,
                       backgroundColor: Colors.faintGrey,
                       borderRadius: 8,
+                      overflow: "hidden",
                     }}
-                  />
-                  <Text style={{ fontFamily: "dm-sb", fontSize: 12 }}>
+                  >
+                    {routine.image ? (
+                      <Image
+                        source={{ uri: routine.image }}
+                        style={{ width: "100%", height: "100%" }}
+                        resizeMode="cover"
+                      />
+                    ) : (
+                      <Text
+                        style={{
+                          fontFamily: "dm-sb",
+                          color: Colors.grey,
+                          marginHorizontal: 8,
+                          textAlign: "center",
+                        }}
+                      >
+                        {routine.name}
+                      </Text>
+                    )}
+                  </View>
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={{ fontFamily: "dm-sb", fontSize: 12 }}
+                  >
                     {routine.name}
                   </Text>
                 </TouchableOpacity>

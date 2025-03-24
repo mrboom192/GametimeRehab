@@ -1,14 +1,31 @@
-import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  Pressable,
+  TextInput,
+} from "react-native";
 import React, { useState } from "react";
 import { useCart } from "@/src/contexts/CartContext";
 import Colors from "@/src/constants/Colors";
 import { Exercise } from "@/src/types/utils";
 import { Link, router } from "expo-router";
-import { auth, db } from "@/firebaseConfig";
-import { addDoc, collection, setDoc } from "firebase/firestore";
+import { auth, db, storage } from "@/firebaseConfig";
+import { addDoc, collection } from "firebase/firestore";
+import * as ImagePicker from "expo-image-picker";
+import uuid from "react-native-uuid";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import * as ImageManipulator from "expo-image-manipulator";
 
 const Page = () => {
   const { cart, setCart } = useCart();
+  const [image, setImage] = useState<string | null>(null);
+  const [imageURL, setImageURL] = useState<string | null>(null);
+  const [routineName, setRoutineName] = useState("My Routine");
+  const [isUploading, setIsUploading] = useState(false);
+  const id = auth.currentUser?.uid; // User id
 
   const handleAdd = (item: Exercise) => {
     setCart((old) => [...old, item]);
@@ -18,12 +35,76 @@ const Page = () => {
     setCart((old) => old.filter((cartItem) => cartItem.id !== item.id));
   };
 
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.01,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      const uri = result.assets[0].uri;
+
+      // Resize & compress image
+      const manipulated = await ImageManipulator.manipulateAsync(
+        uri,
+        [{ resize: { width: 300, height: 300 } }], // Resize image
+        { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+      );
+
+      setImage(manipulated.uri); // Resized image
+    }
+  };
+
   async function createRoutine() {
-    console.log("RAN");
+    setIsUploading(true); // Make sure user cant double tap create routine button
+
+    let uploadedImageURL: string | null = null;
+
+    // Upload image if exists
+    if (image) {
+      const fileRef = ref(storage, `routine-covers/${uuid.v4()}.jpg`);
+
+      const blob: Blob = await new Promise<Blob>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function (e) {
+          console.log(e);
+          reject(new TypeError("Network request failed"));
+        };
+        xhr.responseType = "blob";
+        xhr.open("GET", image, true);
+        xhr.send(null);
+      });
+
+      try {
+        await uploadBytes(fileRef, blob);
+        console.log("Ran"); // Only logs if successful
+      } catch (error) {
+        console.error("uploadBytes failed:", error);
+      }
+
+      // Clean up blob (optional chaining for safety)
+      // @ts-ignore
+      blob.close?.();
+
+      uploadedImageURL = await getDownloadURL(fileRef);
+
+      setImageURL(uploadedImageURL); // still useful if you want to display it somewhere
+    }
+
+    // Create the routine in Firestore
     await addDoc(collection(db, "routines"), {
-      assignee: auth.currentUser?.uid,
-      assigner: null,
-      name: "My Routine",
+      assignee: id,
+      assigner: id,
+      image: uploadedImageURL,
+      name: routineName,
       exercises: [...cart],
     });
 
@@ -41,6 +122,80 @@ const Page = () => {
         backgroundColor: "#FFF",
       }}
     >
+      <View style={{ flexDirection: "row", gap: 16, marginTop: 16 }}>
+        <Pressable
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            width: 128,
+            height: 128,
+            backgroundColor: Colors.faintGrey,
+            borderRadius: 8,
+
+            overflow: "hidden",
+          }}
+          onPress={pickImage}
+        >
+          {image ? (
+            <Image
+              source={{ uri: image }}
+              style={{ width: "100%", height: "100%" }}
+              resizeMode="cover"
+            />
+          ) : (
+            <Text
+              style={{
+                fontFamily: "dm-sb",
+                color: Colors.grey,
+                marginHorizontal: 8,
+                textAlign: "center",
+              }}
+            >
+              Pick a cover image
+            </Text>
+          )}
+        </Pressable>
+        <View style={{ flexDirection: "column", gap: 8, flex: 1 }}>
+          {/* Name */}
+          <View>
+            <Text
+              style={{ fontFamily: "dm", fontSize: 12, color: Colors.grey }}
+            >
+              Name
+            </Text>
+            <TextInput
+              value={routineName}
+              onChangeText={setRoutineName}
+              style={{
+                fontFamily: "dm-sb",
+                fontSize: 16,
+                paddingVertical: 4,
+              }}
+              placeholder="Routine name"
+            />
+          </View>
+
+          {/* Due Date */}
+          <View>
+            <Text
+              style={{ fontFamily: "dm", fontSize: 12, color: Colors.grey }}
+            >
+              Assignee
+            </Text>
+            <Text style={{ fontFamily: "dm-sb", fontSize: 16 }}>Me</Text>
+          </View>
+
+          {/* Due */}
+          <View>
+            <Text
+              style={{ fontFamily: "dm", fontSize: 12, color: Colors.grey }}
+            >
+              Due
+            </Text>
+            <Text style={{ fontFamily: "dm-sb", fontSize: 16 }}>Anytime</Text>
+          </View>
+        </View>
+      </View>
       {cart.length === 0 ? (
         <Text
           style={{
@@ -229,14 +384,15 @@ const Page = () => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={createRoutine}
+          disabled={isUploading}
           style={{
             paddingVertical: 16,
             width: "100%",
             alignItems: "center",
             justifyContent: "center",
             borderWidth: 1,
-            backgroundColor: Colors.dark,
-            borderColor: Colors.dark,
+            backgroundColor: isUploading ? Colors.faintGrey : Colors.dark,
+            borderColor: isUploading ? Colors.faintGrey : Colors.dark,
             borderRadius: 8,
             marginBottom: 32,
           }}
@@ -248,7 +404,7 @@ const Page = () => {
               color: "#FFF",
             }}
           >
-            Create Routine
+            {isUploading ? "Loading..." : "Create Routine"}
           </Text>
         </TouchableOpacity>
       </View>

@@ -79,7 +79,7 @@ export default function AppLayout() {
         name="(modals)/cart"
         options={{
           presentation: "modal",
-          title: "Cart",
+          title: "Create Routine",
           header: () => (
             <View
               style={{
@@ -105,7 +105,7 @@ export default function AppLayout() {
                   fontSize: 16,
                 }}
               >
-                Routines Cart
+                Create Routine
               </Text>
             </View>
           ),

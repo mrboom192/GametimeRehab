@@ -7,20 +7,18 @@ import {
   SafeAreaView,
   ImageBackground,
   TouchableOpacity,
-  TouchableOpacityProps,
 } from "react-native";
-import React, { ForwardRefExoticComponent, useRef, useState } from "react";
-import { useRouter } from "expo-router";
+import React, { useRef, useState } from "react";
 import Colors from "../constants/Colors";
 import * as Haptics from "expo-haptics";
 import { useUser } from "../contexts/UserContext";
 import { StatusBar } from "expo-status-bar";
-import athleteBackground from "@/assets/images/athletebackground1.png";
 import { Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Feather from "@expo/vector-icons/Feather";
 import Avatar from "./Avatar";
 
+const athleteBackground = require("@/assets/images/athletebackground1.png");
 const HEADER_HEIGHT_PERCENTAGE = 0.475; // How much the space the header takes up as a pecentage of screen height
 const GRADIENT_START = { x: 1, y: 0.65 }; // Adjust the gradient start/end
 const GRADIENT_END = { x: 1, y: 0.905 };
@@ -155,7 +153,7 @@ const Header = ({
                 <Pressable
                   onPress={() => selectCategory(index)}
                   key={index}
-                  ref={(el) => (itemsRef.current[index] = el)}
+                  ref={(el) => ((itemsRef as any).current[index] = el)}
                   style={{
                     flexDirection: "column",
                     justifyContent: "center",

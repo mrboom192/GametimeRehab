@@ -345,7 +345,7 @@ const OverlayQuestionnaire = ({
               fontFamily: "dm-sb",
             }}
           >
-            Exercise Completed!
+            {isLastExercise ? "Routine" : "Exercise"} Completed!
           </Text>
           <Text
             style={{
@@ -354,7 +354,7 @@ const OverlayQuestionnaire = ({
               fontFamily: "dm",
             }}
           >
-            Tell us how the exercise felt so we can make adjustments for you in
+            Tell us how this exercise felt so we can make adjustments for you in
             the future!
           </Text>
         </View>

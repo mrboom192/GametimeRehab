@@ -8,7 +8,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { useFonts } from "expo-font";
 import { CartProvider } from "../contexts/CartContext";
-import { RoutineProvider } from "../contexts/RoutineContext";
 import { RoutineSessionProvider } from "../contexts/RoutineSessionContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 

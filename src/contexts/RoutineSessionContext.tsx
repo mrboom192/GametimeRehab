@@ -1,12 +1,18 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
-interface RoutineSession {
+export interface RoutineSession {
   sessionId: string;
   routine: any;
   currentIndex: number;
   timeElapsed: number;
   startedAt: number;
   completed: boolean;
+  feedback?: {
+    [index: number]: {
+      difficulty: "easy" | "just-right" | "hard";
+      repRange: "less" | "assigned" | "more";
+    };
+  };
 }
 
 interface RoutineContextType {

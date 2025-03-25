@@ -1,16 +1,27 @@
-import { View, Text, SafeAreaView, Image, Pressable } from "react-native";
-import React, { useEffect, useState } from "react";
-import { useRoutineSession } from "@/src/contexts/RoutineSessionContext";
-import HoldToStartButton from "@/src/components/buttons/HoldToStartButton";
-import * as Haptics from "expo-haptics";
-import Colors from "@/src/constants/Colors";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
+import {
+  RoutineSession,
+  useRoutineSession,
+} from "@/src/contexts/RoutineSessionContext";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
   runOnJS,
 } from "react-native-reanimated";
+import React, { useEffect, useState } from "react";
+import HoldToStartButton from "@/src/components/buttons/HoldToStartButton";
+import * as Haptics from "expo-haptics";
+import Colors from "@/src/constants/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { router } from "expo-router";
 
 const options = [
   { label: "😁 \n Easy", value: "easy" },
@@ -59,6 +70,8 @@ const ActiveExercisePage = () => {
   const currentExerciseImage =
     routineSession?.routine.exercises[routineSession?.currentIndex!].image_dark;
   const numberOfExercises = routineSession?.routine.exercises.length;
+  const isLastExercise =
+    routineSession?.currentIndex! + 1 === numberOfExercises;
 
   const handleShowQuestionnaire = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
@@ -66,27 +79,64 @@ const ActiveExercisePage = () => {
     opacity.value = withTiming(1, { duration: 300 });
   };
 
-  const handleComplete = () => {
+  const handleCompleteExercise = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-    setRoutineSession((prev) => ({
-      ...prev!,
-      currentIndex: prev!.currentIndex + 1,
-    }));
 
-    console.log(routineSession);
+    // Should probably make this a useReducer in the future
+    setRoutineSession((prev) => {
+      if (!prev) return prev;
+
+      const updatedFeedback = {
+        ...prev.feedback,
+        [prev.currentIndex]: {
+          difficulty: difficultyLevel as "easy" | "just-right" | "hard",
+          repRange: selectedRepRange as "less" | "assigned" | "more",
+        },
+      };
+
+      return {
+        ...prev,
+        currentIndex: prev!.currentIndex + 1,
+        feedback: updatedFeedback,
+      };
+    });
+
+    // Reset questionnaire
+    setDifficultyLevel(null);
+    setSelectedRepRange(null);
 
     opacity.value = withTiming(0, { duration: 300 }, () => {
       runOnJS(setOverlayShown)(false);
     });
   };
 
-  const handleDifficultySelect = (difficulty: string) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  const handleCompleteRoutine = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+
+    // Should probably make this a useReducer in the future
+    setRoutineSession((prev) => {
+      if (!prev) return prev;
+
+      return {
+        ...prev,
+        completed: true,
+      };
+    });
+
+    // opacity.value = withTiming(0, { duration: 300 }, () => {
+    //   runOnJS(setOverlayShown)(false);
+    // });
+
+    router.push("/");
+  };
+
+  const handleDifficultySelect = async (difficulty: string) => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setDifficultyLevel(difficulty);
   };
 
-  const handleRepRangeSelect = (repRange: string) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  const handleRepRangeSelect = async (repRange: string) => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setSelectedRepRange(repRange);
   };
 
@@ -101,10 +151,13 @@ const ActiveExercisePage = () => {
 
     const interval = setInterval(() => {
       const elapsed = Date.now() - startTime;
-      setRoutineSession((prev) => ({
-        ...prev!,
-        timeElapsed: elapsed,
-      }));
+      setRoutineSession(
+        (prev) =>
+          ({
+            ...prev,
+            timeElapsed: elapsed,
+          } as RoutineSession)
+      );
     }, 1000);
 
     return () => clearInterval(interval);
@@ -248,23 +301,47 @@ const ActiveExercisePage = () => {
                   alignItems: "center",
                 }}
               >
-                <HoldToStartButton
-                  onComplete={handleComplete}
-                  text={`Continue to exercise ${
-                    routineSession?.currentIndex! + 2
-                  }`}
-                  baseColor={Colors.dark}
-                  baseIcon={
+                {!isLastExercise ? (
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 8,
+                      paddingVertical: 8,
+                      paddingHorizontal: 16,
+                      borderRadius: 9999,
+                      borderWidth: 1,
+                      borderColor: Colors.dark,
+                    }}
+                    onPress={handleCompleteExercise}
+                  >
+                    <Text>{`Continue to exercise ${
+                      routineSession?.currentIndex! + 2
+                    }`}</Text>
                     <Ionicons
                       name="chevron-forward"
                       size={16}
                       color={Colors.dark}
                     />
-                  }
-                  overlayIcon={
-                    <Ionicons name="chevron-forward" size={16} color={"#FFF"} />
-                  }
-                />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 8,
+                      paddingVertical: 8,
+                      paddingHorizontal: 16,
+                      borderRadius: 9999,
+                      borderWidth: 1,
+                      borderColor: Colors.dark,
+                    }}
+                    onPress={handleCompleteRoutine}
+                  >
+                    <Text>{`Complete ${routineSession?.routine.name}`}</Text>
+                    <Ionicons name="checkmark" size={16} color={Colors.dark} />
+                  </TouchableOpacity>
+                )}
               </View>
             )}
           </View>
@@ -374,7 +451,7 @@ const formatTime = (ms: number) => {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
 
-  // Pad with zero if needed
+  // Pad with zero
   const paddedMinutes = String(minutes).padStart(2, "0");
   const paddedSeconds = String(seconds).padStart(2, "0");
 

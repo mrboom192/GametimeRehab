@@ -23,6 +23,7 @@ import {
   RoutineSession,
   useRoutineSession,
 } from "@/src/contexts/RoutineSessionContext";
+import LottieView from "lottie-react-native";
 
 const difficultyOptions = [
   { label: "😁 \n Easy", value: "easy" },

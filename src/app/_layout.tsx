@@ -10,6 +10,7 @@ import { useFonts } from "expo-font";
 import { CartProvider } from "../contexts/CartContext";
 import { RoutineProvider } from "../contexts/RoutineContext";
 import { RoutineSessionProvider } from "../contexts/RoutineSessionContext";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -48,20 +49,22 @@ function RootLayoutNav() {
   // Need to change font to dm-sans
 
   return (
-    <SessionProvider>
-      <UserProvider>
-        <CartProvider>
-          <RoutineSessionProvider>
-            <StatusBar style="dark" backgroundColor="#FFF" />
-            <Stack
-              screenOptions={{
-                navigationBarColor: "#FFF",
-                headerShown: false,
-              }}
-            />
-          </RoutineSessionProvider>
-        </CartProvider>
-      </UserProvider>
-    </SessionProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SessionProvider>
+        <UserProvider>
+          <CartProvider>
+            <RoutineSessionProvider>
+              <StatusBar style="dark" backgroundColor="#FFF" />
+              <Stack
+                screenOptions={{
+                  navigationBarColor: "#FFF",
+                  headerShown: false,
+                }}
+              />
+            </RoutineSessionProvider>
+          </CartProvider>
+        </UserProvider>
+      </SessionProvider>
+    </GestureHandlerRootView>
   );
 }

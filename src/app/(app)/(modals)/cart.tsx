@@ -53,8 +53,8 @@ const Page = () => {
       // Resize & compress image
       const manipulated = await ImageManipulator.manipulateAsync(
         uri,
-        [{ resize: { width: 300, height: 300 } }], // Resize image
-        { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+        [{ resize: { width: 200, height: 200 } }], // Resize image
+        { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG }
       );
 
       setImage(manipulated.uri); // Resized image

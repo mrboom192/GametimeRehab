@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import {
   Text,
   TouchableOpacity,
@@ -18,13 +18,23 @@ import Animated, {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Colors from "@/src/constants/Colors";
 
-const HOLD_DURATION = 1000;
-
-type Props = {
+const HoldToStartButton = ({
+  onComplete,
+  duration = 1000,
+  baseColor = Colors.green,
+  overlayColor = "#FFF",
+  baseIcon = <Ionicons name="play" size={16} color={baseColor} />,
+  overlayIcon = <Ionicons name="play" size={16} color={overlayColor} />,
+  text = "Hold to start",
+}: {
   onComplete: () => void;
-};
-
-const HoldToStartButton = ({ onComplete }: Props) => {
+  duration?: number;
+  baseColor?: string;
+  overlayColor?: string;
+  baseIcon?: ReactNode;
+  overlayIcon?: ReactNode;
+  text?: string;
+}) => {
   const progress = useSharedValue(0);
   const isHolding = useSharedValue(false);
   const buttonWidth = useSharedValue(0);
@@ -39,7 +49,7 @@ const HoldToStartButton = ({ onComplete }: Props) => {
     progress.value = withTiming(
       1,
       {
-        duration: HOLD_DURATION,
+        duration: duration,
         easing: Easing.bezier(0, -0.05, 0.25, 1),
         reduceMotion: ReduceMotion.System,
       },
@@ -68,17 +78,22 @@ const HoldToStartButton = ({ onComplete }: Props) => {
       activeOpacity={1}
       onPressIn={startHold}
       onPressOut={cancelHold}
-      style={styles.buttonContainer}
+      style={[styles.buttonContainer, { borderColor: baseColor }]}
       onLayout={onLayout}
     >
-      <Animated.View style={[styles.fill, animatedStyle]} />
+      <Animated.View
+        style={[styles.fill, { backgroundColor: baseColor }, animatedStyle]}
+      />
 
       {/* Green text */}
       <View style={styles.content}>
-        <Text style={[styles.text, { color: Colors.green }]} numberOfLines={1}>
-          Hold to start
+        <Text
+          style={[styles.text, { color: baseColor, borderColor: baseColor }]}
+          numberOfLines={1}
+        >
+          {text}
         </Text>
-        <Ionicons name="play" size={16} color={Colors.green} />
+        {baseIcon}
       </View>
 
       {/* For white text effect */}
@@ -92,10 +107,13 @@ const HoldToStartButton = ({ onComplete }: Props) => {
             gap: 8,
           }}
         >
-          <Text style={[styles.text, { color: "#FFF" }]} numberOfLines={1}>
-            Hold to start
+          <Text
+            style={[styles.text, { color: overlayColor }]}
+            numberOfLines={1}
+          >
+            {text}
           </Text>
-          <Ionicons name="play" size={16} color={"#FFF"} />
+          {overlayIcon}
         </View>
       </Animated.View>
     </TouchableOpacity>
@@ -110,15 +128,12 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: Colors.green,
-    backgroundColor: "#FFF",
   },
   fill: {
     position: "absolute",
     left: 0,
     top: 0,
     bottom: 0,
-    backgroundColor: Colors.green,
     zIndex: 0,
   },
   content: {

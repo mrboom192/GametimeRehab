@@ -156,7 +156,6 @@ const RoutinePage = () => {
         data={routine.exercises}
         keyExtractor={(item) => item.id}
         onEndReachedThreshold={0}
-        // style={{ flex: 1 }}
         contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={({ item }) => {
           return (

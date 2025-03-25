@@ -226,9 +226,7 @@ const OverlayQuestionnaire = ({
   const [selectedRepRange, setSelectedRepRange] = useState<string | null>(null);
 
   const numberOfExercises = routineSession?.routine.exercises?.length;
-  const isLastExercise =
-    routineSession?.currentIndex != null &&
-    routineSession.currentIndex + 1 === numberOfExercises;
+  const isLastExercise = routineSession?.currentIndex! === numberOfExercises;
 
   const incrementCurrentIdx = () => {
     // Do not increment if we are on the last exercise, as that messes things up
@@ -463,7 +461,7 @@ const OverlayQuestionnaire = ({
               onPress={handleCompleteExercise}
             >
               <Text style={{ fontFamily: "dm-sb" }}>{`Continue to exercise ${
-                routineSession?.currentIndex! + 1
+                (routineSession?.currentIndex as number) + 1
               }`}</Text>
               <Ionicons name="chevron-forward" size={16} color={Colors.dark} />
             </TouchableOpacity>

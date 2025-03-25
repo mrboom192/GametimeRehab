@@ -155,7 +155,7 @@ const ActiveExercisePage = () => {
                 style={{
                   height: barHeight,
                   width: 4,
-                  backgroundColor: isActive ? Colors.primary : "#ccc",
+                  backgroundColor: isActive ? Colors.primary : Colors.faintGrey,
                   borderRadius: 2,
                 }}
               />
@@ -176,12 +176,14 @@ const ActiveExercisePage = () => {
           </Text>
         </View>
 
+        {/* Exercise image */}
         <Image
           source={{ uri: currentExerciseImage }}
           style={{ width: 300, height: 300 }}
           resizeMode="contain"
         />
 
+        {/* Bottom timer and complete button */}
         <View
           style={{
             flexDirection: "row",
@@ -229,24 +231,27 @@ const OverlayQuestionnaire = ({
     routineSession.currentIndex + 1 === numberOfExercises;
 
   const incrementCurrentIdx = () => {
-    // Should probably make this a useReducer in the future
-    setRoutineSession((prev) => {
-      if (!prev) return prev;
+    // Do not increment if we are on the last exercise, as that messes things up
+    if (!isLastExercise) {
+      // Should probably make this a useReducer in the future
+      setRoutineSession((prev) => {
+        if (!prev) return prev;
 
-      const updatedFeedback = {
-        ...prev.feedback,
-        [prev.currentIndex]: {
-          difficulty: difficultyLevel as "easy" | "just-right" | "hard",
-          repRange: selectedRepRange as "less" | "assigned" | "more",
-        },
-      };
+        const updatedFeedback = {
+          ...prev.feedback,
+          [prev.currentIndex]: {
+            difficulty: difficultyLevel as "easy" | "just-right" | "hard",
+            repRange: selectedRepRange as "less" | "assigned" | "more",
+          },
+        };
 
-      return {
-        ...prev,
-        currentIndex: prev!.currentIndex + 1,
-        feedback: updatedFeedback,
-      };
-    });
+        return {
+          ...prev,
+          currentIndex: prev!.currentIndex + 1,
+          feedback: updatedFeedback,
+        };
+      });
+    }
   };
 
   useAnimatedReaction(
@@ -458,7 +463,7 @@ const OverlayQuestionnaire = ({
               onPress={handleCompleteExercise}
             >
               <Text style={{ fontFamily: "dm-sb" }}>{`Continue to exercise ${
-                routineSession?.currentIndex! + 2
+                routineSession?.currentIndex! + 1
               }`}</Text>
               <Ionicons name="chevron-forward" size={16} color={Colors.dark} />
             </TouchableOpacity>

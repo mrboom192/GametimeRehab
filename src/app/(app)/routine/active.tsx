@@ -111,6 +111,11 @@ const ActiveExercisePage = () => {
     setRoutineSession((prev) => {
       if (!prev) return prev;
 
+      // Hides the modal (need to find a way to hide it first before state updates)
+      opacity.value = withTiming(0, { duration: 300 }, () => {
+        runOnJS(setOverlayShown)(false);
+      });
+
       const updatedFeedback = {
         ...prev.feedback,
         [prev.currentIndex]: {
@@ -129,11 +134,6 @@ const ActiveExercisePage = () => {
     // Reset questionnaire
     setDifficultyLevel(null);
     setSelectedRepRange(null);
-
-    // Hides the modal
-    opacity.value = withTiming(0, { duration: 300 }, () => {
-      runOnJS(setOverlayShown)(false);
-    });
   };
 
   const handleCompleteRoutine = () => {
@@ -306,55 +306,57 @@ const ActiveExercisePage = () => {
                 })}
               </View>
             </View>
-            {selectedRepRange && difficultyLevel && (
-              <View
-                style={{
-                  width: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                {!isLastExercise ? (
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: 8,
-                      borderBottomWidth: 1,
-                      borderColor: Colors.dark,
-                    }}
-                    onPress={handleCompleteExercise}
-                  >
-                    <Text
-                      style={{ fontFamily: "dm-sb" }}
-                    >{`Continue to exercise ${
-                      routineSession?.currentIndex! + 2
-                    }`}</Text>
-                    <Ionicons
-                      name="chevron-forward"
-                      size={16}
-                      color={Colors.dark}
-                    />
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: 8,
-                      borderBottomWidth: 1,
-                      borderColor: Colors.dark,
-                    }}
-                    onPress={handleCompleteRoutine}
-                  >
-                    <Text
-                      style={{ fontFamily: "dm-sb" }}
-                    >{`Complete ${routineSession?.routine.name}`}</Text>
-                    <Ionicons name="checkmark" size={16} color={Colors.dark} />
-                  </TouchableOpacity>
-                )}
-              </View>
-            )}
+            <View
+              style={{
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {!isLastExercise ? (
+                <TouchableOpacity
+                  style={{
+                    opacity: selectedRepRange && difficultyLevel ? 1 : 0,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 8,
+                    borderBottomWidth: 1,
+                    borderColor: Colors.dark,
+                  }}
+                  disabled={selectedRepRange && difficultyLevel ? false : true}
+                  onPress={handleCompleteExercise}
+                >
+                  <Text
+                    style={{ fontFamily: "dm-sb" }}
+                  >{`Continue to exercise ${
+                    routineSession?.currentIndex! + 2
+                  }`}</Text>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={16}
+                    color={Colors.dark}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={{
+                    opacity: selectedRepRange && difficultyLevel ? 1 : 0,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 8,
+                    borderBottomWidth: 1,
+                    borderColor: Colors.dark,
+                  }}
+                  disabled={selectedRepRange && difficultyLevel ? false : true}
+                  onPress={handleCompleteRoutine}
+                >
+                  <Text
+                    style={{ fontFamily: "dm-sb" }}
+                  >{`Complete ${routineSession?.routine.name}`}</Text>
+                  <Ionicons name="checkmark" size={16} color={Colors.dark} />
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
         </Animated.View>
       )}

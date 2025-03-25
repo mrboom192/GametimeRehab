@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, Text, TouchableOpacity, View } from "react-native";
 import { Redirect, router, Stack } from "expo-router";
 import { useSession } from "@/src/contexts/AuthContext";
 import { auth } from "@/firebaseConfig";
@@ -110,7 +110,30 @@ export default function AppLayout() {
           ),
         }}
       />
-      <Stack.Screen name="routine/[id]" />
+      <Stack.Screen
+        name="routine/[id]"
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity
+              style={{
+                padding: 16,
+                borderRadius: 9999,
+                backgroundColor: "#FFF",
+                justifyContent: "center",
+                alignItems: "center",
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.2,
+                shadowRadius: 4,
+                elevation: 5,
+              }}
+              onPress={() => router.back()}
+            >
+              <Ionicons name="chevron-back" color={Colors.dark} size={20} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
       <Stack.Screen
         name="routine/active"
         options={{

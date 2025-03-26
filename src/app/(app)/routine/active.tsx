@@ -23,7 +23,7 @@ import {
   RoutineSession,
   useRoutineSession,
 } from "@/src/contexts/RoutineSessionContext";
-import LottieView from "lottie-react-native";
+import { useConfetti } from "@/src/contexts/ConfettiContext";
 
 const difficultyOptions = [
   { label: "😁 \n Easy", value: "easy" },
@@ -225,6 +225,7 @@ const OverlayQuestionnaire = ({
   const { routineSession, setRoutineSession } = useRoutineSession();
   const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);
   const [selectedRepRange, setSelectedRepRange] = useState<string | null>(null);
+  const { playConfetti } = useConfetti();
 
   const numberOfExercises = routineSession?.routine.exercises?.length;
   const isLastExercise = routineSession?.currentIndex! === numberOfExercises;
@@ -293,6 +294,7 @@ const OverlayQuestionnaire = ({
     setSelectedRepRange(null);
 
     router.dismiss();
+    playConfetti();
   };
 
   const handleDifficultySelect = async (difficulty: string) => {

@@ -19,6 +19,7 @@ import Feather from "@expo/vector-icons/Feather";
 import Avatar from "./Avatar";
 
 const athleteBackground = require("@/assets/images/athletebackground1.png");
+const trainerBackground = require("@/assets/images/trainerbackground1.png");
 const HEADER_HEIGHT_PERCENTAGE = 0.475; // How much the space the header takes up as a pecentage of screen height
 const GRADIENT_START = { x: 1, y: 0.65 }; // Adjust the gradient start/end
 const GRADIENT_END = { x: 1, y: 0.905 };
@@ -54,7 +55,9 @@ const Header = ({
 
   return (
     <ImageBackground
-      source={athleteBackground}
+      source={
+        userInfo?.type === "trainer" ? trainerBackground : athleteBackground
+      }
       imageStyle={{ resizeMode: "cover" }}
       style={{
         height: height * HEADER_HEIGHT_PERCENTAGE,

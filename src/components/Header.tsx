@@ -111,22 +111,20 @@ const Header = ({
 
           <View style={{ flexDirection: "column", gap: 8 }}>
             <View>
-              {userInfo?.type === "athlete" ? (
-                <View style={{ flexDirection: "row", gap: 6, marginLeft: 16 }}>
-                  <Feather name="eye" size={20} color={"#A6A6A6"} />
-                  <Text
-                    style={{
-                      fontFamily: "dm",
-                      fontSize: 16,
-                      color: "#A6A6A6",
-                    }}
-                  >
-                    Athlete View
-                  </Text>
-                </View>
-              ) : (
-                <></>
-              )}
+              <View style={{ flexDirection: "row", gap: 6, marginLeft: 16 }}>
+                <Feather name="eye" size={20} color={"#A6A6A6"} />
+                <Text
+                  style={{
+                    fontFamily: "dm",
+                    fontSize: 16,
+                    color: "#A6A6A6",
+                  }}
+                >
+                  {userInfo?.type === "athlete"
+                    ? "Athlete View"
+                    : "Trainer View"}
+                </Text>
+              </View>
               <Text
                 style={{
                   marginLeft: 16,

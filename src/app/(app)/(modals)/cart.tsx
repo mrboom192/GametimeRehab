@@ -45,8 +45,6 @@ const Page = () => {
       quality: 0.01,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       const uri = result.assets[0].uri;
 
@@ -86,7 +84,6 @@ const Page = () => {
 
       try {
         await uploadBytes(fileRef, blob);
-        console.log("Ran"); // Only logs if successful
       } catch (error) {
         console.error("uploadBytes failed:", error);
       }

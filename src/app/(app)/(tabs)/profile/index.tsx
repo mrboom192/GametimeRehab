@@ -30,8 +30,6 @@ const Profile = () => {
       quality: 0.01,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       const uri = result.assets[0].uri;
 

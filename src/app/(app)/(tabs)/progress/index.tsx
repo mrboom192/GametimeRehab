@@ -34,7 +34,6 @@ const Progress = () => {
         // Customize the appearance of the calendar
         onDayPress={(day: { dateString: React.SetStateAction<string> }) => {
           setSelected(day.dateString);
-          console.log("selected day", day);
         }}
         // Specify the current date
         // Callback that gets called when the user selects a day

@@ -86,10 +86,6 @@ export const SignupProvider: React.FC<SignupProviderProps> = ({ children }) => {
     setSignupData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // useEffect(() => {
-  //   console.log(signupData);
-  // }, [signupData]);
-
   return (
     <SignupContext.Provider value={{ signupData, updateSignupData }}>
       {children}

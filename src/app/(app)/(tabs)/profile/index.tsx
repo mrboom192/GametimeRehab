@@ -245,13 +245,25 @@ const Profile = () => {
         editable={false}
       />
 
-      <View className="mb-32">
-        <NavigateButton
-          href="/profile/pair"
-          title="pair with trainer"
-          theme="dark"
-        />
-      </View>
+      {userInfo.type === "athlete" ? (
+        <View className="mb-32">
+          <NavigateButton
+            href="/profile/pair"
+            title="pair with trainer"
+            theme="dark"
+          />
+        </View>
+      ) : (
+        <View className="mb-32">
+          <NavigateButton
+            href="/profile/pair"
+            title={`${userInfo.pending_requests.length} pair ${
+              userInfo.pending_requests.length === 1 ? "request" : "requests"
+            } `}
+            theme="dark"
+          />
+        </View>
+      )}
     </ScrollView>
   );
 };

@@ -47,7 +47,7 @@ export default function TrainerSurvey4() {
       trainer_communication_styles: signupData.trainer_communication_styles,
       trainer_update_frequency: signupData.trainer_update_frequency,
       trainer_code: generateRandomCode(),
-      pendingRequests: [],
+      pending_requests: [],
     });
   };
 

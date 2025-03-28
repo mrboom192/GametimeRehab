@@ -2,7 +2,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { Redirect, router, Stack } from "expo-router";
 import { useSession } from "@/src/contexts/AuthContext";
 import { auth } from "@/firebaseConfig";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Colors from "@/src/constants/Colors";

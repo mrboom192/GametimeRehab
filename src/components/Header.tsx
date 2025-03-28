@@ -56,7 +56,11 @@ const Header = ({
   return (
     <ImageBackground
       source={
-        userInfo?.type === "trainer" ? trainerBackground : athleteBackground
+        loading // Need a better way to handle loading
+          ? ""
+          : userInfo?.type === "trainer"
+          ? trainerBackground
+          : athleteBackground
       }
       imageStyle={{ resizeMode: "cover" }}
       style={{

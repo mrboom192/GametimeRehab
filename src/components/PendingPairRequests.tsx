@@ -8,12 +8,8 @@ import {
   Alert,
 } from "react-native";
 import {
-  collection,
   doc,
   getDoc,
-  query,
-  where,
-  getDocs,
   updateDoc,
   arrayRemove,
   arrayUnion,

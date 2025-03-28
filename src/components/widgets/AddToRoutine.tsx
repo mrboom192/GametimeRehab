@@ -14,8 +14,10 @@ const AddToRoutine = () => {
         borderRadius: 10,
         flexDirection: "column",
         alignItems: "center",
+        justifyContent: "space-between",
         width: "100%",
         gap: 16,
+        flex: 1,
       }}
     >
       {/* Widget Header */}

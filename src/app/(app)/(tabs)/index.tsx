@@ -3,21 +3,21 @@ import {
   ActivityIndicator,
   View,
   Text,
-  Button,
   SafeAreaView,
   StyleSheet,
   Dimensions,
 } from "react-native";
 import { useUser } from "../../../contexts/UserContext"; // Import UserContext
 import { Stack } from "expo-router";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import Colors from "@/src/constants/Colors";
 import Header from "@/src/components/Header";
 import Animated, { FadeInLeft, FadeInRight } from "react-native-reanimated";
 import Progress from "@/src/components/widgets/Progress";
 import AddToRoutine from "@/src/components/widgets/AddToRoutine";
 import Streak from "@/src/components/widgets/Streak";
 import Trophy from "@/src/components/widgets/Trophy";
+import { Drawer } from "expo-router/drawer";
+import TrainerProgress from "@/src/components/widgets/TrainerProgress";
+import QuickUpdates from "@/src/components/widgets/QuickUpdates";
 
 const trophiesMock = [
   {
@@ -62,7 +62,8 @@ const trophiesMock = [
   },
 ];
 
-const tabs = ["Progress", "Trophies", "Upcoming"];
+const athleteTabs = ["Progress", "Trophies", "Upcoming"];
+const trainerTabs = ["Progress", "Roster", "Upcoming"];
 
 export default function Index() {
   const { userInfo, loading, initializing } = useUser(); // Assume useUser provides a loading state
@@ -87,6 +88,8 @@ export default function Index() {
     );
   }
 
+  const tabs = userInfo?.type === "athlete" ? athleteTabs : trainerTabs;
+
   const onTabChange = (newTab: string) => {
     if (newTab === tab) return; // No-op if you're already on that tab
 
@@ -106,21 +109,37 @@ export default function Index() {
         <View
           style={{
             flexDirection: "row",
+            flex: 1,
             gap: 16,
             width: "100%",
+            paddingBottom: 80,
           }}
         >
           <View style={{ flex: 1 }}>
-            <Progress
-              currentDate={new Date()}
-              recoveryDate={new Date(2025, 4, 15)}
-              startDate={new Date()}
-            />
+            {userInfo?.type === "athlete" ? (
+              <Progress
+                currentDate={new Date()}
+                recoveryDate={new Date(2025, 4, 15)}
+                startDate={new Date()}
+              />
+            ) : (
+              <TrainerProgress
+                currentDate={new Date()}
+                recoveryDate={new Date(2025, 4, 15)}
+                startDate={new Date()}
+              />
+            )}
           </View>
 
           <View style={{ flex: 1, flexDirection: "column", gap: 16 }}>
-            <AddToRoutine />
-            <Streak />
+            {userInfo?.type === "athlete" ? (
+              <>
+                <AddToRoutine />
+                <Streak />
+              </>
+            ) : (
+              <QuickUpdates />
+            )}
           </View>
         </View>
       </View>
@@ -149,6 +168,11 @@ export default function Index() {
         <Text>Upcoming View</Text>
       </View>
     ),
+    Roster: (
+      <View style={{ padding: 16 }}>
+        <Text>Roster View</Text>
+      </View>
+    ),
   };
 
   return (
@@ -167,19 +191,10 @@ export default function Index() {
         key={tab}
         entering={isForward ? FadeInRight : FadeInLeft}
         // exiting={isForward ? FadeOutLeft : FadeOutRight}
-        style={styles.animatedContainer}
+        style={{ flex: 1 }}
       >
         {tabComponents[tab] || <Text>Tab not found</Text>}
       </Animated.View>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  animatedContainer: {
-    flex: 1,
-  },
-});

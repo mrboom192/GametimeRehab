@@ -32,7 +32,7 @@ const Header = ({
   onTabChange: (tabName: string) => void;
 }) => {
   const scrollRef = useRef<ScrollView | null>(null);
-  const { userInfo, loading } = useUser(); // Assume useUser provides a loading state
+  const { data, loading } = useUser(); // Assume useUser provides a loading state
   const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const { height } = Dimensions.get("window");
@@ -58,7 +58,7 @@ const Header = ({
       source={
         loading // Need a better way to handle loading
           ? ""
-          : userInfo?.type === "trainer"
+          : data?.type === "trainer"
           ? trainerBackground
           : athleteBackground
       }
@@ -105,11 +105,9 @@ const Header = ({
 
             <Avatar
               color="#FFF"
-              uri={loading ? null : userInfo.image}
+              uri={loading ? null : data.image}
               size={48}
-              initials={
-                loading ? "?" : userInfo.first_name[0] + userInfo.last_name[0]
-              }
+              initials={loading ? "?" : data.first_name[0] + data.last_name[0]}
             />
           </View>
 
@@ -124,9 +122,7 @@ const Header = ({
                     color: "#A6A6A6",
                   }}
                 >
-                  {userInfo?.type === "athlete"
-                    ? "Athlete View"
-                    : "Trainer View"}
+                  {data?.type === "athlete" ? "Athlete View" : "Trainer View"}
                 </Text>
               </View>
               <Text
@@ -139,7 +135,7 @@ const Header = ({
               >
                 Welcome back,{" "}
                 <Text style={{ color: Colors.primary }}>
-                  {userInfo?.first_name}!
+                  {data?.first_name}!
                 </Text>
               </Text>
             </View>

@@ -16,7 +16,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import Avatar from "@/src/components/Avatar";
 
 const Profile = () => {
-  const { userInfo } = useUser();
+  const { data } = useUser();
   const { signOut } = useSession();
   const [image, setImage] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -133,20 +133,20 @@ const Profile = () => {
         }}
       />
 
-      <Avatar onPress={pickImage} size={64} uri={userInfo.image} />
+      <Avatar onPress={pickImage} size={64} uri={data.image} />
 
       {/* First Name and Last Name */}
       <View className="flex flex-col gap-4">
         <LabeledInput
           label="First name"
           placeholder="John"
-          value={userInfo.first_name}
+          value={data.first_name}
           editable={false}
         />
         <LabeledInput
           label="Last name"
           placeholder="Smith"
-          value={userInfo.last_name}
+          value={data.last_name}
           editable={false}
         />
       </View>
@@ -155,7 +155,7 @@ const Profile = () => {
       <LabeledInput
         label="Email"
         placeholder="example@example.com"
-        value={userInfo.email}
+        value={data.email}
         iconLeft={<Ionicons name="mail-outline" size={16} color="#717171" />}
         editable={false}
       />
@@ -164,7 +164,7 @@ const Profile = () => {
       <LabeledInput
         label="Phone number (optional)"
         placeholder="(123) 555-7890"
-        value={userInfo.phone || "No phone number"}
+        value={data.phone || "No phone number"}
         iconLeft={<Ionicons name="call-outline" size={16} color="#717171" />}
         editable={false}
       />
@@ -173,7 +173,7 @@ const Profile = () => {
       <LabeledInput
         label="Institution FAFSA code"
         placeholder="123456"
-        value={userInfo.institution_code}
+        value={data.institution_code}
         iconLeft={<Ionicons name="school-outline" size={16} color="#717171" />}
         editable={false}
       />
@@ -182,7 +182,7 @@ const Profile = () => {
       <LabeledInput
         label="Program/Sport"
         placeholder="Wrestling, Track, Football, etc..."
-        value={userInfo.sport || "Not specified"}
+        value={data.sport || "Not specified"}
         iconLeft={
           <Ionicons
             name="american-football-outline"
@@ -197,7 +197,7 @@ const Profile = () => {
       <LabeledInput
         label="Position/Weight class"
         placeholder="Quarter Back, Striker, Right Back, etc..."
-        value={userInfo.position || "Not specified"}
+        value={data.position || "Not specified"}
         editable={false}
       />
 
@@ -206,7 +206,7 @@ const Profile = () => {
         <LabeledInput
           label="System of Measurement"
           placeholder="Metric/Imperial"
-          value={userInfo.system_of_measurement || "Not specified"}
+          value={data.system_of_measurement || "Not specified"}
           editable={false}
         />
       </View>
@@ -216,9 +216,9 @@ const Profile = () => {
         label="Weight"
         placeholder="000"
         value={
-          userInfo.system_of_measurement === "imperial"
-            ? `${userInfo.weight_value || "N/A"} Pounds`
-            : `${userInfo.weight_value || "N/A"} Kilograms`
+          data.system_of_measurement === "imperial"
+            ? `${data.weight_value || "N/A"} Pounds`
+            : `${data.weight_value || "N/A"} Kilograms`
         }
         editable={false}
       />
@@ -228,11 +228,9 @@ const Profile = () => {
         label="Height"
         placeholder="000"
         value={
-          userInfo.system_of_measurement === "imperial"
-            ? `${userInfo.height_feet || "0"}' ${
-                userInfo.height_inches || "0"
-              }"`
-            : `${userInfo.height_cm || "0"} cm`
+          data.system_of_measurement === "imperial"
+            ? `${data.height_feet || "0"}' ${data.height_inches || "0"}"`
+            : `${data.height_cm || "0"} cm`
         }
         editable={false}
       />
@@ -241,11 +239,11 @@ const Profile = () => {
       <LabeledInput
         label="Gender"
         placeholder="Male/Female"
-        value={userInfo.gender || "Not specified"}
+        value={data.gender || "Not specified"}
         editable={false}
       />
 
-      {userInfo.type === "athlete" ? (
+      {data.type === "athlete" ? (
         <View className="mb-32">
           <NavigateButton
             href="/profile/pair"
@@ -257,8 +255,8 @@ const Profile = () => {
         <View className="mb-32">
           <NavigateButton
             href="/profile/pair"
-            title={`${userInfo.pending_requests.length} pair ${
-              userInfo.pending_requests.length === 1 ? "request" : "requests"
+            title={`${data.pending_requests.length} pair ${
+              data.pending_requests.length === 1 ? "request" : "requests"
             } `}
             theme="dark"
           />

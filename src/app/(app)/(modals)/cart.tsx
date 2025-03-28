@@ -26,7 +26,7 @@ const Page = () => {
   const [routineName, setRoutineName] = useState("My Routine");
   const [isUploading, setIsUploading] = useState(false);
   const id = auth.currentUser?.uid; // User id
-  const { userInfo } = useUser();
+  const { data } = useUser();
 
   const handleAdd = (item: Exercise) => {
     setCart((old) => [...old, item]);
@@ -100,9 +100,9 @@ const Page = () => {
 
     const currentUser = {
       id: id,
-      firstName: userInfo.first_name,
-      lastName: userInfo.first_name,
-      image: userInfo.image,
+      firstName: data.first_name,
+      lastName: data.first_name,
+      image: data.image,
     };
 
     // User creates their own routine in firebase

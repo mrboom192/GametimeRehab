@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Tabs } from "expo-router";
 import PairForm from "@/src/components/PairForm";
 import { useUser } from "@/src/contexts/UserContext";
@@ -7,17 +7,95 @@ import Colors from "@/src/constants/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as Haptics from "expo-haptics";
 import Avatar from "@/src/components/Avatar";
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  updateDoc,
+  writeBatch,
+} from "@firebase/firestore";
+import { db } from "@/firebaseConfig";
 
 const Pair = () => {
-  const { userInfo } = useUser();
+  const { data, setData } = useUser();
+  const [loading, setLoading] = useState(false);
 
-  const handleAccept = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  const handleAccept = async (athlete: any) => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
+    try {
+      setLoading(true);
+
+      // Use Firestore batch to atomically update both trainer and athlete documents
+      const batch = writeBatch(db);
+
+      // Remove athlete from `pendingRequests` and add to `athleteIds`
+      batch.update(doc(db, "users", data.uid), {
+        pending_requests: arrayRemove(athlete),
+        athletes: arrayUnion(athlete),
+      });
+
+      // Update athlete's `trainerId`
+      batch.update(doc(db, "users", athlete.uid), {
+        trainer: {
+          first_name: data.first_name,
+          last_name: data.last_name,
+          image: data.image,
+          uid: data.uid,
+        },
+      });
+
+      await batch.commit();
+
+      // If no error, the line below will run. Otherwise, will run the catch block
+      // We'll perform optimistic updates to trainer state.
+      setData((prev: any) => ({
+        ...prev,
+        pending_requests: prev.pending_requests.filter(
+          (req: any) => req.uid !== athlete.uid
+        ),
+        athletes: [...prev.athletes, athlete],
+      }));
+    } catch (err) {
+      console.error("Error accepting athlete request:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleReject = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  const handleReject = async (athlete: any) => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
+    try {
+      setLoading(true);
+
+      // Remove athlete from `pendingRequests`
+      await updateDoc(doc(db, "users", data.uid), {
+        pending_requests: arrayRemove(athlete),
+      });
+
+      // If no error, the line below will run. Otherwise, will run the catch block
+      // We'll perform optimistic updates to trainer state.
+      setData((prev: any) => ({
+        ...prev,
+        pending_requests: prev.pending_requests.filter(
+          (req: any) => req.uid !== athlete.uid
+        ),
+      }));
+    } catch (err) {
+      console.error("Error rejecting athlete request:", err);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (loading) {
+    return (
+      <View className="flex-1 flex-col bg-white p-5 gap-4">
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <View className="flex-1 flex-col bg-white p-5 gap-4">
@@ -33,21 +111,21 @@ const Pair = () => {
         }}
       />
       <View style={{ flex: 1, padding: 16 }}>
-        {userInfo?.type === "athlete" ? (
+        {data?.type === "athlete" ? (
           <PairForm />
         ) : (
           <View>
             <Text
               style={{ fontFamily: "dm-sb", fontSize: 20, marginBottom: 24 }}
             >
-              Trainer Code: {userInfo.trainer_code}
+              Trainer Code: {data.trainer_code}
             </Text>
 
             <Text style={{ fontFamily: "dm-sb", fontSize: 20 }}>
-              {userInfo.pending_requests.length} Pairing{" "}
-              {userInfo.pending_requests.length === 1 ? "Request" : "Requests"}
+              {data.pending_requests.length} Pairing{" "}
+              {data.pending_requests.length === 1 ? "Request" : "Requests"}
             </Text>
-            {userInfo.pending_requests.map((athlete: any) => (
+            {data.pending_requests.map((athlete: any) => (
               <View
                 style={{
                   paddingVertical: 16,
@@ -57,6 +135,7 @@ const Pair = () => {
                   borderBottomWidth: 1,
                   borderBottomColor: Colors.faintGrey,
                 }}
+                key={athlete.uid}
               >
                 {/* User info */}
                 <View
@@ -84,7 +163,7 @@ const Pair = () => {
                       backgroundColor: Colors.dark,
                       borderRadius: 9999,
                     }}
-                    onPress={() => handleAccept()}
+                    onPress={() => handleAccept(athlete)}
                   >
                     <Ionicons name="checkmark" color={"#FFF"} size={20} />
                   </TouchableOpacity>
@@ -94,7 +173,7 @@ const Pair = () => {
                       backgroundColor: Colors.red,
                       borderRadius: 9999,
                     }}
-                    onPress={() => handleReject()}
+                    onPress={() => handleReject(athlete)}
                   >
                     <Ionicons name="trash-outline" color={"#FFF"} size={20} />
                   </TouchableOpacity>

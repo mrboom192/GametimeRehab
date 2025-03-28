@@ -11,9 +11,8 @@ import React, {
 
 // Define types for user information (user context)
 interface UserContextType {
-  user: User | null;
-  userInfo: any | null; // Can be null if user info is not available
-  setUserInfo: React.Dispatch<React.SetStateAction<any | null>>; // Function to update the user info
+  data: any | null; // Can be null if user info is not available
+  setData: React.Dispatch<React.SetStateAction<any | null>>; // Function to update the user info
   loading: boolean; // To track if user data is being fetched
   initializing: boolean;
   error: string | null; // To track any errors in fetching user data
@@ -24,7 +23,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState<any | null>(null);
+  const [data, setData] = useState<any | null>(null);
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 
@@ -56,9 +55,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists()) {
-        setUserInfo(userDoc.data()); // Ensure data is correctly typed
+        setData(userDoc.data()); // Ensure data is correctly typed
       } else {
-        setUserInfo(null);
+        setData(null);
         setError("No user information found.");
       }
     } catch (e: any) {
@@ -71,7 +70,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, userInfo, initializing, setUserInfo, loading, error }}
+      value={{ data, setData, initializing, loading, error }}
     >
       {children}
     </UserContext.Provider>

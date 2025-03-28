@@ -15,7 +15,7 @@ import TrainerAthletes from "../TrainerAthletes";
 import PendingAthleteRequests from "../PendingPairRequests";
 
 export default function Home() {
-  const { userInfo } = useUser();
+  const { data } = useUser();
 
   return (
     <SafeAreaView className="flex-1 ">
@@ -23,13 +23,13 @@ export default function Home() {
 
       <View className="flex-1 flex-col p-5 gap-4">
         <Text>Athlete View</Text>
-        <AthleteDashboard firstName={userInfo?.first_name} />
+        <AthleteDashboard firstName={data?.first_name} />
 
-        {userInfo?.type === "trainer" ? (
+        {data?.type === "trainer" ? (
           <>
-            <Text>Trainer code: {userInfo.trainer_code}</Text>
-            <TrainerAthletes trainerUid={userInfo.uid} />
-            <PendingAthleteRequests trainerUid={userInfo.uid} />
+            <Text>Trainer code: {data.trainer_code}</Text>
+            <TrainerAthletes trainerUid={data.uid} />
+            <PendingAthleteRequests trainerUid={data.uid} />
           </>
         ) : (
           <></>

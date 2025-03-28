@@ -10,7 +10,7 @@ import {
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
-import { db } from "@/firebaseConfig";
+import { auth, db } from "@/firebaseConfig";
 import { useUser } from "../contexts/UserContext";
 
 const PairForm = () => {
@@ -18,7 +18,7 @@ const PairForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const { user, userInfo } = useUser();
+  const { data, setData } = useUser();
 
   const handlePair = async () => {
     // Reset error message first
@@ -33,7 +33,7 @@ const PairForm = () => {
     setLoading(true);
 
     try {
-      if (!user) {
+      if (!auth.currentUser) {
         setError("You must be logged in to request a pair.");
         setLoading(false);
         return;
@@ -57,16 +57,16 @@ const PairForm = () => {
       const trainerDoc = trainerSnapshot.docs[0];
       const trainerData = trainerDoc.data();
 
-      const userInfoToTrainer = {
-        uid: userInfo.uid,
-        first_name: userInfo.first_name,
-        last_name: userInfo.last_name,
-        image: userInfo.image,
+      const dataToTrainer = {
+        uid: data.uid,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        image: data.image,
       };
 
       // Add the current user's info to the trainer's pending_requests
       await updateDoc(doc(db, "users", trainerDoc.id), {
-        pending_requests: arrayUnion(userInfoToTrainer),
+        pending_requests: arrayUnion(dataToTrainer),
       });
 
       setSuccess(

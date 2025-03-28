@@ -24,6 +24,8 @@ import {
   useRoutineSession,
 } from "@/src/contexts/RoutineSessionContext";
 import { useConfetti } from "@/src/contexts/ConfettiContext";
+import { auth, db } from "@/firebaseConfig";
+import { doc, serverTimestamp, setDoc } from "@firebase/firestore";
 
 const difficultyOptions = [
   { label: "😁 \n Easy", value: "easy" },
@@ -83,12 +85,12 @@ const ActiveExercisePage = () => {
 
   // Helpful stuff
   const currentExercise =
-    routineSession?.routine?.exercises?.[routineSession?.currentIndex ?? 0];
+    routineSession?.exercises?.[routineSession?.currentIndex ?? 0];
 
   const currentExerciseName = currentExercise?.name ?? "";
   const currentExerciseDescription = currentExercise?.description ?? "";
   const currentExerciseImage = currentExercise?.image_dark ?? "";
-  const numberOfExercises = routineSession?.routine.exercises?.length;
+  const numberOfExercises = routineSession!.exercises.length;
 
   const handleShowQuestionnaire = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
@@ -227,7 +229,7 @@ const OverlayQuestionnaire = ({
   const [selectedRepRange, setSelectedRepRange] = useState<string | null>(null);
   const { playConfetti } = useConfetti();
 
-  const numberOfExercises = routineSession?.routine.exercises?.length;
+  const numberOfExercises = routineSession?.exercises?.length;
   const isLastExercise = routineSession?.currentIndex! === numberOfExercises;
 
   const incrementCurrentIdx = () => {
@@ -275,26 +277,39 @@ const OverlayQuestionnaire = ({
     };
   });
 
-  const handleCompleteRoutine = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+  const handleCompleteRoutine = async () => {
+    try {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 
-    // Should probably make this a useReducer in the future
-    setRoutineSession((prev) => {
-      if (!prev) return prev;
+      const uid = auth.currentUser?.uid;
+      if (!uid || !routineSession) return;
 
-      return {
-        ...prev,
+      const updatedSession = {
+        ...routineSession,
+        endedAt: serverTimestamp(),
         completed: true,
       };
-    });
 
-    // Reset everything
-    setRoutineSession(null);
-    setDifficultyLevel(null);
-    setSelectedRepRange(null);
+      setRoutineSession(updatedSession);
 
-    router.dismiss();
-    playConfetti();
+      const routineRef = doc(
+        db,
+        `users/${uid}/completedRoutines/${routineSession.sessionId}`
+      );
+
+      await setDoc(routineRef, updatedSession);
+
+      // Reset everything
+      setRoutineSession(null);
+      setDifficultyLevel(null);
+      setSelectedRepRange(null);
+
+      router.dismiss();
+      playConfetti();
+    } catch (error) {
+      console.error("Failed to complete routine:", error);
+      // Optional: Show error toast or UI feedback
+    }
   };
 
   const handleDifficultySelect = async (difficulty: string) => {
@@ -483,7 +498,7 @@ const OverlayQuestionnaire = ({
             >
               <Text
                 style={{ fontFamily: "dm-sb" }}
-              >{`Complete ${routineSession?.routine.name}`}</Text>
+              >{`Complete ${routineSession?.name}`}</Text>
               <Ionicons name="checkmark" size={16} color={Colors.dark} />
             </TouchableOpacity>
           )}

@@ -1,7 +1,7 @@
 import { View, Text, Image, FlatList, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Link, router, Stack, useLocalSearchParams } from "expo-router";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, Timestamp } from "firebase/firestore";
 import { auth, db } from "@/firebaseConfig";
 import Colors from "@/src/constants/Colors";
 import Avatar from "@/src/components/Avatar";
@@ -25,7 +25,7 @@ const RoutinePage = () => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          setRoutine({ id: docSnap.id, ...docSnap.data() });
+          setRoutine({ routineId: docSnap.id, ...docSnap.data() });
         } else {
           console.log("No such routine!");
         }
@@ -142,11 +142,12 @@ const RoutinePage = () => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
             setRoutineSession({
               sessionId: uuid.v4(), // So we can find the session later in local storage
-              routine: routine, // The routine object
               currentIndex: 0, // Current exercise we are on
-              timeElapsed: 0, // Total time taken for the routine
-              startedAt: Date.now(), // The date we start the session
+              timeElapsed: 0, // Milliseconds
+              startedAt: Timestamp.now(), // The date we start the session
+              endedAt: null,
               completed: false, // User cannot complete the exercise immediately
+              ...routine,
             });
             router.push(`/(app)/routine/active`);
           }}

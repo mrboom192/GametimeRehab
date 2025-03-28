@@ -66,7 +66,7 @@ const athleteTabs = ["Progress", "Trophies", "Upcoming"];
 const trainerTabs = ["Progress", "Roster", "Upcoming"];
 
 export default function Index() {
-  const { userInfo, loading, initializing } = useUser(); // Assume useUser provides a loading state
+  const { data, loading, initializing } = useUser(); // Assume useUser provides a loading state
   const [tab, setTab] = useState("Progress");
   const [isForward, setIsForward] = useState(false);
 
@@ -88,7 +88,7 @@ export default function Index() {
     );
   }
 
-  const tabs = userInfo?.type === "athlete" ? athleteTabs : trainerTabs;
+  const tabs = data?.type === "athlete" ? athleteTabs : trainerTabs;
 
   const onTabChange = (newTab: string) => {
     if (newTab === tab) return; // No-op if you're already on that tab
@@ -116,7 +116,7 @@ export default function Index() {
           }}
         >
           <View style={{ flex: 1 }}>
-            {userInfo?.type === "athlete" ? (
+            {data?.type === "athlete" ? (
               <Progress
                 currentDate={new Date()}
                 recoveryDate={new Date(2025, 4, 15)}
@@ -132,7 +132,7 @@ export default function Index() {
           </View>
 
           <View style={{ flex: 1, flexDirection: "column", gap: 16 }}>
-            {userInfo?.type === "athlete" ? (
+            {data?.type === "athlete" ? (
               <>
                 <AddToRoutine />
                 <Streak />

@@ -1,18 +1,30 @@
+import { FieldValue, Timestamp } from "firebase/firestore";
 import React, { createContext, useState, useContext, ReactNode } from "react";
+import { Exercise } from "../types/utils";
 
 export interface RoutineSession {
   sessionId: string;
-  routine: any;
   currentIndex: number;
   timeElapsed: number;
-  startedAt: number;
+  startedAt: Timestamp | FieldValue;
+  endedAt: Timestamp | FieldValue;
   completed: boolean;
-  feedback?: {
+  feedback: {
     [index: number]: {
       difficulty: "easy" | "just-right" | "hard";
       repRange: "less" | "assigned" | "more";
     };
   };
+
+  // Below is data about the routine itself
+  routineId: string;
+  assigneeIds: string[];
+  assignees: any[];
+  assigner: any;
+  createdAt: Timestamp | FieldValue;
+  exercises: Exercise[];
+  image: string;
+  name: string;
 }
 
 interface RoutineContextType {

@@ -106,31 +106,41 @@ const Page = () => {
               {exercise?.category}
             </Text>
           </View>
+          <Text style={{ fontFamily: "dm-sb", marginTop: 16, fontSize: 20 }}>
+            Tags
+          </Text>
           <View
             style={{
               paddingVertical: 16,
               flexDirection: "row",
+              flexWrap: "wrap", // ✅ allow wrapping
               gap: 8,
               alignItems: "center",
-              borderBottomWidth: 1,
-              borderColor: Colors.faintGrey,
+              marginBottom: 128,
             }}
           >
-            <Ionicons
-              name="information-circle-outline"
-              size={24}
-              color={Colors.dark}
-            />
-            <Text
-              style={{
-                textTransform: "capitalize",
-                fontFamily: "dm",
-                fontSize: 16,
-                color: Colors.dark,
-              }}
-            >
-              Rehabilitation
-            </Text>
+            {exercise.tags.map((tag, index) => (
+              <View
+                key={index}
+                style={{
+                  backgroundColor: hashStringToColor(tag),
+                  borderRadius: 9999,
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "dm-sb",
+                    fontSize: 14,
+                    textTransform: "capitalize",
+                    color: Colors.dark,
+                  }}
+                >
+                  {tag}
+                </Text>
+              </View>
+            ))}
           </View>
         </View>
       </ScrollView>
@@ -152,28 +162,6 @@ const Page = () => {
             borderTopWidth: 1,
           }}
         >
-          {/* <TouchableOpacity
-          style={{
-            paddingVertical: 16,
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "center",
-            borderWidth: 1,
-            borderColor: Colors.dark,
-            borderRadius: 8,
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: "dm-sb",
-              fontSize: 16,
-              color: Colors.dark,
-            }}
-          >
-            Edit
-          </Text>
-        </TouchableOpacity> */}
-
           <TouchableOpacity
             style={{
               paddingVertical: 16,
@@ -207,3 +195,25 @@ const Page = () => {
 };
 
 export default Page;
+
+const hashStringToColor = (str: string) => {
+  const tagColors = [
+    "#E0F7FA", // light blue
+    "#F1F8E9", // light green
+    "#FFF9C4", // light yellow
+    "#F8BBD0", // light pink
+    "#D1C4E9", // light purple
+    "#FFE0B2", // peach
+    "#C8E6C9", // mint green
+    "#FFCCBC", // light coral
+    "#DCEDC8", // celery green
+    "#B3E5FC", // sky blue
+  ];
+
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % tagColors.length;
+  return tagColors[index];
+};

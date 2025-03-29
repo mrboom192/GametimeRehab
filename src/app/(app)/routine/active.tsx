@@ -229,7 +229,7 @@ const OverlayQuestionnaire = ({
   const [selectedRepRange, setSelectedRepRange] = useState<string | null>(null);
   const { playConfetti } = useConfetti();
 
-  const numberOfExercises = routineSession?.exercises?.length;
+  const numberOfExercises = routineSession!.exercises.length;
   const isLastExercise = routineSession?.currentIndex! === numberOfExercises;
 
   const incrementCurrentIdx = () => {
@@ -239,18 +239,13 @@ const OverlayQuestionnaire = ({
       setRoutineSession((prev) => {
         if (!prev) return prev;
 
-        const updatedFeedback = {
-          ...prev.feedback,
-          [prev.currentIndex]: {
-            difficulty: difficultyLevel as "easy" | "just-right" | "hard",
-            repRange: selectedRepRange as "less" | "assigned" | "more",
-          },
-        };
+        // Reset questionnaire
+        setDifficultyLevel(null);
+        setSelectedRepRange(null);
 
         return {
           ...prev,
           currentIndex: prev!.currentIndex + 1,
-          feedback: updatedFeedback,
         };
       });
     }
@@ -288,6 +283,13 @@ const OverlayQuestionnaire = ({
         ...routineSession,
         endedAt: serverTimestamp(),
         completed: true,
+        feedback: {
+          ...routineSession.feedback,
+          [routineSession.currentIndex - 1]: {
+            difficulty: difficultyLevel as "easy" | "just-right" | "hard",
+            repRange: selectedRepRange as "less" | "assigned" | "more",
+          },
+        },
       };
 
       setRoutineSession(updatedSession);
@@ -325,9 +327,19 @@ const OverlayQuestionnaire = ({
   const handleCompleteExercise = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 
-    // Reset questionnaire
-    setDifficultyLevel(null);
-    setSelectedRepRange(null);
+    setRoutineSession((prev) => {
+      if (!prev) return prev;
+
+      const updatedFeedback = {
+        ...prev.feedback,
+        [prev.currentIndex - 1]: {
+          difficulty: difficultyLevel as "easy" | "just-right" | "hard",
+          repRange: selectedRepRange as "less" | "assigned" | "more",
+        },
+      };
+
+      return { ...prev, feedback: updatedFeedback };
+    });
 
     // Hides the modal (need to find a way to hide it first before state updates)
     opacity.value = withTiming(0, { duration: 300 }, () => {

@@ -16,12 +16,14 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSearch } from "@/src/contexts/SearchContext";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { auth, db } from "@/firebaseConfig";
+import { useExercise } from "@/src/contexts/ExerciseContext";
 
 const ITEMS_PER_PAGE = 8;
 
 const Search = () => {
   const { id } = useLocalSearchParams();
   const [exerciseList, setExerciseList] = useState<Exercise[]>([]);
+  const { setExercise } = useExercise();
   const [routines, setRoutines] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const { searchQuery } = useSearch();
@@ -63,6 +65,10 @@ const Search = () => {
 
   const handleRemove = (item: Exercise) => {
     setCart((old) => old.filter((cartItem) => cartItem.id !== item.id));
+  };
+
+  const handleOpen = (item: Exercise) => {
+    setExercise(item);
   };
 
   useEffect(() => {
@@ -281,13 +287,7 @@ const Search = () => {
                       gap: 8,
                     }}
                   >
-                    <Link
-                      href={{
-                        pathname: "/(app)/(modals)/[exercise-id]",
-                        params: { id: item.id },
-                      }}
-                      asChild
-                    >
+                    <Link href="/(app)/(modals)/exercise" asChild>
                       <TouchableOpacity
                         style={{
                           paddingHorizontal: 16,
@@ -299,6 +299,7 @@ const Search = () => {
                           borderColor: Colors.grey2,
                           borderRadius: 9999,
                         }}
+                        onPress={() => handleOpen(item)}
                       >
                         <Text
                           style={{

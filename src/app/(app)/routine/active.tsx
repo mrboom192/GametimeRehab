@@ -294,10 +294,7 @@ const OverlayQuestionnaire = ({
 
       setRoutineSession(updatedSession);
 
-      const routineRef = doc(
-        db,
-        `users/${uid}/completedRoutines/${routineSession.sessionId}`
-      );
+      const routineRef = doc(db, `completions/${routineSession.sessionId}`);
 
       await setDoc(routineRef, updatedSession);
 

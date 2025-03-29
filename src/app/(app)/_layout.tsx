@@ -38,7 +38,7 @@ export default function AppLayout() {
     <Stack screenOptions={{ navigationBarColor: "#FFF" }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen
-        name="(modals)/[exercise-id]"
+        name="(modals)/exercise"
         options={{
           presentation: "modal",
           title: "Exercise Details",

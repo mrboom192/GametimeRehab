@@ -9,12 +9,19 @@ import HoldToStartButton from "@/src/components/buttons/HoldToStartButton";
 import * as Haptics from "expo-haptics";
 import { useRoutineSession } from "@/src/contexts/RoutineSessionContext";
 import uuid from "react-native-uuid";
+import { useExercise } from "@/src/contexts/ExerciseContext";
+import { Exercise } from "@/src/types/utils";
 
 const RoutinePage = () => {
   const { id } = useLocalSearchParams();
   const [routine, setRoutine] = useState<any>();
   const { setRoutineSession } = useRoutineSession();
   const [loading, setLoading] = useState(true);
+  const { setExercise } = useExercise();
+
+  const handleOpen = (item: Exercise) => {
+    setExercise(item);
+  };
 
   useEffect(() => {
     const fetchRoutine = async () => {
@@ -225,13 +232,7 @@ const RoutinePage = () => {
                     gap: 8,
                   }}
                 >
-                  <Link
-                    href={{
-                      pathname: "/(app)/(modals)/[exercise-id]",
-                      params: { id: item.id },
-                    }}
-                    asChild
-                  >
+                  <Link href="/(app)/(modals)/exercise" asChild>
                     <TouchableOpacity
                       style={{
                         paddingHorizontal: 16,
@@ -243,6 +244,7 @@ const RoutinePage = () => {
                         borderColor: Colors.grey2,
                         borderRadius: 9999,
                       }}
+                      onPress={() => handleOpen(item)}
                     >
                       <Text
                         style={{

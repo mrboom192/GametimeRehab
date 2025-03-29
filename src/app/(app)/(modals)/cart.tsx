@@ -19,10 +19,12 @@ import uuid from "react-native-uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import * as ImageManipulator from "expo-image-manipulator";
 import { useUser } from "@/src/contexts/UserContext";
+import { useExercise } from "@/src/contexts/ExerciseContext";
 
 const Page = () => {
   const { cart, setCart } = useCart();
   const [image, setImage] = useState<string | null>(null);
+  const { setExercise } = useExercise();
   const [routineName, setRoutineName] = useState("My Routine");
   const [isUploading, setIsUploading] = useState(false);
   const id = auth.currentUser?.uid; // User id
@@ -34,6 +36,10 @@ const Page = () => {
 
   const handleRemove = (item: Exercise) => {
     setCart((old) => old.filter((cartItem) => cartItem.id !== item.id));
+  };
+
+  const handleOpen = (item: Exercise) => {
+    setExercise(item);
   };
 
   const pickImage = async () => {
@@ -107,6 +113,7 @@ const Page = () => {
       assigneeIds: [currentUser.id],
       assignees: [currentUser], // An array of people assigned to the routine
       assigner: currentUser, // Can only have 1 person assigning
+      assignerId: currentUser.id, // Can only have 1 person assigning
       image: uploadedImageURL,
       name: routineName,
       exercises: [...cart],
@@ -285,13 +292,7 @@ const Page = () => {
                       gap: 8,
                     }}
                   >
-                    <Link
-                      href={{
-                        pathname: "/(app)/(modals)/[exercise-id]",
-                        params: { id: item.id },
-                      }}
-                      asChild
-                    >
+                    <Link href="/(app)/(modals)/exercise" asChild>
                       <TouchableOpacity
                         style={{
                           paddingHorizontal: 16,
@@ -303,6 +304,7 @@ const Page = () => {
                           borderColor: Colors.grey2,
                           borderRadius: 9999,
                         }}
+                        onPress={() => handleOpen(item)}
                       >
                         <Text
                           style={{
@@ -366,7 +368,7 @@ const Page = () => {
           borderTopWidth: 1,
         }}
       >
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             paddingVertical: 16,
             width: "100%",
@@ -386,7 +388,7 @@ const Page = () => {
           >
             Add to Routine
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={createRoutine}
           disabled={isUploading}

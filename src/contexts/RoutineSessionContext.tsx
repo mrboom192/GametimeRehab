@@ -21,6 +21,7 @@ export interface RoutineSession {
   assigneeIds: string[];
   assignees: any[];
   assigner: any;
+  assignerId: any;
   createdAt: Timestamp | FieldValue;
   exercises: Exercise[];
   image: string;

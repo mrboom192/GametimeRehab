@@ -11,6 +11,7 @@ import { CartProvider } from "../contexts/CartContext";
 import { RoutineSessionProvider } from "../contexts/RoutineSessionContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ConfettiProvider } from "../contexts/ConfettiContext";
+import { ExerciseProvider } from "../contexts/ExerciseContext";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -54,15 +55,17 @@ function RootLayoutNav() {
         <UserProvider>
           <CartProvider>
             <RoutineSessionProvider>
-              <ConfettiProvider>
-                <StatusBar style="dark" backgroundColor="#FFF" />
-                <Stack
-                  screenOptions={{
-                    navigationBarColor: "#FFF",
-                    headerShown: false,
-                  }}
-                />
-              </ConfettiProvider>
+              <ExerciseProvider>
+                <ConfettiProvider>
+                  <StatusBar style="dark" backgroundColor="#FFF" />
+                  <Stack
+                    screenOptions={{
+                      navigationBarColor: "#FFF",
+                      headerShown: false,
+                    }}
+                  />
+                </ConfettiProvider>
+              </ExerciseProvider>
             </RoutineSessionProvider>
           </CartProvider>
         </UserProvider>

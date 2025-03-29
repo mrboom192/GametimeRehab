@@ -1,18 +1,41 @@
-import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
-import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  TextInput,
+} from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import exercises from "@/assets/data/exercises.json";
 import { Exercise } from "@/src/types/utils";
 import Colors from "@/src/constants/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useCart } from "@/src/contexts/CartContext";
+import * as Haptics from "expo-haptics";
+import { useExercise } from "@/src/contexts/ExerciseContext";
 
 const Page = () => {
   const { id } = useLocalSearchParams();
+  const { cart, setCart } = useCart();
+  const { exercise, setExercise } = useExercise();
 
-  // Find the exercise
-  const exercise = (exercises as Exercise[]).find(
-    (item: Exercise) => item.id === id
-  );
+  if (!exercise) {
+    return <Text>Loading...</Text>;
+  }
+
+  const handleAdd = async (item: Exercise) => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setCart((old) => [...old, item]);
+  };
+
+  const handleRemove = async (item: Exercise) => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setCart((old) => old.filter((cartItem) => cartItem.id !== item.id));
+  };
+
+  const isInCart = cart.some((cartItem) => cartItem.id === exercise.id);
 
   return (
     <View style={{ flex: 1 }}>
@@ -30,9 +53,18 @@ const Page = () => {
           >
             {exercise?.name}
           </Text>
-          <Text style={{ fontSize: 16, fontFamily: "dm", color: Colors.grey2 }}>
-            {exercise?.description}
-          </Text>
+          <TextInput
+            value={exercise.description}
+            onChangeText={(value) =>
+              setExercise((old: any) => ({ ...old, description: value }))
+            }
+            style={{
+              fontSize: 16,
+              fontFamily: "dm",
+              color: Colors.grey2,
+            }}
+            multiline
+          />
         </View>
 
         {/* Should perfect this later */}
@@ -118,7 +150,7 @@ const Page = () => {
           borderTopWidth: 1,
         }}
       >
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             paddingVertical: 16,
             width: "100%",
@@ -138,7 +170,7 @@ const Page = () => {
           >
             Edit
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={{
             paddingVertical: 16,
@@ -146,11 +178,14 @@ const Page = () => {
             alignItems: "center",
             justifyContent: "center",
             borderWidth: 1,
-            backgroundColor: Colors.dark,
-            borderColor: Colors.dark,
+            backgroundColor: isInCart ? Colors.red : Colors.dark,
+            borderColor: isInCart ? Colors.red : Colors.dark,
             borderRadius: 8,
             marginBottom: 32,
           }}
+          onPress={() =>
+            isInCart ? handleRemove(exercise) : handleAdd(exercise)
+          }
         >
           <Text
             style={{
@@ -159,7 +194,7 @@ const Page = () => {
               color: "#FFF",
             }}
           >
-            Add to Routine Cart
+            {isInCart ? "Remove from Cart" : "Add to Routine Cart"}
           </Text>
         </TouchableOpacity>
       </View>

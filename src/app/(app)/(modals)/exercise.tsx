@@ -25,6 +25,8 @@ const Page = () => {
     return <Text>Loading...</Text>;
   }
 
+  const isInCart = cart.some((cartItem) => cartItem.id === exercise.id);
+
   const handleAdd = async (item: Exercise) => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCart((old) => [...old, item]);
@@ -34,8 +36,6 @@ const Page = () => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCart((old) => old.filter((cartItem) => cartItem.id !== item.id));
   };
-
-  const isInCart = cart.some((cartItem) => cartItem.id === exercise.id);
 
   return (
     <View style={{ flex: 1 }}>

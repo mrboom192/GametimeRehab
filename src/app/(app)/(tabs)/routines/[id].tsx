@@ -105,7 +105,7 @@ const Search = () => {
               <Link
                 href={{
                   pathname: "/(app)/routine/[id]",
-                  params: { id: routine.id },
+                  params: { id: routine.id as string },
                 }}
                 key={routine.id}
                 asChild

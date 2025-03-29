@@ -14,9 +14,8 @@ import { useCart } from "@/src/contexts/CartContext";
 import { Exercise } from "@/src/types/utils";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSearch } from "@/src/contexts/SearchContext";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { auth, db } from "@/firebaseConfig";
 import { useExercise } from "@/src/contexts/ExerciseContext";
+import { useRoutines } from "@/src/contexts/RoutinesContext";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -24,8 +23,7 @@ const Search = () => {
   const { id } = useLocalSearchParams();
   const [exerciseList, setExerciseList] = useState<Exercise[]>([]);
   const { setExercise, setCanEdit } = useExercise();
-  const [routines, setRoutines] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { routines, setRoutines, loading } = useRoutines();
   const { searchQuery } = useSearch();
   const [page, setPage] = useState(1);
   const { cart, setCart } = useCart();
@@ -72,37 +70,14 @@ const Search = () => {
     setCanEdit(true);
   };
 
-  useEffect(() => {
-    const fetchRoutines = async () => {
-      const uid = auth.currentUser?.uid;
-      if (!uid) return;
-
-      try {
-        const q = query(
-          collection(db, "routines"),
-          where("assigneeIds", "array-contains", uid)
-        );
-        const querySnapshot = await getDocs(q);
-        const docs = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as any[];
-
-        setRoutines(docs);
-      } catch (error) {
-        console.error("Failed to fetch routines:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRoutines();
-  }, []);
-
   // Initial loading
   useEffect(() => {
     setExerciseList(filteredExercises.slice(0, ITEMS_PER_PAGE));
   }, [id]); // Reload when id changes
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FFF" }}>
@@ -123,9 +98,7 @@ const Search = () => {
           style={{ marginBottom: 16 }}
           contentContainerStyle={{ paddingLeft: 16 }}
         >
-          {loading ? (
-            <Text>Loading...</Text>
-          ) : routines.length === 0 ? (
+          {routines.length === 0 ? (
             <Text>No routines yet.</Text>
           ) : (
             routines.map((routine) => (

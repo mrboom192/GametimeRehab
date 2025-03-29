@@ -1,7 +1,13 @@
 import { View, Text, Image, FlatList, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Link, router, Stack, useLocalSearchParams } from "expo-router";
-import { doc, getDoc, serverTimestamp, Timestamp } from "firebase/firestore";
+import {
+  deleteDoc,
+  doc,
+  getDoc,
+  serverTimestamp,
+  Timestamp,
+} from "firebase/firestore";
 import { auth, db } from "@/firebaseConfig";
 import Colors from "@/src/constants/Colors";
 import Avatar from "@/src/components/Avatar";
@@ -22,6 +28,22 @@ const RoutinePage = () => {
   const handleOpen = (item: Exercise) => {
     setExercise(item);
     setCanEdit(false);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+
+      // Routine document location
+      const routineRef = doc(db, "routines", id as string);
+      await deleteDoc(routineRef);
+
+      router.dismiss();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setRoutine({});
+    }
   };
 
   useEffect(() => {
@@ -128,7 +150,7 @@ const RoutinePage = () => {
           justifyContent: "space-between",
         }}
       >
-        {/* Edit button */}
+        {/* Edit button
         <TouchableOpacity
           style={{
             flexDirection: "row",
@@ -142,7 +164,16 @@ const RoutinePage = () => {
           <Text style={{ color: "#FFF", fontFamily: "dm-sb", fontSize: 12 }}>
             Edit
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+
+        {/* Delete button */}
+        <HoldToStartButton
+          text="Delete routine"
+          baseColor={Colors.red}
+          baseIcon={<></>}
+          overlayIcon={<></>}
+          onComplete={handleDelete}
+        />
 
         {/* Start button */}
         <HoldToStartButton

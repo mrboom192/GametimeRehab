@@ -10,18 +10,19 @@ import React from "react";
 import Colors from "../constants/Colors";
 import { StatusBar } from "expo-status-bar";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Link, router, useSegments } from "expo-router";
+import { Link, router, usePathname, useSegments } from "expo-router";
 import { useCart } from "../contexts/CartContext";
 import { useSearch } from "../contexts/SearchContext";
 
 const ExerciseHeader = () => {
   const segments = useSegments();
+  const pathName = usePathname();
   const { cart } = useCart(); // Access the cart state
   const { searchQuery, setSearchQuery } = useSearch();
 
   const updateSearch = (query: string) => {
-    console.log(segments);
     setSearchQuery(query);
+    console.log(pathName);
   };
 
   return (

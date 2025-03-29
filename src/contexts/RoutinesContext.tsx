@@ -1,13 +1,20 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "@/firebaseConfig";
 import { Routine } from "../types/utils";
-import { onAuthStateChanged } from "firebase/auth";
 
 interface RoutinesContextType {
   routines: Routine[];
   setRoutines: React.Dispatch<React.SetStateAction<Routine[]>>;
   loading: boolean;
+  refetchRoutines: () => void;
 }
 
 const RoutinesContext = createContext<RoutinesContextType | undefined>(
@@ -19,43 +26,55 @@ export const RoutinesProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [uid, setUid] = useState<string | null>(null);
+
+  const fetchRoutines = useCallback(async (userId: string) => {
+    setLoading(true);
+    try {
+      const q = query(
+        collection(db, "routines"),
+        where("assigneeIds", "array-contains", userId)
+      );
+
+      const querySnapshot = await getDocs(q);
+      const docs = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Routine[];
+
+      setRoutines(docs);
+    } catch (error) {
+      console.error("Error fetching routines:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const refetchRoutines = useCallback(() => {
+    if (uid) {
+      fetchRoutines(uid);
+    }
+  }, [uid, fetchRoutines]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
+      if (user?.uid) {
+        setUid(user.uid);
+        fetchRoutines(user.uid);
+      } else {
+        setUid(null);
+        setRoutines([]);
         setLoading(false);
-        return;
       }
-
-      const fetchRoutines = async () => {
-        try {
-          const q = query(
-            collection(db, "routines"),
-            where("assigneeIds", "array-contains", user.uid)
-          );
-
-          const querySnapshot = await getDocs(q);
-          const docs = querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          })) as Routine[];
-
-          setRoutines(docs);
-        } catch (error) {
-          console.error("Error fetching routines:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchRoutines();
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [fetchRoutines]);
 
   return (
-    <RoutinesContext.Provider value={{ routines, setRoutines, loading }}>
+    <RoutinesContext.Provider
+      value={{ routines, setRoutines, loading, refetchRoutines }}
+    >
       {children}
     </RoutinesContext.Provider>
   );

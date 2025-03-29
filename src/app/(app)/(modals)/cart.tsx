@@ -10,21 +10,28 @@ import {
 import React, { useState } from "react";
 import { useCart } from "@/src/contexts/CartContext";
 import Colors from "@/src/constants/Colors";
-import { Exercise } from "@/src/types/utils";
+import { Exercise, Routine } from "@/src/types/utils";
 import { Link, router } from "expo-router";
 import { auth, db, storage } from "@/firebaseConfig";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  Timestamp,
+} from "firebase/firestore";
 import * as ImagePicker from "expo-image-picker";
 import uuid from "react-native-uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import * as ImageManipulator from "expo-image-manipulator";
 import { useUser } from "@/src/contexts/UserContext";
 import { useExercise } from "@/src/contexts/ExerciseContext";
+import { useRoutines } from "@/src/contexts/RoutinesContext";
 
 const Page = () => {
   const { cart, setCart } = useCart();
   const [image, setImage] = useState<string | null>(null);
   const { setExercise, setCanEdit } = useExercise();
+  const { setRoutines, refetchRoutines } = useRoutines();
   const [routineName, setRoutineName] = useState("My Routine");
   const [isUploading, setIsUploading] = useState(false);
   const id = auth.currentUser?.uid; // User id
@@ -109,18 +116,21 @@ const Page = () => {
       image: data.image,
     };
 
-    // User creates their own routine in firebase
-    await addDoc(collection(db, "routines"), {
-      assigneeIds: [currentUser.id],
+    const newRoutine: Routine = {
+      assigneeIds: [currentUser.id as string],
       assignees: [currentUser], // An array of people assigned to the routine
       assigner: currentUser, // Can only have 1 person assigning
-      assignerId: currentUser.id, // Can only have 1 person assigning
-      image: uploadedImageURL,
+      assignerId: currentUser.id as string, // Can only have 1 person assigning
+      image: uploadedImageURL as string,
       name: routineName,
       exercises: [...cart],
       createdAt: serverTimestamp(),
-    });
+    };
 
+    // User creates their own routine in firebase
+    await addDoc(collection(db, "routines"), newRoutine);
+
+    refetchRoutines();
     setCart([]);
     router.back();
   }

@@ -17,6 +17,7 @@ import { useRoutineSession } from "@/src/contexts/RoutineSessionContext";
 import uuid from "react-native-uuid";
 import { useExercise } from "@/src/contexts/ExerciseContext";
 import { Exercise } from "@/src/types/utils";
+import { useRoutines } from "@/src/contexts/RoutinesContext";
 
 const RoutinePage = () => {
   const { id } = useLocalSearchParams();
@@ -24,6 +25,7 @@ const RoutinePage = () => {
   const { setRoutineSession } = useRoutineSession();
   const [loading, setLoading] = useState(true);
   const { setExercise, setCanEdit } = useExercise();
+  const { routines, setRoutines } = useRoutines();
 
   const handleOpen = (item: Exercise) => {
     setExercise(item);
@@ -42,7 +44,7 @@ const RoutinePage = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setRoutine({});
+      setRoutines((old) => old.filter((item) => item.id !== id));
     }
   };
 

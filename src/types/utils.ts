@@ -1,4 +1,4 @@
-import { Timestamp } from "firebase/firestore";
+import { FieldValue, Timestamp } from "firebase/firestore";
 
 export interface IconProps {
   color: string;
@@ -16,7 +16,7 @@ export interface Exercise {
 }
 
 export interface Routine {
-  id: string;
+  id?: string;
   assigneeIds: string[];
   assignees: any[]; // An array of people assigned to the routine
   assigner: any; // Can only have 1 person assigning
@@ -24,5 +24,5 @@ export interface Routine {
   image: string;
   name: string;
   exercises: Exercise[];
-  createdAt: Timestamp;
+  createdAt: Timestamp | FieldValue;
 }

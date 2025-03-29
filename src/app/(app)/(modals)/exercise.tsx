@@ -19,7 +19,7 @@ import { useExercise } from "@/src/contexts/ExerciseContext";
 const Page = () => {
   const { id } = useLocalSearchParams();
   const { cart, setCart } = useCart();
-  const { exercise, setExercise } = useExercise();
+  const { exercise, setExercise, canEdit } = useExercise();
 
   if (!exercise) {
     return <Text>Loading...</Text>;
@@ -64,6 +64,7 @@ const Page = () => {
               color: Colors.grey2,
             }}
             multiline
+            editable={canEdit}
           />
         </View>
 
@@ -135,22 +136,23 @@ const Page = () => {
       </ScrollView>
 
       {/* Footer */}
-      <View
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          backgroundColor: "#fff",
-          paddingVertical: 16,
-          paddingHorizontal: 16,
-          flexDirection: "column",
-          gap: 8,
-          borderTopColor: Colors.faintGrey,
-          borderTopWidth: 1,
-        }}
-      >
-        {/* <TouchableOpacity
+      {canEdit && (
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            backgroundColor: "#fff",
+            paddingVertical: 16,
+            paddingHorizontal: 16,
+            flexDirection: "column",
+            gap: 8,
+            borderTopColor: Colors.faintGrey,
+            borderTopWidth: 1,
+          }}
+        >
+          {/* <TouchableOpacity
           style={{
             paddingVertical: 16,
             width: "100%",
@@ -171,33 +173,35 @@ const Page = () => {
             Edit
           </Text>
         </TouchableOpacity> */}
-        <TouchableOpacity
-          style={{
-            paddingVertical: 16,
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "center",
-            borderWidth: 1,
-            backgroundColor: isInCart ? Colors.red : Colors.dark,
-            borderColor: isInCart ? Colors.red : Colors.dark,
-            borderRadius: 8,
-            marginBottom: 32,
-          }}
-          onPress={() =>
-            isInCart ? handleRemove(exercise) : handleAdd(exercise)
-          }
-        >
-          <Text
+
+          <TouchableOpacity
             style={{
-              fontFamily: "dm-sb",
-              fontSize: 16,
-              color: "#FFF",
+              paddingVertical: 16,
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+              borderWidth: 1,
+              backgroundColor: isInCart ? Colors.red : Colors.dark,
+              borderColor: isInCart ? Colors.red : Colors.dark,
+              borderRadius: 8,
+              marginBottom: 32,
             }}
+            onPress={() =>
+              isInCart ? handleRemove(exercise) : handleAdd(exercise)
+            }
           >
-            {isInCart ? "Remove from Cart" : "Add to Routine Cart"}
-          </Text>
-        </TouchableOpacity>
-      </View>
+            <Text
+              style={{
+                fontFamily: "dm-sb",
+                fontSize: 16,
+                color: "#FFF",
+              }}
+            >
+              {isInCart ? "Remove from Cart" : "Add to Routine Cart"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };

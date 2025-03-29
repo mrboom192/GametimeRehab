@@ -17,10 +17,11 @@ const RoutinePage = () => {
   const [routine, setRoutine] = useState<any>();
   const { setRoutineSession } = useRoutineSession();
   const [loading, setLoading] = useState(true);
-  const { setExercise } = useExercise();
+  const { setExercise, setCanEdit } = useExercise();
 
   const handleOpen = (item: Exercise) => {
     setExercise(item);
+    setCanEdit(false);
   };
 
   useEffect(() => {

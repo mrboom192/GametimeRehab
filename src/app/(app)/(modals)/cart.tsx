@@ -24,7 +24,7 @@ import { useExercise } from "@/src/contexts/ExerciseContext";
 const Page = () => {
   const { cart, setCart } = useCart();
   const [image, setImage] = useState<string | null>(null);
-  const { setExercise } = useExercise();
+  const { setExercise, setCanEdit } = useExercise();
   const [routineName, setRoutineName] = useState("My Routine");
   const [isUploading, setIsUploading] = useState(false);
   const id = auth.currentUser?.uid; // User id
@@ -40,6 +40,7 @@ const Page = () => {
 
   const handleOpen = (item: Exercise) => {
     setExercise(item);
+    setCanEdit(true);
   };
 
   const pickImage = async () => {

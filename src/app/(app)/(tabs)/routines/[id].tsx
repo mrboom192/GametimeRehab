@@ -23,7 +23,7 @@ const ITEMS_PER_PAGE = 8;
 const Search = () => {
   const { id } = useLocalSearchParams();
   const [exerciseList, setExerciseList] = useState<Exercise[]>([]);
-  const { setExercise } = useExercise();
+  const { setExercise, setCanEdit } = useExercise();
   const [routines, setRoutines] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const { searchQuery } = useSearch();
@@ -69,6 +69,7 @@ const Search = () => {
 
   const handleOpen = (item: Exercise) => {
     setExercise(item);
+    setCanEdit(true);
   };
 
   useEffect(() => {

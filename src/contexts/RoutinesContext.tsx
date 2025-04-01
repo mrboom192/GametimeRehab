@@ -6,7 +6,7 @@ import React, {
   useCallback,
   useRef,
 } from "react";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { collection, onSnapshot, or, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "@/firebaseConfig";
 import { Routine } from "../types/utils";
@@ -32,7 +32,10 @@ export const RoutinesProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const q = query(
       collection(db, "routines"),
-      where("assigneeIds", "array-contains", userId)
+      or(
+        where("assigneeIds", "array-contains", userId),
+        where("assignerId", "==", userId)
+      )
     );
 
     const unsubscribeFn = onSnapshot(

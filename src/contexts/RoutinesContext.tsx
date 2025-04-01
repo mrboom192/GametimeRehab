@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useState,
   useCallback,
+  useRef,
 } from "react";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
@@ -12,7 +13,6 @@ import { Routine } from "../types/utils";
 
 interface RoutinesContextType {
   routines: Routine[];
-  setRoutines: React.Dispatch<React.SetStateAction<Routine[]>>;
   loading: boolean;
 }
 
@@ -25,7 +25,7 @@ export const RoutinesProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [unsubscribe, setUnsubscribe] = useState<(() => void) | null>(null);
+  const unsubscribeRef = useRef<(() => void) | null>(null); // ✅ useRef instead of useState
 
   const startRoutineListener = useCallback((userId: string) => {
     setLoading(true);
@@ -51,7 +51,8 @@ export const RoutinesProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     );
 
-    setUnsubscribe(() => unsubscribeFn);
+    // Save unsubscribe function without triggering re-renders
+    unsubscribeRef.current = unsubscribeFn;
   }, []);
 
   useEffect(() => {
@@ -61,18 +62,18 @@ export const RoutinesProvider: React.FC<{ children: React.ReactNode }> = ({
       } else {
         setRoutines([]);
         setLoading(false);
-        unsubscribe?.();
+        unsubscribeRef.current?.();
       }
     });
 
     return () => {
       authUnsub();
-      unsubscribe?.();
+      unsubscribeRef.current?.();
     };
-  }, [startRoutineListener, unsubscribe]);
+  }, [startRoutineListener]);
 
   return (
-    <RoutinesContext.Provider value={{ routines, setRoutines, loading }}>
+    <RoutinesContext.Provider value={{ routines, loading }}>
       {children}
     </RoutinesContext.Provider>
   );

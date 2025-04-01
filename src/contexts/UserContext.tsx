@@ -54,7 +54,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists()) {
-        setData(userDoc.data()); // Ensure data is correctly typed
+        setData({ uid: user.uid, ...userDoc.data() });
       } else {
         setData(null);
         setError("No user information found.");

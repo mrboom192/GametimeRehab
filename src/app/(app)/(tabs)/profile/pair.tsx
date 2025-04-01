@@ -48,6 +48,7 @@ const Pair = () => {
           image: data.image,
           uid: data.uid,
         },
+        trainerId: data.uid,
       });
 
       await batch.commit();
@@ -160,8 +161,10 @@ const Pair = () => {
             </Text>
 
             <Text style={{ fontFamily: "dm-sb", fontSize: 20 }}>
-              {data.pending_requests.length} Pairing{" "}
-              {data.pending_requests.length === 1 ? "Request" : "Requests"}
+              {data.pending_requests?.length || 0} Pairing{" "}
+              {(data.pending_requests?.length || 0) === 1
+                ? "Request"
+                : "Requests"}
             </Text>
             {data.pending_requests.map((athlete: any) => (
               <View
@@ -202,6 +205,7 @@ const Pair = () => {
                       borderRadius: 9999,
                     }}
                     onPress={() => handleAccept(athlete)}
+                    disabled={loading}
                   >
                     <Ionicons name="checkmark" color={"#FFF"} size={20} />
                   </TouchableOpacity>

@@ -312,9 +312,9 @@ const OverlayQuestionnaire = ({
       };
 
       const trainer =
-        data.trainer_id && data.trainer
+        data.trainerId && data.trainer
           ? {
-              uid: data.trainer_id,
+              uid: data.trainerId,
               firstName: data.trainer.first_name,
               lastName: data.trainer.last_name,
               image: data.trainer.image,

@@ -73,6 +73,14 @@ const Progress = () => {
               currentUserId={data.uid}
             />
           );
+        } else if (activity.type === "pair") {
+          return (
+            <PairActivityMessage
+              key={activity.id}
+              activity={activity}
+              currentUserId={data.uid}
+            />
+          );
         }
       })}
 
@@ -191,6 +199,68 @@ const CompletionActivityMessage: React.FC<{
           <Text style={{ fontFamily: "dm-sb" }}>{displayName}</Text> completed{" "}
           <Text style={{ fontFamily: "dm-sb" }}>{activity.routineName}</Text>,
           lasting about {durationText}.
+        </Text>
+        <Text
+          style={{
+            fontSize: 12,
+            fontFamily: "dm",
+            color: Colors.grey2,
+            marginTop: 4,
+          }}
+        >
+          {timeAgo}
+        </Text>
+      </View>
+    </View>
+  );
+};
+
+const PairActivityMessage: React.FC<{
+  activity: any;
+  currentUserId: string;
+}> = ({ activity, currentUserId }) => {
+  const actorName = `${activity.actor.firstName} ${activity.actor.lastName}`;
+  const displayName = currentUserId === activity.actorId ? "You" : actorName;
+
+  const timeAgo = formatDistanceToNow(
+    activity.createdAt?.toDate?.() || new Date(),
+    { addSuffix: true }
+  );
+
+  const start = activity.startedAt?.toDate?.();
+  const end = activity.endedAt?.toDate?.();
+  let durationText = "";
+
+  if (start && end) {
+    const secondsElapsed = Math.round((end.getTime() - start.getTime()) / 1000);
+    durationText = formatDuration(secondsElapsed);
+  }
+
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "flex-start",
+        paddingVertical: 24,
+        borderBottomWidth: 1,
+        borderColor: Colors.faintGrey,
+      }}
+    >
+      <Image
+        source={{ uri: activity.actor.image }}
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 9999,
+          marginRight: 10,
+        }}
+      />
+      <View style={{ flex: 1 }}>
+        <Text style={{ fontFamily: "dm" }}>
+          <Text style={{ fontFamily: "dm-sb" }}>{displayName}</Text> paired with{" "}
+          <Text style={{ fontFamily: "dm-sb" }}>
+            {activity.assignees[0].firstName} {activity.assignees[0].lastName}.
+          </Text>
         </Text>
         <Text
           style={{

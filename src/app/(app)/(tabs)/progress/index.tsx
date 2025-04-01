@@ -81,6 +81,14 @@ const Progress = () => {
               currentUserId={data.uid}
             />
           );
+        } else if (activity.type === "assign") {
+          return (
+            <AssignActivityMessage
+              key={activity.id}
+              activity={activity}
+              currentUserId={data.uid}
+            />
+          );
         }
       })}
 
@@ -264,6 +272,74 @@ const PairActivityMessage: React.FC<{
               : `${activity.assignees[0].firstName} ${activity.assignees[0].lastName}`}
             .
           </Text>
+        </Text>
+        <Text
+          style={{
+            fontSize: 12,
+            fontFamily: "dm",
+            color: Colors.grey2,
+            marginTop: 4,
+          }}
+        >
+          {timeAgo}
+        </Text>
+      </View>
+    </View>
+  );
+};
+
+const AssignActivityMessage: React.FC<{
+  activity: any;
+  currentUserId: string;
+}> = ({ activity, currentUserId }) => {
+  const actorName = `${activity.actor.firstName} ${activity.actor.lastName}`;
+  const displayName = currentUserId === activity.actorId ? "You" : actorName;
+
+  const timeAgo = formatDistanceToNow(
+    activity.createdAt?.toDate?.() || new Date(),
+    { addSuffix: true }
+  );
+
+  console.log(activity.assignees[0]);
+
+  const assignees = activity.assignees || [];
+  const firstAssignee = assignees[0];
+  const othersCount = assignees.length - 1;
+
+  const assigneeName =
+    firstAssignee?.uid === currentUserId
+      ? "you"
+      : `${firstAssignee?.first_name} ${firstAssignee?.last_name}`;
+
+  const assigneeText =
+    othersCount > 0
+      ? `${assigneeName} and ${othersCount} other${othersCount > 1 ? "s" : ""}`
+      : assigneeName;
+
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "flex-start",
+        paddingVertical: 24,
+        borderBottomWidth: 1,
+        borderColor: Colors.faintGrey,
+      }}
+    >
+      <Image
+        source={{ uri: activity.actor.image }}
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 9999,
+          marginRight: 10,
+        }}
+      />
+      <View style={{ flex: 1 }}>
+        <Text style={{ fontFamily: "dm" }}>
+          <Text style={{ fontFamily: "dm-sb" }}>{displayName}</Text> assigned{" "}
+          <Text style={{ fontFamily: "dm-sb" }}>{activity.routineName}</Text> to{" "}
+          <Text style={{ fontFamily: "dm-sb" }}>{assigneeText}</Text>.
         </Text>
         <Text
           style={{

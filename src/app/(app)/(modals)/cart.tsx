@@ -35,7 +35,6 @@ const Page = () => {
   const { setExercise, setCanEdit } = useExercise();
   const [routineName, setRoutineName] = useState("My Routine");
   const [isUploading, setIsUploading] = useState(false);
-  const id = auth.currentUser?.uid; // User id
   const { data } = useUser();
 
   const handleAdd = (item: Exercise) => {
@@ -152,6 +151,9 @@ const Page = () => {
 
         // Metadata
         createdAt: serverTimestamp(),
+
+        // Stuff below related to assign
+        routineName: routineName,
       };
 
       await setDoc(activityRef, newAssignActivty);

@@ -6,7 +6,7 @@ import { useUser } from "@/src/contexts/UserContext";
 
 const Page = () => {
   const [pain, setPain] = useState(null);
-  const { data, setData } = useUser();
+  const { data } = useUser();
 
   return (
     <View style={{ flex: 1 }}>

@@ -20,7 +20,7 @@ import { auth, db } from "@/firebaseConfig";
 import uuid from "react-native-uuid";
 
 const Pair = () => {
-  const { data, setData } = useUser();
+  const { data } = useUser();
   const [loading, setLoading] = useState(false);
 
   const handleAccept = async (athlete: any) => {
@@ -52,16 +52,6 @@ const Pair = () => {
       });
 
       await batch.commit();
-
-      // If no error, the line below will run. Otherwise, will run the catch block
-      // We'll perform optimistic updates to trainer state.
-      setData((prev: any) => ({
-        ...prev,
-        pending_requests: prev.pending_requests.filter(
-          (req: any) => req.uid !== athlete.uid
-        ),
-        athletes: [...prev.athletes, athlete],
-      }));
 
       const pairId = uuid.v4();
 
@@ -112,15 +102,6 @@ const Pair = () => {
       await updateDoc(doc(db, "users", data.uid), {
         pending_requests: arrayRemove(athlete),
       });
-
-      // If no error, the line below will run. Otherwise, will run the catch block
-      // We'll perform optimistic updates to trainer state.
-      setData((prev: any) => ({
-        ...prev,
-        pending_requests: prev.pending_requests.filter(
-          (req: any) => req.uid !== athlete.uid
-        ),
-      }));
     } catch (err) {
       console.error("Error rejecting athlete request:", err);
     } finally {

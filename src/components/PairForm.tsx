@@ -18,7 +18,7 @@ const PairForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const { data, setData } = useUser();
+  const { data } = useUser();
 
   const handlePair = async () => {
     // Reset error message first

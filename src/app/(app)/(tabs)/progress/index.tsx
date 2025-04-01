@@ -50,7 +50,7 @@ const Progress = () => {
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: "#FFF" }}
-      contentContainerClassName="flex-col bg-white p-5 gap-8"
+      contentContainerClassName="flex-col bg-white p-5"
     >
       <Tabs.Screen
         options={{

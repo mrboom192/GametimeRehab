@@ -259,7 +259,10 @@ const PairActivityMessage: React.FC<{
         <Text style={{ fontFamily: "dm" }}>
           <Text style={{ fontFamily: "dm-sb" }}>{displayName}</Text> paired with{" "}
           <Text style={{ fontFamily: "dm-sb" }}>
-            {activity.assignees[0].firstName} {activity.assignees[0].lastName}.
+            {activity.assignees[0].uid === currentUserId
+              ? "you"
+              : `${activity.assignees[0].firstName} ${activity.assignees[0].lastName}`}
+            .
           </Text>
         </Text>
         <Text

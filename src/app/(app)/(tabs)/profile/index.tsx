@@ -95,8 +95,6 @@ const Profile = () => {
           image: uploadedImageURL,
         });
       }
-
-      console.log("User Firestore document updated.");
     } catch (error) {
       console.error("Error updating Firestore user doc:", error);
     }

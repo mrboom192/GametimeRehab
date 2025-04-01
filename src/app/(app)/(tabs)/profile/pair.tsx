@@ -11,10 +11,13 @@ import {
   arrayRemove,
   arrayUnion,
   doc,
+  serverTimestamp,
+  setDoc,
   updateDoc,
   writeBatch,
 } from "@firebase/firestore";
-import { db } from "@/firebaseConfig";
+import { auth, db } from "@/firebaseConfig";
+import uuid from "react-native-uuid";
 
 const Pair = () => {
   const { data, setData } = useUser();
@@ -22,6 +25,8 @@ const Pair = () => {
 
   const handleAccept = async (athlete: any) => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
+    if (!auth.currentUser?.uid) return; // Just in case
 
     try {
       setLoading(true);
@@ -56,6 +61,39 @@ const Pair = () => {
         ),
         athletes: [...prev.athletes, athlete],
       }));
+
+      const pairId = uuid.v4();
+
+      const activityRef = doc(db, `activities/${pairId}`);
+
+      // Only trainer can confirm pairing
+      const currentUser = {
+        uid: auth.currentUser?.uid,
+        firstName: data.first_name,
+        lastName: data.last_name,
+        image: data.image,
+      };
+
+      // We dont have to do this, but just in case we change something in the future
+      const formattedAthlete = {
+        uid: athlete.uid,
+        firstName: athlete.first_name,
+        lastName: athlete.last_name,
+        image: athlete.image,
+      };
+
+      const newPairActivity: any = {
+        type: "pair",
+        actor: currentUser,
+        actorId: currentUser.uid as string,
+        assignees: formattedAthlete ? [formattedAthlete] : [],
+        assigneeIds: formattedAthlete ? [formattedAthlete.uid] : [],
+
+        // Metadata
+        createdAt: serverTimestamp(),
+      };
+
+      await setDoc(activityRef, newPairActivity);
     } catch (err) {
       console.error("Error accepting athlete request:", err);
     } finally {

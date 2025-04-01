@@ -3,15 +3,18 @@ import React from "react";
 import Colors from "@/src/constants/Colors";
 import Feather from "@expo/vector-icons/Feather";
 import { format, differenceInWeeks } from "date-fns";
+import { useUser } from "@/src/contexts/UserContext";
 
 const TrainerProgress = ({
   startDate,
   currentDate,
   recoveryDate,
+  data,
 }: {
   startDate: Date;
   currentDate: Date;
   recoveryDate: Date;
+  data?: any;
 }) => {
   const formattedDate = format(recoveryDate, "MMMM dd, yyyy"); // Example: March 16, 2025
   const weeksBetween = differenceInWeeks(recoveryDate, startDate);
@@ -58,7 +61,7 @@ const TrainerProgress = ({
           fontSize: 48,
         }}
       >
-        4
+        {data && data.athletes ? data.athletes.length : "0"}
       </Text>
 
       <Text
@@ -69,7 +72,7 @@ const TrainerProgress = ({
           textTransform: "uppercase",
         }}
       >
-        Athletes ahead of pace
+        Athletes in your roster
       </Text>
 
       <Text
@@ -79,8 +82,9 @@ const TrainerProgress = ({
           fontSize: 12,
         }}
       >
-        4 out of 12 athletes on your roster area ahead of schedule. Check in on
-        the others to see how they're doing.{" "}
+        As a trainer, you have{" "}
+        {data && data.athletes ? data.athletes.length : "0"} athletes in your
+        roster.
       </Text>
     </View>
   );

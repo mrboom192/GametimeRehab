@@ -337,7 +337,7 @@ const OverlayQuestionnaire = ({
         image: latestSession.image,
         startedAt: latestSession.startedAt,
         endedAt: latestSession.endedAt,
-        timeElapsed: latestSession.timeElapsed,
+        // timeElapsed: latestSession.timeElapsed,
         completed: latestSession.completed,
         feedback: latestSession.feedback,
         exerciseCount: latestSession.exercises.length,

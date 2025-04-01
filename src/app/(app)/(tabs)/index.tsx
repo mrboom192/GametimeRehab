@@ -127,6 +127,7 @@ export default function Index() {
                 currentDate={new Date()}
                 recoveryDate={new Date(2025, 4, 15)}
                 startDate={new Date()}
+                data={data}
               />
             )}
           </View>

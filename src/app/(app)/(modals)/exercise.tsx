@@ -6,9 +6,8 @@ import {
   ScrollView,
   TextInput,
 } from "react-native";
-import React, { useEffect, useMemo, useState } from "react";
+import React from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import exercises from "@/assets/data/exercises.json";
 import { Exercise } from "@/src/types/utils";
 import Colors from "@/src/constants/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -25,16 +24,24 @@ const Page = () => {
     return <Text>Loading...</Text>;
   }
 
-  const isInCart = cart.some((cartItem) => cartItem.id === exercise.id);
+  const isInCart = cart.exercises.some(
+    (cartItem) => cartItem.id === exercise.id
+  );
 
   const handleAdd = async (item: Exercise) => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setCart((old) => [...old, item]);
+    setCart((prev) => ({
+      ...prev,
+      exercises: [...prev.exercises, item],
+    }));
   };
 
   const handleRemove = async (item: Exercise) => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setCart((old) => old.filter((cartItem) => cartItem.id !== item.id));
+    setCart((prev) => ({
+      ...prev,
+      exercises: prev.exercises.filter((cartItem) => cartItem.id !== item.id),
+    }));
   };
 
   return (

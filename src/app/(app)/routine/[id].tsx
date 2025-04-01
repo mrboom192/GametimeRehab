@@ -25,7 +25,6 @@ const RoutinePage = () => {
   const { setRoutineSession } = useRoutineSession();
   const [loading, setLoading] = useState(true);
   const { setExercise, setCanEdit } = useExercise();
-  const { routines, setRoutines } = useRoutines();
 
   const handleOpen = (item: Exercise) => {
     setExercise(item);
@@ -43,8 +42,6 @@ const RoutinePage = () => {
       router.dismiss();
     } catch (error) {
       console.log(error);
-    } finally {
-      setRoutines((old) => old.filter((item) => item.id !== id));
     }
   };
 

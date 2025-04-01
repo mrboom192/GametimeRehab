@@ -23,7 +23,7 @@ const Search = () => {
   const { id } = useLocalSearchParams();
   const [exerciseList, setExerciseList] = useState<Exercise[]>([]);
   const { setExercise, setCanEdit } = useExercise();
-  const { routines, setRoutines, loading } = useRoutines();
+  const { routines, loading } = useRoutines();
   const { searchQuery } = useSearch();
   const [page, setPage] = useState(1);
   const { cart, setCart } = useCart();
@@ -58,11 +58,17 @@ const Search = () => {
   };
 
   const handleAdd = (item: Exercise) => {
-    setCart((old) => [...old, item]);
+    setCart((prev) => ({
+      ...prev,
+      exercises: [...prev.exercises, item],
+    }));
   };
 
   const handleRemove = (item: Exercise) => {
-    setCart((old) => old.filter((cartItem) => cartItem.id !== item.id));
+    setCart((prev) => ({
+      ...prev,
+      exercises: prev.exercises.filter((cartItem) => cartItem.id !== item.id),
+    }));
   };
 
   const handleOpen = (item: Exercise) => {
@@ -194,7 +200,9 @@ const Search = () => {
           style={{ flex: 1 }}
           contentContainerStyle={{ marginHorizontal: 16, paddingBottom: 100 }}
           renderItem={({ item }) => {
-            const isInCart = cart.some((cartItem) => cartItem.id === item.id);
+            const isInCart = cart.exercises.some(
+              (cartItem) => cartItem.id === item.id
+            );
             return (
               <View
                 style={{

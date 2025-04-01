@@ -5,7 +5,7 @@ import React, {
   useState,
   useCallback,
 } from "react";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "@/firebaseConfig";
 import { Routine } from "../types/utils";
@@ -14,7 +14,6 @@ interface RoutinesContextType {
   routines: Routine[];
   setRoutines: React.Dispatch<React.SetStateAction<Routine[]>>;
   loading: boolean;
-  refetchRoutines: () => void;
 }
 
 const RoutinesContext = createContext<RoutinesContextType | undefined>(
@@ -26,55 +25,54 @@ export const RoutinesProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [uid, setUid] = useState<string | null>(null);
+  const [unsubscribe, setUnsubscribe] = useState<(() => void) | null>(null);
 
-  const fetchRoutines = useCallback(async (userId: string) => {
+  const startRoutineListener = useCallback((userId: string) => {
     setLoading(true);
-    try {
-      const q = query(
-        collection(db, "routines"),
-        where("assigneeIds", "array-contains", userId)
-      );
 
-      const querySnapshot = await getDocs(q);
-      const docs = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as Routine[];
+    const q = query(
+      collection(db, "routines"),
+      where("assigneeIds", "array-contains", userId)
+    );
 
-      setRoutines(docs);
-    } catch (error) {
-      console.error("Error fetching routines:", error);
-    } finally {
-      setLoading(false);
-    }
+    const unsubscribeFn = onSnapshot(
+      q,
+      (snapshot) => {
+        const docs = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Routine[];
+        setRoutines(docs);
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error listening to routines:", error);
+        setLoading(false);
+      }
+    );
+
+    setUnsubscribe(() => unsubscribeFn);
   }, []);
 
-  const refetchRoutines = useCallback(() => {
-    if (uid) {
-      fetchRoutines(uid);
-    }
-  }, [uid, fetchRoutines]);
-
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const authUnsub = onAuthStateChanged(auth, (user) => {
       if (user?.uid) {
-        setUid(user.uid);
-        fetchRoutines(user.uid);
+        startRoutineListener(user.uid);
       } else {
-        setUid(null);
         setRoutines([]);
         setLoading(false);
+        unsubscribe?.();
       }
     });
 
-    return () => unsubscribe();
-  }, [fetchRoutines]);
+    return () => {
+      authUnsub();
+      unsubscribe?.();
+    };
+  }, [startRoutineListener, unsubscribe]);
 
   return (
-    <RoutinesContext.Provider
-      value={{ routines, setRoutines, loading, refetchRoutines }}
-    >
+    <RoutinesContext.Provider value={{ routines, setRoutines, loading }}>
       {children}
     </RoutinesContext.Provider>
   );

@@ -105,7 +105,7 @@ const ExerciseHeader = () => {
         </View>
 
         {/* Cart Button */}
-        {cart.length > 0 && (
+        {cart.exercises.length > 0 && (
           <Link href="/(app)/(modals)/cart" asChild>
             <TouchableOpacity
               style={{
@@ -130,7 +130,7 @@ const ExerciseHeader = () => {
                   color: "#FFF",
                 }}
               >
-                {cart.length}
+                {cart.exercises.length}
               </Text>
             </TouchableOpacity>
           </Link>

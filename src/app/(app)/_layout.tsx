@@ -110,6 +110,42 @@ export default function AppLayout() {
         }}
       />
       <Stack.Screen
+        name="(modals)/assign"
+        options={{
+          presentation: "modal",
+          title: "Assign to Athletes",
+          header: () => (
+            <View
+              style={{
+                position: "relative",
+                padding: 20,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#FFF",
+                borderBottomWidth: 1,
+                borderColor: Colors.faintGrey,
+              }}
+            >
+              <TouchableOpacity
+                style={{ position: "absolute", left: 16 }}
+                onPress={() => router.back()}
+              >
+                <Ionicons name="close-outline" color={Colors.dark} size={24} />
+              </TouchableOpacity>
+              <Text
+                style={{
+                  color: Colors.dark,
+                  fontFamily: "dm-sb",
+                  fontSize: 16,
+                }}
+              >
+                Assign to Athletes
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Stack.Screen
         name="routine/[id]"
         options={{
           headerLeft: () => (

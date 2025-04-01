@@ -16,7 +16,9 @@ import { auth, db, storage } from "@/firebaseConfig";
 import {
   addDoc,
   collection,
+  doc,
   serverTimestamp,
+  setDoc,
   Timestamp,
 } from "firebase/firestore";
 import * as ImagePicker from "expo-image-picker";
@@ -31,18 +33,23 @@ const Page = () => {
   const { cart, setCart } = useCart();
   const [image, setImage] = useState<string | null>(null);
   const { setExercise, setCanEdit } = useExercise();
-  const { setRoutines, refetchRoutines } = useRoutines();
   const [routineName, setRoutineName] = useState("My Routine");
   const [isUploading, setIsUploading] = useState(false);
   const id = auth.currentUser?.uid; // User id
   const { data } = useUser();
 
   const handleAdd = (item: Exercise) => {
-    setCart((old) => [...old, item]);
+    setCart((prev) => ({
+      ...prev,
+      exercises: [...prev.exercises, item],
+    }));
   };
 
   const handleRemove = (item: Exercise) => {
-    setCart((old) => old.filter((cartItem) => cartItem.id !== item.id));
+    setCart((prev) => ({
+      ...prev,
+      exercises: prev.exercises.filter((cartItem) => cartItem.id !== item.id),
+    }));
   };
 
   const handleOpen = (item: Exercise) => {
@@ -110,28 +117,52 @@ const Page = () => {
     }
 
     const currentUser = {
-      id: id,
+      uid: auth.currentUser?.uid,
       firstName: data.first_name,
-      lastName: data.first_name,
+      lastName: data.last_name,
       image: data.image,
     };
 
     const newRoutine: Routine = {
-      assigneeIds: [currentUser.id as string],
-      assignees: [currentUser], // An array of people assigned to the routine
+      assigneeIds: cart.assigneeIds,
+      assignees: cart.assignees, // An array of people assigned to the routine
       assigner: currentUser, // Can only have 1 person assigning
-      assignerId: currentUser.id as string, // Can only have 1 person assigning
+      assignerId: currentUser.uid as string, // Can only have 1 person assigning
       image: uploadedImageURL as string,
       name: routineName,
-      exercises: [...cart],
+      exercises: [...cart.exercises],
       createdAt: serverTimestamp(),
     };
 
     // User creates their own routine in firebase
     await addDoc(collection(db, "routines"), newRoutine);
 
-    refetchRoutines();
-    setCart([]);
+    if (data.type === "trainer" && cart.assignees.length !== 0) {
+      const assignId = uuid.v4();
+
+      const activityRef = doc(db, `activities/${assignId}`);
+
+      // Only trainer can assign like this
+      const newAssignActivty: any = {
+        type: "assign",
+        actor: currentUser,
+        actorId: currentUser.uid as string,
+        assignees: cart.assignees,
+        assigneeIds: cart.assigneeIds,
+
+        // Metadata
+        createdAt: serverTimestamp(),
+      };
+
+      await setDoc(activityRef, newAssignActivty);
+    }
+
+    setCart({
+      exercises: [],
+      routineName: "",
+      assignees: [],
+      assigneeIds: [],
+    });
     router.back();
   }
 
@@ -199,14 +230,36 @@ const Page = () => {
           </View>
 
           {/* Due Date */}
-          <View>
-            <Text
-              style={{ fontFamily: "dm", fontSize: 12, color: Colors.grey }}
-            >
-              Assignee
-            </Text>
-            <Text style={{ fontFamily: "dm-sb", fontSize: 16 }}>Me</Text>
-          </View>
+          <Link href={"/(app)/(modals)/assign"} asChild>
+            <TouchableOpacity>
+              <Text
+                style={{ fontFamily: "dm", fontSize: 12, color: Colors.grey }}
+              >
+                Assignees
+              </Text>
+              {cart.assignees.length === 0 ? (
+                <Text style={{ fontFamily: "dm-sb", fontSize: 16 }}>None</Text>
+              ) : (
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  {cart.assignees.map((athlete, index) => (
+                    <Image
+                      key={athlete.uid}
+                      source={{ uri: athlete.image }}
+                      style={{
+                        width: 24,
+                        height: 24,
+                        borderRadius: 12,
+                        borderWidth: 1,
+                        borderColor: "#FFF",
+                        marginLeft: index === 0 ? 0 : -8, // overlap spacing
+                        zIndex: cart.assignees.length - index, // ensure left-most is top
+                      }}
+                    />
+                  ))}
+                </View>
+              )}
+            </TouchableOpacity>
+          </Link>
 
           {/* Due */}
           <View>
@@ -219,7 +272,7 @@ const Page = () => {
           </View>
         </View>
       </View>
-      {cart.length === 0 ? (
+      {cart.exercises.length === 0 ? (
         <Text
           style={{
             fontSize: 16,
@@ -231,12 +284,14 @@ const Page = () => {
         </Text>
       ) : (
         <FlatList
-          data={cart}
+          data={cart.exercises}
           keyExtractor={(item) => item.id}
           onEndReachedThreshold={0}
           contentContainerStyle={{ paddingTop: 16, paddingBottom: 200 }} // To account for the footer
           renderItem={({ item }) => {
-            const isInCart = cart.some((cartItem) => cartItem.id === item.id);
+            const isInCart = cart.exercises.some(
+              (cartItem) => cartItem.id === item.id
+            );
             return (
               <View
                 style={{

@@ -25,7 +25,14 @@ import {
 } from "@/src/contexts/RoutineSessionContext";
 import { useConfetti } from "@/src/contexts/ConfettiContext";
 import { auth, db } from "@/firebaseConfig";
-import { doc, serverTimestamp, setDoc } from "@firebase/firestore";
+import {
+  doc,
+  FieldPath,
+  serverTimestamp,
+  setDoc,
+  Timestamp,
+} from "@firebase/firestore";
+import { useUser } from "@/src/contexts/UserContext";
 
 const difficultyOptions = [
   { label: "😁 \n Easy", value: "easy" },
@@ -228,6 +235,7 @@ const OverlayQuestionnaire = ({
   const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);
   const [selectedRepRange, setSelectedRepRange] = useState<string | null>(null);
   const { playConfetti } = useConfetti();
+  const { data } = useUser();
 
   const numberOfExercises = routineSession!.exercises.length;
   const isLastExercise = routineSession?.currentIndex! === numberOfExercises;
@@ -279,7 +287,7 @@ const OverlayQuestionnaire = ({
       const uid = auth.currentUser?.uid;
       if (!uid || !routineSession) return;
 
-      const updatedSession = {
+      const latestSession = {
         ...routineSession,
         endedAt: serverTimestamp(),
         completed: true,
@@ -292,11 +300,50 @@ const OverlayQuestionnaire = ({
         },
       };
 
-      setRoutineSession(updatedSession);
+      setRoutineSession(latestSession);
 
-      const routineRef = doc(db, `completions/${routineSession.sessionId}`);
+      const activityRef = doc(db, `activities/${routineSession.sessionId}`);
 
-      await setDoc(routineRef, updatedSession);
+      const currentUser = {
+        uid: auth.currentUser?.uid,
+        firstName: data.first_name,
+        lastName: data.last_name,
+        image: data.image,
+      };
+
+      const trainer =
+        data.trainer_id && data.trainer
+          ? {
+              uid: data.trainer_id,
+              firstName: data.trainer.first_name,
+              lastName: data.trainer.last_name,
+              image: data.trainer.image,
+            }
+          : null;
+
+      const newCompletionActivity: any = {
+        type: "completion",
+        actor: currentUser,
+        actorId: currentUser.uid as string,
+        assignees: trainer ? [trainer] : [],
+        assigneeIds: trainer ? [trainer.uid] : [],
+
+        // Metadata
+        createdAt: serverTimestamp(),
+
+        // Stuff below is specific to routine completion
+        routineId: latestSession.sessionId,
+        routineName: latestSession.name,
+        image: latestSession.image,
+        startedAt: latestSession.startedAt,
+        endedAt: latestSession.endedAt,
+        timeElapsed: latestSession.timeElapsed,
+        completed: latestSession.completed,
+        feedback: latestSession.feedback,
+        exerciseCount: latestSession.exercises.length,
+      };
+
+      await setDoc(activityRef, newCompletionActivity);
 
       // Reset everything
       setRoutineSession(null);

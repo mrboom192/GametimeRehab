@@ -13,7 +13,7 @@ const Progress = () => {
 
   return (
     <ScrollView
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: "#FFF" }}
       contentContainerClassName="flex-col bg-white p-5 gap-8"
     >
       <Tabs.Screen
@@ -28,7 +28,7 @@ const Progress = () => {
         }}
       />
 
-      <AchievementsCard />
+      {/* <AchievementsCard />
 
       <Calendar
         // Customize the appearance of the calendar
@@ -78,7 +78,7 @@ const Progress = () => {
         progress={30}
         color="#78B16C"
         title="Current recovery pace"
-      />
+      /> */}
     </ScrollView>
   );
 };

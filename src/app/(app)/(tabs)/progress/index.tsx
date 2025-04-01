@@ -300,8 +300,6 @@ const AssignActivityMessage: React.FC<{
     { addSuffix: true }
   );
 
-  console.log(activity.assignees[0]);
-
   const assignees = activity.assignees || [];
   const firstAssignee = assignees[0];
   const othersCount = assignees.length - 1;

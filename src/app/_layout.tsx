@@ -61,7 +61,7 @@ function RootLayoutNav() {
                 <ExerciseProvider>
                   <SearchProvider>
                     <ConfettiProvider>
-                      <StatusBar style="dark" backgroundColor="#FFF" />
+                      <StatusBar style="auto" />
                       <Stack
                         screenOptions={{
                           navigationBarColor: "#FFF",

@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import React from "react";
 import Colors from "../constants/Colors";
-import { StatusBar } from "expo-status-bar";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link, router, usePathname, useSegments } from "expo-router";
 import { useCart } from "../contexts/CartContext";
@@ -27,7 +26,6 @@ const ExerciseHeader = () => {
 
   return (
     <SafeAreaView style={{ backgroundColor: "#FFF" }}>
-      <StatusBar style="dark" />
       <View
         style={{
           paddingHorizontal: 16,

@@ -6,7 +6,6 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
 import { Link } from "expo-router";
 import { useState } from "react";
 import React from "react";
@@ -31,7 +30,6 @@ const SignIn = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white tems-center">
-      <StatusBar backgroundColor={"#FFF"} style="dark" />
       <View className="flex-1 flex flex-col justify-between items-start mx-8 mt-4 mb-16">
         <KeyboardAvoidingView
           className="flex flex-col items-center justify-center gap-8"

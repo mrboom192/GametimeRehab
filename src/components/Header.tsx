@@ -12,7 +12,6 @@ import React, { useRef, useState } from "react";
 import Colors from "../constants/Colors";
 import * as Haptics from "expo-haptics";
 import { useUser } from "../contexts/UserContext";
-import { StatusBar } from "expo-status-bar";
 import { Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Feather from "@expo/vector-icons/Feather";
@@ -69,7 +68,6 @@ const Header = ({
         position: "relative",
       }}
     >
-      <StatusBar style="light" />
       <LinearGradient
         // Background Linear Gradient
         colors={["transparent", "rgba(255,255,255, 1)"]}
@@ -88,10 +86,10 @@ const Header = ({
             style={{
               flexDirection: "row",
               paddingHorizontal: 16,
-              justifyContent: "space-between",
+              justifyContent: "flex-end",
             }}
           >
-            <Pressable
+            {/* <Pressable
               onPress={() => console.log("Pressed!")}
               style={{
                 flexDirection: "column",
@@ -101,7 +99,7 @@ const Header = ({
               }}
             >
               <Feather name="menu" size={40} color={"#FFF"} />
-            </Pressable>
+            </Pressable> */}
 
             <Avatar
               color="#FFF"

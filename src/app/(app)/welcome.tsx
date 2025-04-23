@@ -2,8 +2,6 @@ import { View, Text, Pressable } from "react-native";
 import React from "react";
 import { Stack, useRouter } from "expo-router";
 import { useUser } from "@/src/contexts/UserContext";
-import { StatusBar } from "expo-status-bar";
-
 export default function FirstWelcome() {
   const { data } = useUser();
   const router = useRouter();
@@ -19,8 +17,6 @@ export default function FirstWelcome() {
 
   return (
     <View className="flex-1 bg-white items-center">
-      <StatusBar style="dark" backgroundColor="#FFF" />
-
       <Stack.Screen
         options={{
           gestureEnabled: false,

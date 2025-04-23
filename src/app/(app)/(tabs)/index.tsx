@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   View,
@@ -15,9 +15,10 @@ import Progress from "@/src/components/widgets/Progress";
 import AddToRoutine from "@/src/components/widgets/AddToRoutine";
 import Streak from "@/src/components/widgets/Streak";
 import Trophy from "@/src/components/widgets/Trophy";
-import { Drawer } from "expo-router/drawer";
 import TrainerProgress from "@/src/components/widgets/TrainerProgress";
 import QuickUpdates from "@/src/components/widgets/QuickUpdates";
+import { ScreenTransition } from "@/src/components/ScreenTransition";
+import { TextSemiBold } from "@/src/components/StyledText";
 
 const trophiesMock = [
   {
@@ -166,12 +167,12 @@ export default function Index() {
     ),
     Upcoming: (
       <View style={{ padding: 16 }}>
-        <Text>Upcoming View</Text>
+        <TextSemiBold>Upcoming View</TextSemiBold>
       </View>
     ),
     Roster: (
       <View style={{ padding: 16 }}>
-        <Text>Roster View</Text>
+        <TextSemiBold>Roster View</TextSemiBold>
       </View>
     ),
   };
@@ -188,14 +189,13 @@ export default function Index() {
           header: () => <Header onTabChange={onTabChange} tabs={tabs} />,
         }}
       />
-      <Animated.View
+      <ScreenTransition
         key={tab}
-        entering={isForward ? FadeInRight : FadeInLeft}
-        // exiting={isForward ? FadeOutLeft : FadeOutRight}
+        direction={isForward ? "Forward" : "Backward"}
         style={{ flex: 1 }}
       >
         {tabComponents[tab] || <Text>Tab not found</Text>}
-      </Animated.View>
+      </ScreenTransition>
     </SafeAreaView>
   );
 }

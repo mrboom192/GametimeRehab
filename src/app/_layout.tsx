@@ -1,12 +1,16 @@
 import "../../global.css";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar"; // Ensure expo-status-bar is used
 import React from "react";
 import { UserProvider } from "../contexts/UserContext";
 import { SessionProvider } from "../contexts/AuthContext";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { useFonts } from "expo-font";
+import {
+  useFonts,
+  DMSans_400Regular,
+  DMSans_700Bold,
+  DMSans_600SemiBold,
+} from "@expo-google-fonts/dm-sans";
 import { CartProvider } from "../contexts/CartContext";
 import { RoutineSessionProvider } from "../contexts/RoutineSessionContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -28,6 +32,8 @@ export default function RootLayout() {
     dm: require("../../assets/fonts/DMSans-Regular.ttf"),
     "dm-sb": require("../../assets/fonts/DMSans-SemiBold.ttf"),
     "dm-b": require("../../assets/fonts/DMSans-Bold.ttf"),
+    DMSans_400Regular,
+    DMSans_600SemiBold,
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -61,7 +67,6 @@ function RootLayoutNav() {
                 <ExerciseProvider>
                   <SearchProvider>
                     <ConfettiProvider>
-                      <StatusBar style="auto" />
                       <Stack
                         screenOptions={{
                           navigationBarColor: "#FFF",

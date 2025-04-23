@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Colors from "@/src/constants/Colors";
+import { TextSemiBold } from "@/src/components/StyledText";
 
 export default function AppLayout() {
   const { signOut, session, isLoading } = useSession();
@@ -21,7 +22,7 @@ export default function AppLayout() {
 
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading || !isAuthReady) {
-    return <Text>Loading...</Text>;
+    return <TextSemiBold>Loading...</TextSemiBold>;
   }
 
   // Only require authentication within the (app) group's layout as users
@@ -60,15 +61,14 @@ export default function AppLayout() {
               >
                 <Ionicons name="close-outline" color={Colors.dark} size={24} />
               </TouchableOpacity>
-              <Text
+              <TextSemiBold
                 style={{
                   color: Colors.dark,
-                  fontFamily: "dm-sb",
                   fontSize: 16,
                 }}
               >
                 Exercise Details
-              </Text>
+              </TextSemiBold>
             </View>
           ),
         }}
@@ -96,15 +96,14 @@ export default function AppLayout() {
               >
                 <Ionicons name="close-outline" color={Colors.dark} size={24} />
               </TouchableOpacity>
-              <Text
+              <TextSemiBold
                 style={{
                   color: Colors.dark,
-                  fontFamily: "dm-sb",
                   fontSize: 16,
                 }}
               >
                 Create Routine
-              </Text>
+              </TextSemiBold>
             </View>
           ),
         }}
@@ -132,15 +131,14 @@ export default function AppLayout() {
               >
                 <Ionicons name="close-outline" color={Colors.dark} size={24} />
               </TouchableOpacity>
-              <Text
+              <TextSemiBold
                 style={{
                   color: Colors.dark,
-                  fontFamily: "dm-sb",
                   fontSize: 16,
                 }}
               >
                 Assign to Athletes
-              </Text>
+              </TextSemiBold>
             </View>
           ),
         }}

@@ -8,7 +8,6 @@ import { useEffect } from "react";
 import {
   useFonts,
   DMSans_400Regular,
-  DMSans_700Bold,
   DMSans_600SemiBold,
 } from "@expo-google-fonts/dm-sans";
 import { CartProvider } from "../contexts/CartContext";
@@ -18,6 +17,7 @@ import { ConfettiProvider } from "../contexts/ConfettiContext";
 import { ExerciseProvider } from "../contexts/ExerciseContext";
 import { RoutinesProvider } from "../contexts/RoutinesContext";
 import { SearchProvider } from "../contexts/SearchContext";
+import { StatusBar } from "expo-status-bar";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -67,6 +67,7 @@ function RootLayoutNav() {
                 <ExerciseProvider>
                   <SearchProvider>
                     <ConfettiProvider>
+                      <StatusBar style={"dark"} />
                       <Stack
                         screenOptions={{
                           navigationBarColor: "#FFF",

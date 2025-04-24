@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   View,
@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import { useUser } from "../../../contexts/UserContext"; // Import UserContext
-import { Stack } from "expo-router";
+import { Stack, useFocusEffect } from "expo-router";
 import Header from "@/src/components/Header";
 import Animated, { FadeInLeft, FadeInRight } from "react-native-reanimated";
 import Progress from "@/src/components/widgets/Progress";
@@ -19,6 +19,7 @@ import TrainerProgress from "@/src/components/widgets/TrainerProgress";
 import QuickUpdates from "@/src/components/widgets/QuickUpdates";
 import { ScreenTransition } from "@/src/components/ScreenTransition";
 import { TextSemiBold } from "@/src/components/StyledText";
+import { setStatusBarStyle, StatusBar } from "expo-status-bar";
 
 const trophiesMock = [
   {
@@ -73,6 +74,17 @@ export default function Index() {
 
   const screenWidth = Dimensions.get("window").width;
   const trophyWidth = (screenWidth - 16 * 2 - 8) / 2;
+
+  // Magical status bar
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarStyle("light");
+
+      return () => {
+        setStatusBarStyle("dark");
+      };
+    }, [])
+  );
 
   if (loading || initializing) {
     return (

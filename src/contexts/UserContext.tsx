@@ -11,7 +11,6 @@ import React, {
 
 interface UserContextType {
   data: any | null;
-  // setData: React.Dispatch<React.SetStateAction<any | null>>;
   loading: boolean;
   initializing: boolean;
   error: string | null;

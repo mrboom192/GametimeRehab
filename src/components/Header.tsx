@@ -15,7 +15,7 @@ import { useUser } from "../contexts/UserContext";
 import { Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Feather from "@expo/vector-icons/Feather";
-import Avatar from "./Avatar";
+import UserAvatar from "./UserAvatar";
 
 const athleteBackground = require("@/assets/images/athletebackground1.png");
 const trainerBackground = require("@/assets/images/trainerbackground1.png");
@@ -101,12 +101,7 @@ const Header = ({
               <Feather name="menu" size={40} color={"#FFF"} />
             </Pressable> */}
 
-            <Avatar
-              color="#FFF"
-              uri={loading ? null : data.image}
-              size={48}
-              initials={loading ? "?" : data.first_name[0] + data.last_name[0]}
-            />
+            <UserAvatar size={48} />
           </View>
 
           <View style={{ flexDirection: "column", gap: 8 }}>

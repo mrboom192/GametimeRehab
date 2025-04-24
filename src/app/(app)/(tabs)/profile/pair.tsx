@@ -6,7 +6,6 @@ import { useUser } from "@/src/contexts/UserContext";
 import Colors from "@/src/constants/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as Haptics from "expo-haptics";
-import Avatar from "@/src/components/Avatar";
 import {
   arrayRemove,
   arrayUnion,
@@ -18,6 +17,7 @@ import {
 } from "@firebase/firestore";
 import { auth, db } from "@/firebaseConfig";
 import uuid from "react-native-uuid";
+import Avatar from "@/src/components/Avatar";
 
 const Pair = () => {
   const { data } = useUser();

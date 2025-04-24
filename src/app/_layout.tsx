@@ -70,9 +70,21 @@ function RootLayoutNav() {
                       <Stack
                         screenOptions={{
                           navigationBarColor: "#FFF",
-                          headerShown: false,
                         }}
-                      />
+                      >
+                        <Stack.Screen
+                          name="(app)"
+                          options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                          name="login"
+                          options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                          name="(signup)"
+                          options={{ headerShown: false }}
+                        />
+                      </Stack>
                     </ConfettiProvider>
                   </SearchProvider>
                 </ExerciseProvider>

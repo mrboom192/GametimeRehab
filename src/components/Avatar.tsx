@@ -1,20 +1,49 @@
+import React, { useEffect } from "react";
 import { Text, Pressable, Image, View } from "react-native";
-import Colors from "../constants/Colors";
-import React from "react";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withRepeat,
+  Easing,
+} from "react-native-reanimated";
+import { TextSemiBold } from "./StyledText";
 
 const Avatar = ({
   onPress = null,
   size,
   uri = null,
   initials = "",
-  color = Colors.faintGrey,
+  color = "#ddd",
+  loading = false,
 }: {
   onPress?: null | (() => void);
   size: number;
   uri?: string | null;
   initials?: string;
   color?: string;
+  loading?: boolean;
 }) => {
+  const opacity = useSharedValue(1);
+
+  useEffect(() => {
+    if (loading) {
+      opacity.value = withRepeat(
+        withTiming(0.3, { duration: 700, easing: Easing.inOut(Easing.ease) }),
+        -1,
+        true
+      );
+    } else {
+      opacity.value = withTiming(1);
+    }
+  }, [loading]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: opacity.value,
+    };
+  });
+
   return (
     <Pressable
       style={{
@@ -28,14 +57,25 @@ const Avatar = ({
       }}
       onPress={onPress}
     >
-      {uri ? (
+      {loading ? (
+        <Animated.View
+          style={[
+            {
+              width: "100%",
+              height: "100%",
+              backgroundColor: "#ccc",
+              borderRadius: 9999,
+            },
+            animatedStyle,
+          ]}
+        />
+      ) : uri ? (
         <>
           <Image
-            source={{ uri: uri }}
+            source={{ uri }}
             style={{ width: "100%", height: "100%" }}
             resizeMode="cover"
           />
-          {/* Overlay border */}
           <View
             pointerEvents="none"
             style={{
@@ -51,16 +91,15 @@ const Avatar = ({
           />
         </>
       ) : (
-        <Text
+        <TextSemiBold
           style={{
-            fontFamily: "dm-sb",
-            color: Colors.grey,
+            color: "#555",
             marginHorizontal: 8,
             textAlign: "center",
           }}
         >
           {initials}
-        </Text>
+        </TextSemiBold>
       )}
     </Pressable>
   );

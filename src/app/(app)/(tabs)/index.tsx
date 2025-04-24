@@ -78,10 +78,10 @@ export default function Index() {
   // Magical status bar
   useFocusEffect(
     useCallback(() => {
-      setStatusBarStyle("light");
+      setStatusBarStyle("light", true);
 
       return () => {
-        setStatusBarStyle("dark");
+        setStatusBarStyle("dark", true);
       };
     }, [])
   );

@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import LabeledInput from "./LabeledInput";
 import {
@@ -12,6 +12,8 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "@/firebaseConfig";
 import { useUser } from "../contexts/UserContext";
+import { TextSemiBold } from "./StyledText";
+import Colors from "../constants/Colors";
 
 const PairForm = () => {
   const [code, setCode] = useState<string>("");
@@ -19,6 +21,12 @@ const PairForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const { data } = useUser();
+
+  if (!data) {
+    setError("User data not found.");
+    setLoading(false);
+    return;
+  }
 
   const handlePair = async () => {
     // Reset error message first
@@ -89,30 +97,33 @@ const PairForm = () => {
         label="8-digit trainer code"
         placeholder="12345678"
         value={code}
-        onChangeText={(text) => setCode(text)}
+        onChangeText={(text) => {
+          setCode(text);
+          setError(undefined);
+          setSuccess(undefined);
+        }}
         note="Provided to you by trainer"
         error={error}
         success={success}
       />
-      <View className="rounded-lg bg-[#2C2C2C] overflow-hidden border">
-        <Pressable
-          android_ripple={{
-            color: "#444",
-            borderless: false,
-          }}
-          className="py-2.5 px-3 justify-center flex-row items-center rounded-lg gap-2"
-          onPress={handlePair}
-          disabled={loading} // Disable button while loading
-        >
-          <Text
-            className={`text-white uppercase ${
-              loading ? "opacity-50" : "opacity-100"
-            }`}
-          >
-            {loading ? "Sending..." : "Request Pair"}
-          </Text>
-        </Pressable>
-      </View>
+
+      <TouchableOpacity
+        accessibilityRole="button"
+        onPress={handlePair}
+        disabled={loading}
+        style={{
+          borderRadius: 12,
+          backgroundColor: Colors.dark,
+          alignItems: "center",
+          padding: 14,
+          marginTop: 16,
+          opacity: loading ? 0.5 : 1,
+        }}
+      >
+        <TextSemiBold style={{ color: "#FFF" }}>
+          {loading ? "Sending..." : "Request Pair"}
+        </TextSemiBold>
+      </TouchableOpacity>
     </View>
   );
 };

@@ -18,6 +18,7 @@ import {
 import { auth, db } from "@/firebaseConfig";
 import uuid from "react-native-uuid";
 import Avatar from "@/src/components/Avatar";
+import BackButton from "@/src/components/buttons/BackButton";
 
 const Pair = () => {
   const { data } = useUser();
@@ -128,6 +129,7 @@ const Pair = () => {
           headerTitle: () => (
             <Text className="text-[#2C2C2C] text-4xl">Pair</Text>
           ),
+          headerLeft: () => <BackButton />,
         }}
       />
       <View style={{ flex: 1, padding: 16 }}>

@@ -12,16 +12,15 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link, router, usePathname, useSegments } from "expo-router";
 import { useCart } from "../contexts/CartContext";
 import { useSearch } from "../contexts/SearchContext";
+import { TextSemiBold } from "./StyledText";
 
 const ExerciseHeader = () => {
   const segments = useSegments();
-  const pathName = usePathname();
   const { cart } = useCart(); // Access the cart state
   const { searchQuery, setSearchQuery } = useSearch();
 
   const updateSearch = (query: string) => {
     setSearchQuery(query);
-    console.log(pathName);
   };
 
   return (
@@ -55,52 +54,33 @@ const ExerciseHeader = () => {
           </TouchableOpacity>
         )}
 
-        {/* Search bar */}
-        <View
-          style={{
-            borderRadius: 9999,
-            flex: 1,
-            backgroundColor: "#FFF",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.2,
-            shadowRadius: 4,
-            elevation: 5,
-          }}
-        >
-          <Ionicons
-            name="search"
-            color={Colors.grey2}
-            size={20}
-            style={{ marginLeft: 16 }}
-          />
-          <TextInput
-            placeholder="Search exercises"
-            placeholderTextColor={Colors.grey2}
-            value={searchQuery}
-            onChangeText={(text) => updateSearch(text)}
+        {/* Search Button */}
+        <Link href={"/search"} asChild>
+          <TouchableOpacity
             style={{
-              padding: 16,
-              fontFamily: "dm-sb",
+              borderRadius: 9999,
               flex: 1,
+              backgroundColor: "#FFF",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.2,
+              shadowRadius: 4,
+              elevation: 5,
             }}
-          />
-          {searchQuery ? (
-            <Pressable onPress={() => updateSearch("")}>
-              <Ionicons
-                name="close"
-                color={Colors.dark}
-                size={20}
-                style={{ marginRight: 16 }}
-              />
-            </Pressable>
-          ) : (
-            <></>
-          )}
-        </View>
+          >
+            <TextSemiBold
+              style={{
+                padding: 16,
+                fontFamily: "dm-sb",
+              }}
+            >
+              Search Exercises
+            </TextSemiBold>
+          </TouchableOpacity>
+        </Link>
 
         {/* Cart Button */}
         {cart.exercises.length > 0 && (

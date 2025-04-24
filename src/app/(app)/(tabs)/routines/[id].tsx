@@ -16,6 +16,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSearch } from "@/src/contexts/SearchContext";
 import { useExercise } from "@/src/contexts/ExerciseContext";
 import { useRoutines } from "@/src/contexts/RoutinesContext";
+import ExerciseList from "@/src/components/ExerciseList";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -192,145 +193,13 @@ const Search = () => {
           <Text style={{ fontFamily: "dm-sb" }}>"{searchQuery}"</Text>.
         </Text>
       ) : (
-        <FlatList
-          data={filteredExercises}
-          keyExtractor={(item) => item.id}
+        <ExerciseList
+          data={exerciseList}
           onEndReached={loadMoreExercises}
-          onEndReachedThreshold={0}
-          style={{ flex: 1 }}
-          contentContainerStyle={{ marginHorizontal: 16, paddingBottom: 100 }}
-          renderItem={({ item }) => {
-            const isInCart = cart.exercises.some(
-              (cartItem) => cartItem.id === item.id
-            );
-            return (
-              <View
-                style={{
-                  borderRadius: 16,
-                  padding: 16,
-                  marginBottom: 8,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderWidth: 1,
-                  borderColor: Colors.faintGrey,
-                }}
-              >
-                {/* The exercise image */}
-                <Image
-                  source={{
-                    uri: item.image_dark,
-                  }}
-                  style={{
-                    width: 96,
-                    height: 96,
-                    marginRight: 16,
-                  }}
-                  resizeMode="contain"
-                />
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <View>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontFamily: "dm-sb",
-                        marginBottom: 4,
-                      }}
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                    >
-                      {item.name}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        color: Colors.grey2,
-                      }}
-                    >
-                      {item.tags[0]
-                        ?.split(" ")
-                        .map(
-                          (word: string) =>
-                            word.charAt(0).toUpperCase() + word.slice(1)
-                        )
-                        .join(" ")}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      width: "100%",
-                      justifyContent: "flex-end",
-                      flexDirection: "row",
-                      gap: 8,
-                    }}
-                  >
-                    <Link href="/(app)/(modals)/exercise" asChild>
-                      <TouchableOpacity
-                        style={{
-                          paddingHorizontal: 16,
-                          paddingVertical: 8,
-                          flexDirection: "row",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          borderWidth: 1,
-                          borderColor: Colors.grey2,
-                          borderRadius: 9999,
-                        }}
-                        onPress={() => handleOpen(item)}
-                      >
-                        <Text
-                          style={{
-                            fontFamily: "dm-sb",
-                            fontSize: 12,
-                            color: Colors.grey2,
-                          }}
-                        >
-                          Details
-                        </Text>
-                      </TouchableOpacity>
-                    </Link>
-                    <TouchableOpacity
-                      style={{
-                        paddingHorizontal: 16,
-                        paddingVertical: 8,
-                        flexDirection: "row",
-                        gap: 8,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        backgroundColor: isInCart ? Colors.green : Colors.dark,
-                        borderWidth: 1,
-                        borderColor: isInCart ? Colors.green : Colors.dark,
-                        borderRadius: 9999,
-                      }}
-                      onPress={() =>
-                        isInCart ? handleRemove(item) : handleAdd(item)
-                      }
-                    >
-                      <Text
-                        style={{
-                          fontFamily: "dm-sb",
-                          fontSize: 12,
-                          color: "#FFF",
-                        }}
-                      >
-                        {isInCart ? "Added" : "Add"}
-                      </Text>
-                      {isInCart ? (
-                        <Ionicons name="checkmark" size={16} color={"#FFF"} />
-                      ) : (
-                        <></>
-                      )}
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            );
-          }}
+          cart={cart.exercises}
+          onAdd={handleAdd}
+          onRemove={handleRemove}
+          onOpen={handleOpen}
         />
       )}
     </View>

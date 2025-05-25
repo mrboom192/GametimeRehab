@@ -16,6 +16,8 @@ import { Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Feather from "@expo/vector-icons/Feather";
 import UserAvatar from "./UserAvatar";
+import { router, useNavigation } from "expo-router";
+import { DrawerActions } from "@react-navigation/native";
 
 const athleteBackground = require("@/assets/images/athletebackground1.png");
 const trainerBackground = require("@/assets/images/trainerbackground1.png");
@@ -30,6 +32,7 @@ const Header = ({
   tabs: string[];
   onTabChange: (tabName: string) => void;
 }) => {
+  const navigation = useNavigation();
   const scrollRef = useRef<ScrollView | null>(null);
   const { data, loading } = useUser(); // Assume useUser provides a loading state
   const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
@@ -86,11 +89,11 @@ const Header = ({
             style={{
               flexDirection: "row",
               paddingHorizontal: 16,
-              justifyContent: "flex-end",
+              justifyContent: "space-between",
             }}
           >
-            {/* <Pressable
-              onPress={() => console.log("Pressed!")}
+            <Pressable
+              onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
               style={{
                 flexDirection: "column",
                 justifyContent: "center",
@@ -99,7 +102,7 @@ const Header = ({
               }}
             >
               <Feather name="menu" size={40} color={"#FFF"} />
-            </Pressable> */}
+            </Pressable>
 
             <UserAvatar size={48} />
           </View>

@@ -15,6 +15,7 @@ export default function AppLayout() {
   const [isAuthReady, setIsAuthReady] = useState(false);
   const { data } = useUser();
 
+  // Move this to a scheduled firebase function (costs $$$)
   useEffect(() => {
     const resetStreakForUser = async (uid: string) => {
       try {
@@ -73,7 +74,7 @@ export default function AppLayout() {
   // This layout can be deferred because it's not the root layout.
   return (
     <Stack screenOptions={{ navigationBarColor: "#FFF" }}>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
       <Stack.Screen
         name="(modals)/exercise"
         options={{
@@ -209,6 +210,12 @@ export default function AppLayout() {
           headerShown: false,
           gestureEnabled: false,
           animation: "slide_from_bottom",
+        }}
+      />
+      <Stack.Screen
+        name="(profile)"
+        options={{
+          headerShown: false,
         }}
       />
     </Stack>

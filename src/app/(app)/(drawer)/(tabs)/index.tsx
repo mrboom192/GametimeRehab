@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
-import { useUser } from "../../../contexts/UserContext"; // Import UserContext
+import { useUser } from "../../../../contexts/UserContext"; // Import UserContext
 import { Stack, useFocusEffect } from "expo-router";
 import Header from "@/src/components/Header";
 import Progress from "@/src/components/widgets/Progress";

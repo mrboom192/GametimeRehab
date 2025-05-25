@@ -1,5 +1,6 @@
 import { TabBar } from "@/src/components/TabBar/TabBar";
 import { Tabs } from "expo-router";
+import { Drawer } from "expo-router/drawer";
 
 export default function TabLayout() {
   return (
@@ -15,10 +16,6 @@ export default function TabLayout() {
       <Tabs.Screen
         name="progress"
         options={{ title: "Progress", headerShown: false }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{ title: "Profile", headerShown: false }}
       />
     </Tabs>
   );

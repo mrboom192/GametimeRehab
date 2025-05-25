@@ -10,7 +10,6 @@ import {
 import { useUser } from "../../../contexts/UserContext"; // Import UserContext
 import { Stack, useFocusEffect } from "expo-router";
 import Header from "@/src/components/Header";
-import Animated, { FadeInLeft, FadeInRight } from "react-native-reanimated";
 import Progress from "@/src/components/widgets/Progress";
 import AddToRoutine from "@/src/components/widgets/AddToRoutine";
 import Streak from "@/src/components/widgets/Streak";
@@ -19,7 +18,7 @@ import TrainerProgress from "@/src/components/widgets/TrainerProgress";
 import QuickUpdates from "@/src/components/widgets/QuickUpdates";
 import { ScreenTransition } from "@/src/components/ScreenTransition";
 import { TextSemiBold } from "@/src/components/StyledText";
-import { setStatusBarStyle, StatusBar } from "expo-status-bar";
+import { setStatusBarStyle } from "expo-status-bar";
 
 const trophiesMock = [
   {

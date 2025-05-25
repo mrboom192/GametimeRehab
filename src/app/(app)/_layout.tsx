@@ -1,16 +1,52 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { Redirect, router, Stack } from "expo-router";
 import { useSession } from "@/src/contexts/AuthContext";
-import { auth } from "@/firebaseConfig";
+import { auth, db } from "@/firebaseConfig";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Colors from "@/src/constants/Colors";
 import { TextSemiBold } from "@/src/components/StyledText";
+import { doc, Timestamp, updateDoc } from "firebase/firestore";
+import { useUser } from "@/src/contexts/UserContext";
 
 export default function AppLayout() {
   const { signOut, session, isLoading } = useSession();
   const [isAuthReady, setIsAuthReady] = useState(false);
+  const { data } = useUser();
+
+  useEffect(() => {
+    const resetStreakForUser = async (uid: string) => {
+      try {
+        const userRef = doc(db, "users", uid);
+        await updateDoc(userRef, {
+          currentStreak: 0,
+        });
+        console.log("Streak reset for user:", uid);
+      } catch (error) {
+        console.error("Error resetting streak:", error);
+      }
+    };
+
+    // Reset streak if the user has done nothing for a day
+    if (isAuthReady && session) {
+      const currentDate = Timestamp.now().toDate();
+      const lastActiveDate = data?.lastActivityDate?.toDate();
+
+      if (!lastActiveDate) return;
+
+      // Compare currentDate and lastActiveDate
+      const oneDayMillis = 24 * 60 * 60 * 1000;
+
+      const timeDifference = currentDate.getTime() - lastActiveDate.getTime();
+
+      if (timeDifference > oneDayMillis) {
+        // More than 1 day has passed since last activity, reset streak
+        // You can call a function to update Firestore here
+        resetStreakForUser(data.uid);
+      }
+    }
+  }, [isAuthReady, session, data?.lastActivityDate]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {

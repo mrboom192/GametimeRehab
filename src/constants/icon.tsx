@@ -12,7 +12,7 @@ export const icon: any = {
   progress: (props: IconRenderProps) => (
     <GametimeIcons name="BarChartIcon" size={24} {...props} />
   ),
-  profile: (props: IconRenderProps) => (
-    <GametimeIcons name="UserOutline" size={24} {...props} />
-  ),
+  // profile: (props: IconRenderProps) => (
+  //   <GametimeIcons name="UserOutline" size={24} {...props} />
+  // ),
 };

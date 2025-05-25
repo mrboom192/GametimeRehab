@@ -2,8 +2,11 @@ import { View, Text } from "react-native";
 import React from "react";
 import Colors from "@/src/constants/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useUser } from "@/src/contexts/UserContext";
 
 const Streak = () => {
+  const { data } = useUser();
+
   return (
     <View
       style={{
@@ -45,7 +48,7 @@ const Streak = () => {
             fontSize: 24,
           }}
         >
-          3 Days
+          {data.currentStreak} Day{data.currentStreak == 1 ? "" : "s"}
         </Text>
         <Text
           style={{
@@ -65,7 +68,9 @@ const Streak = () => {
           fontSize: 10,
         }}
       >
-        10 days until PB
+        {data.currentStreak >= data.personalBest
+          ? "New Personal Best!"
+          : `${data.personalBest - data.currentStreak} days until PB`}
       </Text>
     </View>
   );

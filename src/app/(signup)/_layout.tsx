@@ -1,20 +1,19 @@
+import BackButton from "@/src/components/buttons/BackButton";
 import { SignupProvider } from "@/src/contexts/SignupContext";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Text } from "react-native";
 
 const Layout = () => {
   return (
     <SignupProvider>
-      <StatusBar style="dark" backgroundColor="#FFF" />
-
       <Stack
         screenOptions={{
           navigationBarColor: "#FFF",
           headerShadowVisible: false,
           headerTitleAlign: "center",
           headerTitle: "",
+          headerLeft: () => <BackButton />,
         }}
       >
         <Stack.Screen

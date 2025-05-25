@@ -1,9 +1,20 @@
 import { Link, router } from "expo-router";
-import { Pressable, Text, View, Alert } from "react-native";
+import {
+  Pressable,
+  Text,
+  View,
+  Alert,
+  Linking,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import LabeledInput from "../../components/LabeledInput";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSignup } from "@/src/contexts/SignupContext";
 import { useState } from "react";
+import { TextRegular } from "@/src/components/StyledText";
+import Colors from "@/src/constants/Colors";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface Errors {
   first_name?: string;
@@ -66,9 +77,18 @@ export default function SignupScreen() {
   };
 
   return (
-    <View className="flex-1 bg-white items-center">
-      <View className="flex-1 flex flex-col justify-between items-start mx-8 mt-8 mb-16">
-        <View className="flex flex-col gap-12">
+    <View
+      style={{ backgroundColor: "#FFF", padding: 16, paddingBottom: 64 }}
+      className="flex-1 flex flex-col justify-between items-start"
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={100}
+        style={{ flex: 1 }}
+      >
+        <ScrollView
+          contentContainerStyle={{ flexDirection: "column", gap: 24 }}
+        >
           {/* First Name and Last Name */}
           <View className="flex flex-col gap-4">
             <LabeledInput
@@ -146,21 +166,39 @@ export default function SignupScreen() {
               error={errors.confirm_password}
             />
           </View>
-        </View>
 
-        {/* Footer Section */}
-        <View className="flex flex-row items-center justify-end self-stretch gap-6">
-          <Text className="text-slate-700 italic text-center">
-            Less than 4 minutes to finish.
-          </Text>
-          <Pressable
-            className="py-2.5 px-3 justify-center flex-row items-center rounded-lg bg-white border border-[#717171] gap-2"
-            onPress={handleNext}
-          >
-            <Text className="text-black uppercase">Next</Text>
-            <Ionicons name="chevron-forward" size={16} color="#000" />
-          </Pressable>
-        </View>
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            <TextRegular>By signing up, you agree to our </TextRegular>
+            <TextRegular
+              onPress={() => router.push("/terms")}
+              style={{ color: Colors.primary }}
+            >
+              Terms & Conditions
+            </TextRegular>
+            <TextRegular> and </TextRegular>
+            <TextRegular
+              onPress={() => router.push("/privacy-policy")}
+              style={{ color: Colors.primary }}
+            >
+              Privacy Policy
+            </TextRegular>
+            <TextRegular>.</TextRegular>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+
+      {/* Footer Section */}
+      <View className="flex flex-row items-center justify-end self-stretch gap-6">
+        <Text className="text-slate-700 italic text-center">
+          Less than 4 minutes to finish.
+        </Text>
+        <Pressable
+          className="py-2.5 px-3 justify-center flex-row items-center rounded-lg bg-white border border-[#717171] gap-2"
+          onPress={handleNext}
+        >
+          <Text className="text-black uppercase">Next</Text>
+          <Ionicons name="chevron-forward" size={16} color="#000" />
+        </Pressable>
       </View>
     </View>
   );

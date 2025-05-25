@@ -2,10 +2,8 @@ import { View, Text, Pressable } from "react-native";
 import React from "react";
 import { Stack, useRouter } from "expo-router";
 import { useUser } from "@/src/contexts/UserContext";
-import { StatusBar } from "expo-status-bar";
-
 export default function FirstWelcome() {
-  const { userInfo } = useUser();
+  const { data } = useUser();
   const router = useRouter();
 
   const handleNext = () => {
@@ -19,8 +17,6 @@ export default function FirstWelcome() {
 
   return (
     <View className="flex-1 bg-white items-center">
-      <StatusBar style="dark" backgroundColor="#FFF" />
-
       <Stack.Screen
         options={{
           gestureEnabled: false,
@@ -35,7 +31,7 @@ export default function FirstWelcome() {
         <View className="absolute top-[35%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#FEF5EF] rounded-full flex items-center justify-center" />
         <View className="top-[35%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full flex items-center justify-center">
           <View className="flex flex-col w-3/4 items-center gap-4 px-6">
-            {userInfo && userInfo === "trainer" ? (
+            {data && data?.type === "trainer" ? (
               <Text className="text-[#2C2C2C] text-4xl">
                 We're here to assist you in{" "}
                 <Text className="text-[#F1744D] text-4xl font-bold">

@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import LabeledInput from "./LabeledInput";
 import {
@@ -10,19 +10,29 @@ import {
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
-import { db } from "@/firebaseConfig";
+import { auth, db } from "@/firebaseConfig";
 import { useUser } from "../contexts/UserContext";
+import { TextSemiBold } from "./StyledText";
+import Colors from "../constants/Colors";
 
 const PairForm = () => {
   const [code, setCode] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const { user } = useUser();
+  const { data } = useUser();
+
+  if (!data) {
+    setError("User data not found.");
+    setLoading(false);
+    return;
+  }
 
   const handlePair = async () => {
+    // Reset error message first
     setError("");
 
+    // Client side code validation
     if (code.length !== 8) {
       setError("Trainer code must be 8 characters long.");
       return;
@@ -31,20 +41,20 @@ const PairForm = () => {
     setLoading(true);
 
     try {
-      if (!user) {
+      if (!auth.currentUser) {
         setError("You must be logged in to request a pair.");
         setLoading(false);
         return;
       }
 
       // Find the trainer with the entered code
-      const trainerQuery = query(
-        collection(db, "users"),
-        where("type", "==", "trainer"),
-        where("trainer_code", "==", code)
+      const trainerSnapshot = await getDocs(
+        query(
+          collection(db, "users"),
+          where("type", "==", "trainer"),
+          where("trainer_code", "==", code)
+        )
       );
-
-      const trainerSnapshot = await getDocs(trainerQuery);
 
       if (trainerSnapshot.empty) {
         setError("No trainer found with this code.");
@@ -55,11 +65,16 @@ const PairForm = () => {
       const trainerDoc = trainerSnapshot.docs[0];
       const trainerData = trainerDoc.data();
 
-      console.log(trainerData);
+      const dataToTrainer = {
+        uid: data.uid,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        image: data.image,
+      };
 
-      // Add the current user's UID to the trainer's pending_requests
+      // Add the current user's info to the trainer's pending_requests
       await updateDoc(doc(db, "users", trainerDoc.id), {
-        pending_requests: arrayUnion(user.uid),
+        pending_requests: arrayUnion(dataToTrainer),
       });
 
       setSuccess(
@@ -82,30 +97,33 @@ const PairForm = () => {
         label="8-digit trainer code"
         placeholder="12345678"
         value={code}
-        onChangeText={(text) => setCode(text)}
+        onChangeText={(text) => {
+          setCode(text);
+          setError(undefined);
+          setSuccess(undefined);
+        }}
         note="Provided to you by trainer"
         error={error}
         success={success}
       />
-      <View className="rounded-lg bg-[#2C2C2C] overflow-hidden border">
-        <Pressable
-          android_ripple={{
-            color: "#444",
-            borderless: false,
-          }}
-          className="py-2.5 px-3 justify-center flex-row items-center rounded-lg gap-2"
-          onPress={handlePair}
-          disabled={loading} // Disable button while loading
-        >
-          <Text
-            className={`text-white uppercase ${
-              loading ? "opacity-50" : "opacity-100"
-            }`}
-          >
-            {loading ? "Sending..." : "Request Pair"}
-          </Text>
-        </Pressable>
-      </View>
+
+      <TouchableOpacity
+        accessibilityRole="button"
+        onPress={handlePair}
+        disabled={loading}
+        style={{
+          borderRadius: 12,
+          backgroundColor: Colors.dark,
+          alignItems: "center",
+          padding: 14,
+          marginTop: 16,
+          opacity: loading ? 0.5 : 1,
+        }}
+      >
+        <TextSemiBold style={{ color: "#FFF" }}>
+          {loading ? "Sending..." : "Request Pair"}
+        </TextSemiBold>
+      </TouchableOpacity>
     </View>
   );
 };

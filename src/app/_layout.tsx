@@ -1,12 +1,23 @@
 import "../../global.css";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar"; // Ensure expo-status-bar is used
 import React from "react";
 import { UserProvider } from "../contexts/UserContext";
 import { SessionProvider } from "../contexts/AuthContext";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { useFonts } from "expo-font";
+import {
+  useFonts,
+  DMSans_400Regular,
+  DMSans_600SemiBold,
+} from "@expo-google-fonts/dm-sans";
+import { CartProvider } from "../contexts/CartContext";
+import { RoutineSessionProvider } from "../contexts/RoutineSessionContext";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { ConfettiProvider } from "../contexts/ConfettiContext";
+import { ExerciseProvider } from "../contexts/ExerciseContext";
+import { RoutinesProvider } from "../contexts/RoutinesContext";
+import { SearchProvider } from "../contexts/SearchContext";
+import { StatusBar } from "expo-status-bar";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -21,6 +32,8 @@ export default function RootLayout() {
     dm: require("../../assets/fonts/DMSans-Regular.ttf"),
     "dm-sb": require("../../assets/fonts/DMSans-SemiBold.ttf"),
     "dm-b": require("../../assets/fonts/DMSans-Bold.ttf"),
+    DMSans_400Regular,
+    DMSans_600SemiBold,
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -45,18 +58,42 @@ function RootLayoutNav() {
   // Need to change font to dm-sans
 
   return (
-    <SessionProvider>
-      <UserProvider>
-        <StatusBar style="dark" backgroundColor="#FFF" />
-        <Stack
-          screenOptions={{
-            navigationBarColor: "#FFF",
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="(signup)" options={{ headerShown: false }} />
-        </Stack>
-      </UserProvider>
-    </SessionProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SessionProvider>
+        <UserProvider>
+          <CartProvider>
+            <RoutinesProvider>
+              <RoutineSessionProvider>
+                <ExerciseProvider>
+                  <SearchProvider>
+                    <ConfettiProvider>
+                      <StatusBar style={"dark"} />
+                      <Stack
+                        screenOptions={{
+                          navigationBarColor: "#FFF",
+                        }}
+                      >
+                        <Stack.Screen
+                          name="(app)"
+                          options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                          name="login"
+                          options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                          name="(signup)"
+                          options={{ headerShown: false }}
+                        />
+                      </Stack>
+                    </ConfettiProvider>
+                  </SearchProvider>
+                </ExerciseProvider>
+              </RoutineSessionProvider>
+            </RoutinesProvider>
+          </CartProvider>
+        </UserProvider>
+      </SessionProvider>
+    </GestureHandlerRootView>
   );
 }

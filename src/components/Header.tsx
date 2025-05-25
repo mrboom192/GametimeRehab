@@ -6,18 +6,21 @@ import {
   Pressable,
   SafeAreaView,
   ImageBackground,
+  TouchableOpacity,
 } from "react-native";
 import React, { useRef, useState } from "react";
-import { useRouter } from "expo-router";
 import Colors from "../constants/Colors";
 import * as Haptics from "expo-haptics";
 import { useUser } from "../contexts/UserContext";
-import { StatusBar } from "expo-status-bar";
-import athleteBackground from "@/assets/images/athletebackground1.png";
 import { Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Feather from "@expo/vector-icons/Feather";
+import UserAvatar from "./UserAvatar";
+import { router, useNavigation } from "expo-router";
+import { DrawerActions } from "@react-navigation/native";
 
+const athleteBackground = require("@/assets/images/athletebackground1.png");
+const trainerBackground = require("@/assets/images/trainerbackground1.png");
 const HEADER_HEIGHT_PERCENTAGE = 0.475; // How much the space the header takes up as a pecentage of screen height
 const GRADIENT_START = { x: 1, y: 0.65 }; // Adjust the gradient start/end
 const GRADIENT_END = { x: 1, y: 0.905 };
@@ -29,9 +32,10 @@ const Header = ({
   tabs: string[];
   onTabChange: (tabName: string) => void;
 }) => {
+  const navigation = useNavigation();
   const scrollRef = useRef<ScrollView | null>(null);
-  const { userInfo } = useUser(); // Assume useUser provides a loading state
-  const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
+  const { data, loading } = useUser(); // Assume useUser provides a loading state
+  const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const { height } = Dimensions.get("window");
 
@@ -39,7 +43,7 @@ const Header = ({
     const selected = itemsRef.current[index];
     setActiveIndex(index);
 
-    selected?.measure((x: number) => {
+    (selected as any)?.measure((x: number) => {
       scrollRef.current?.scrollTo({
         x: x - 16,
         y: 0,
@@ -53,7 +57,13 @@ const Header = ({
 
   return (
     <ImageBackground
-      source={athleteBackground}
+      source={
+        loading // Need a better way to handle loading
+          ? ""
+          : data?.type === "trainer"
+          ? trainerBackground
+          : athleteBackground
+      }
       imageStyle={{ resizeMode: "cover" }}
       style={{
         height: height * HEADER_HEIGHT_PERCENTAGE,
@@ -61,7 +71,6 @@ const Header = ({
         position: "relative",
       }}
     >
-      <StatusBar style="light" />
       <LinearGradient
         // Background Linear Gradient
         colors={["transparent", "rgba(255,255,255, 1)"]}
@@ -84,7 +93,7 @@ const Header = ({
             }}
           >
             <Pressable
-              onPress={() => console.log("Pressed!")}
+              onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
               style={{
                 flexDirection: "column",
                 justifyContent: "center",
@@ -95,40 +104,23 @@ const Header = ({
               <Feather name="menu" size={40} color={"#FFF"} />
             </Pressable>
 
-            <View
-              style={{
-                height: 40,
-                width: 40,
-                backgroundColor: "#FFF",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 9999,
-              }}
-            >
-              <Text className="text-xl text-black">
-                {userInfo?.first_name?.[0] || "?"}
-              </Text>
-            </View>
+            <UserAvatar size={48} />
           </View>
 
           <View style={{ flexDirection: "column", gap: 8 }}>
             <View>
-              {userInfo?.type === "athlete" ? (
-                <View style={{ flexDirection: "row", gap: 6, marginLeft: 16 }}>
-                  <Feather name="eye" size={20} color={"#A6A6A6"} />
-                  <Text
-                    style={{
-                      fontFamily: "dm",
-                      fontSize: 16,
-                      color: "#A6A6A6",
-                    }}
-                  >
-                    Athlete View
-                  </Text>
-                </View>
-              ) : (
-                <></>
-              )}
+              <View style={{ flexDirection: "row", gap: 6, marginLeft: 16 }}>
+                <Feather name="eye" size={20} color={"#A6A6A6"} />
+                <Text
+                  style={{
+                    fontFamily: "dm",
+                    fontSize: 16,
+                    color: "#A6A6A6",
+                  }}
+                >
+                  {data?.type === "athlete" ? "Athlete View" : "Trainer View"}
+                </Text>
+              </View>
               <Text
                 style={{
                   marginLeft: 16,
@@ -139,7 +131,7 @@ const Header = ({
               >
                 Welcome back,{" "}
                 <Text style={{ color: Colors.primary }}>
-                  {userInfo?.first_name}!
+                  {data?.first_name}!
                 </Text>
               </Text>
             </View>
@@ -158,7 +150,7 @@ const Header = ({
                 <Pressable
                   onPress={() => selectCategory(index)}
                   key={index}
-                  ref={(el) => (itemsRef.current[index] = el)}
+                  ref={(el) => ((itemsRef as any).current[index] = el)}
                   style={{
                     flexDirection: "column",
                     justifyContent: "center",

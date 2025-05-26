@@ -18,6 +18,7 @@ import { ExerciseProvider } from "../contexts/ExerciseContext";
 import { RoutinesProvider } from "../contexts/RoutinesContext";
 import { SearchProvider } from "../contexts/SearchContext";
 import { StatusBar } from "expo-status-bar";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -59,41 +60,43 @@ function RootLayoutNav() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SessionProvider>
-        <UserProvider>
-          <CartProvider>
-            <RoutinesProvider>
-              <RoutineSessionProvider>
-                <ExerciseProvider>
-                  <SearchProvider>
-                    <ConfettiProvider>
-                      <StatusBar style={"dark"} />
-                      <Stack
-                        screenOptions={{
-                          navigationBarColor: "#FFF",
-                        }}
-                      >
-                        <Stack.Screen
-                          name="(app)"
-                          options={{ headerShown: false }}
-                        />
-                        <Stack.Screen
-                          name="login"
-                          options={{ headerShown: false }}
-                        />
-                        <Stack.Screen
-                          name="(signup)"
-                          options={{ headerShown: false }}
-                        />
-                      </Stack>
-                    </ConfettiProvider>
-                  </SearchProvider>
-                </ExerciseProvider>
-              </RoutineSessionProvider>
-            </RoutinesProvider>
-          </CartProvider>
-        </UserProvider>
-      </SessionProvider>
+      <KeyboardProvider>
+        <SessionProvider>
+          <UserProvider>
+            <CartProvider>
+              <RoutinesProvider>
+                <RoutineSessionProvider>
+                  <ExerciseProvider>
+                    <SearchProvider>
+                      <ConfettiProvider>
+                        <StatusBar style={"dark"} />
+                        <Stack
+                          screenOptions={{
+                            navigationBarColor: "#FFF",
+                          }}
+                        >
+                          <Stack.Screen
+                            name="(app)"
+                            options={{ headerShown: false }}
+                          />
+                          <Stack.Screen
+                            name="login"
+                            options={{ headerShown: false }}
+                          />
+                          <Stack.Screen
+                            name="(signup)"
+                            options={{ headerShown: false }}
+                          />
+                        </Stack>
+                      </ConfettiProvider>
+                    </SearchProvider>
+                  </ExerciseProvider>
+                </RoutineSessionProvider>
+              </RoutinesProvider>
+            </CartProvider>
+          </UserProvider>
+        </SessionProvider>
+      </KeyboardProvider>
     </GestureHandlerRootView>
   );
 }

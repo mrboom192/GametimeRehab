@@ -1,205 +1,203 @@
-import { Link, router } from "expo-router";
-import {
-  Pressable,
-  Text,
-  View,
-  Alert,
-  Linking,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
-import LabeledInput from "../../components/LabeledInput";
+import { router } from "expo-router";
+import { Pressable, Text, View, StyleSheet } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSignup } from "@/src/contexts/SignupContext";
-import { useState } from "react";
 import { TextRegular } from "@/src/components/StyledText";
 import Colors from "@/src/constants/Colors";
-import { ScrollView } from "react-native-gesture-handler";
-
-interface Errors {
-  first_name?: string;
-  last_name?: string;
-  email?: string;
-  phone?: string;
-  password?: string;
-  confirm_password?: string;
-}
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { SubmitHandler, useForm } from "react-hook-form";
+import ControllerInput from "@/src/components/ControllerInput";
 
 export default function SignupScreen() {
   const { signupData, updateSignupData } = useSignup();
-  const [errors, setErrors] = useState<Errors>({});
+  const { control, handleSubmit } = useForm<any>({
+    defaultValues: {},
+  });
 
-  // Validation logic
-  const validateFields = (): boolean => {
-    const newErrors: Errors = {};
+  const onSubmit: SubmitHandler<any> = (data) => {
+    (Object.keys(data) as (keyof typeof signupData)[]).forEach((field) => {
+      updateSignupData(field, data[field]);
+    });
 
-    if (!signupData.first_name.trim()) {
-      newErrors.first_name = "First name is required.";
-    }
-
-    if (!signupData.last_name.trim()) {
-      newErrors.last_name = "Last name is required.";
-    }
-
-    if (
-      !signupData.email.trim() ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(signupData.email)
-    ) {
-      newErrors.email = "Valid email is required.";
-    }
-
-    if (
-      signupData.phone &&
-      !/^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/.test(signupData.phone)
-    ) {
-      newErrors.phone = "Phone number is invalid.";
-    }
-
-    if (!signupData.password || signupData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters long.";
-    }
-
-    if (signupData.password !== signupData.confirm_password) {
-      newErrors.confirm_password = "Passwords do not match.";
-    }
-
-    setErrors(newErrors);
-
-    // Return true if there are no errors
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleNext = () => {
-    if (validateFields()) {
-      router.push("./user-type", { relativeToDirectory: false });
-    } else {
-    }
+    router.push("./user-type", { relativeToDirectory: false });
   };
 
   return (
-    <View
-      style={{ backgroundColor: "#FFF", padding: 16, paddingBottom: 64 }}
-      className="flex-1 flex flex-col justify-between items-start"
+    <KeyboardAwareScrollView
+      bottomOffset={62}
+      style={styles.container}
+      contentContainerStyle={styles.content}
     >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={100}
-        style={{ flex: 1 }}
+      {/* First Name and Last Name */}
+      <ControllerInput
+        name="first_name"
+        control={control}
+        label="First name"
+        placeholder="e.g. John"
+        rules={{ required: "First name is required" }}
+      />
+      <ControllerInput
+        name="last_name"
+        control={control}
+        label="Last name"
+        placeholder="e.g. Doe"
+        rules={{ required: "Last name is required" }}
+      />
+
+      <ControllerInput
+        name="email"
+        control={control}
+        label="Email"
+        placeholder="e.g. Doe"
+        rules={{
+          required: "Email is required",
+          pattern: {
+            value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            message: "Invalid email address",
+          },
+        }}
+        iconLeft="email"
+      />
+      <ControllerInput
+        name="phone"
+        control={control}
+        label="Phone number (optional)"
+        placeholder="(123) 555-7890"
+        rules={{
+          pattern: {
+            value: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+            message: "Invalid phone number format",
+          },
+        }}
+        iconLeft="phone"
+      />
+
+      {/* Dividing 1px line */}
+      <View
+        style={{
+          height: 1,
+          backgroundColor: Colors.faintGrey,
+          marginVertical: 16,
+        }}
+      />
+
+      <ControllerInput
+        name="password"
+        control={control}
+        label="Create password"
+        placeholder="Enter a 6+ length password"
+        rules={{
+          required: "Password is required",
+          minLength: {
+            value: 6,
+            message: "Password must be at least 6 characters",
+          },
+        }}
+        iconLeft="lock"
+        sensitive
+      />
+      <ControllerInput
+        name="confirm_password"
+        control={control}
+        label="Confirm password"
+        placeholder="Re-enter your password"
+        rules={{
+          required: "Please confirm your password",
+          validate: (value: string, formValues: any) =>
+            value === formValues.password || "Passwords do not match",
+        }}
+        iconLeft="lock"
+        sensitive
+      />
+
+      {/* Dividing 1px line */}
+      <View
+        style={{
+          height: 1,
+          backgroundColor: Colors.faintGrey,
+          marginVertical: 16,
+        }}
+      />
+
+      <View
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+        }}
       >
-        <ScrollView
-          contentContainerStyle={{ flexDirection: "column", gap: 24 }}
+        <TextRegular style={{ color: Colors.lightText }}>
+          By signing up, you agree to our{" "}
+        </TextRegular>
+        <TextRegular
+          onPress={() => router.push("/terms")}
+          style={{ color: Colors.primary }}
         >
-          {/* First Name and Last Name */}
-          <View className="flex flex-col gap-4">
-            <LabeledInput
-              label="First name"
-              placeholder="John"
-              value={signupData.first_name}
-              onChangeText={(text) => updateSignupData("first_name", text)}
-              error={errors.first_name}
-            />
-            <LabeledInput
-              label="Last name"
-              placeholder="Smith"
-              value={signupData.last_name}
-              onChangeText={(text) => updateSignupData("last_name", text)}
-              error={errors.last_name}
-            />
-          </View>
-
-          {/* Email */}
-          <LabeledInput
-            label="Email"
-            placeholder="example@example.com"
-            value={signupData.email}
-            onChangeText={(text) => updateSignupData("email", text)}
-            iconLeft={
-              <Ionicons name="mail-outline" size={16} color="#717171" />
-            }
-            error={errors.email}
-          />
-
-          {/* Phone Number */}
-          <LabeledInput
-            label="Phone number (optional)"
-            placeholder="(123) 555-7890"
-            value={signupData.phone}
-            onChangeText={(text) => updateSignupData("phone", text)}
-            iconLeft={
-              <Ionicons name="call-outline" size={16} color="#717171" />
-            }
-            error={errors.phone}
-          />
-
-          {/* Password Fields */}
-          <View className="flex flex-col gap-4">
-            <LabeledInput
-              label="Create password"
-              placeholder="Enter a 6+ length password"
-              value={signupData.password}
-              onChangeText={(text) => updateSignupData("password", text)}
-              iconLeft={
-                <Ionicons
-                  name="lock-closed-outline"
-                  size={16}
-                  color="#717171"
-                />
-              }
-              secureTextEntry={true}
-              error={errors.password}
-            />
-            <LabeledInput
-              label="Confirm password"
-              placeholder="Confirm your password"
-              value={signupData.confirm_password}
-              onChangeText={(text) =>
-                updateSignupData("confirm_password", text)
-              }
-              iconLeft={
-                <Ionicons
-                  name="lock-closed-outline"
-                  size={16}
-                  color="#717171"
-                />
-              }
-              secureTextEntry={true}
-              error={errors.confirm_password}
-            />
-          </View>
-
-          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            <TextRegular>By signing up, you agree to our </TextRegular>
-            <TextRegular
-              onPress={() => router.push("/terms")}
-              style={{ color: Colors.primary }}
-            >
-              Terms & Conditions
-            </TextRegular>
-            <TextRegular> and </TextRegular>
-            <TextRegular
-              onPress={() => router.push("/privacy-policy")}
-              style={{ color: Colors.primary }}
-            >
-              Privacy Policy
-            </TextRegular>
-            <TextRegular>.</TextRegular>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          Terms & Conditions
+        </TextRegular>
+        <TextRegular style={{ color: Colors.lightText }}> and </TextRegular>
+        <TextRegular
+          onPress={() => router.push("/privacy-policy")}
+          style={{ color: Colors.primary }}
+        >
+          Privacy Policy
+        </TextRegular>
+        <TextRegular>.</TextRegular>
+      </View>
 
       {/* Footer Section */}
-      <View className="flex flex-row items-center justify-end self-stretch gap-6">
+      <View className="flex flex-row items-center justify-end self-stretch gap-6 my-8">
         <Text className="text-slate-700 italic text-center">
           Less than 4 minutes to finish.
         </Text>
         <Pressable
           className="py-2.5 px-3 justify-center flex-row items-center rounded-lg bg-white border border-[#717171] gap-2"
-          onPress={handleNext}
+          onPress={handleSubmit(onSubmit)}
         >
           <Text className="text-black uppercase">Next</Text>
           <Ionicons name="chevron-forward" size={16} color="#000" />
         </Pressable>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  content: {
+    backgroundColor: "#fff",
+
+    padding: 16,
+    position: "relative",
+  },
+  inputRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 8,
+  },
+  disclaimer: {
+    color: Colors.lightText,
+    fontSize: 12,
+    marginTop: 48,
+    textAlign: "center",
+  },
+  submitButton: {
+    backgroundColor: Colors.dark,
+    borderRadius: 8,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    marginTop: 16,
+    marginBottom: 64,
+    alignSelf: "center",
+    width: "100%",
+    maxWidth: 300,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  submitText: {
+    color: "#FFF",
+  },
+});

@@ -48,7 +48,7 @@ const Streak = () => {
             fontSize: 24,
           }}
         >
-          {data.currentStreak} Day{data.currentStreak == 1 ? "" : "s"}
+          {data.currentStreak || 0} Day{data.currentStreak == 1 ? "" : "s"}
         </Text>
         <Text
           style={{
@@ -70,7 +70,8 @@ const Streak = () => {
       >
         {data.currentStreak >= data.personalBest
           ? "New Personal Best!"
-          : `${data.personalBest - data.currentStreak} days until PB`}
+          : `${data.personalBest - data.currentStreak} days until PB` ||
+            "No Streak Yet"}
       </Text>
     </View>
   );

@@ -49,11 +49,7 @@ const PairForm = () => {
 
       // Find the trainer with the entered code
       const trainerSnapshot = await getDocs(
-        query(
-          collection(db, "users"),
-          where("type", "==", "trainer"),
-          where("trainer_code", "==", code)
-        )
+        query(collection(db, "users"), where("trainer_code", "==", code))
       );
 
       if (trainerSnapshot.empty) {

@@ -13,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import UserAvatar from "../UserAvatar";
 import { useUser } from "@/src/contexts/UserContext";
 import { useSession } from "@/src/contexts/AuthContext";
+import AddInjuryButton from "../screens/profile/AddInjuryButton";
 
 function CustomDrawerContent(props: any) {
   const { data } = useUser();
@@ -61,6 +62,8 @@ function CustomDrawerContent(props: any) {
         href={"/terms" as RelativePathString}
         bottomBorder={false}
       />
+
+      {data?.type === "athlete" && <AddInjuryButton />}
 
       <PairButton />
     </DrawerContentScrollView>
